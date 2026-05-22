@@ -439,37 +439,41 @@ nav{
 .sp-dot.active{color:var(--teal)}
 .sp-dot.active::before{transform:scale(1.9)}
 .sp-dot:hover:not(.active){color:var(--text2)}
+@keyframes sc-mob-in{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
 @media(max-width:768px){
-  /* Section flows naturally — no sticky, no 500vh scroll tunnel */
   .story-section{height:auto}
-  .story-sticky{position:relative;height:auto;display:flex;flex-direction:column;gap:0}
+  .story-sticky{position:relative;height:auto;display:flex;flex-direction:column}
 
-  /* Canvas pane — auto height, padded, no divider line */
-  .story-visual{
-    height:auto;padding:28px 20px 20px;
-    border-right:none;border-bottom:none;
-  }
-  /* Canvas card fills available width */
+  /* Canvas pane */
+  .story-visual{height:auto;padding:28px 20px 20px;border-right:none;border-bottom:none}
   .sc-canvas-wrap{width:100%;aspect-ratio:3/2;border-radius:18px}
   .sc-state-label{font-size:9px;bottom:10px}
 
-  /* Text pane — vertical stack, all chapters visible */
-  .story-text{
-    position:relative;
-    display:flex;flex-direction:column;gap:12px;
-    padding:4px 20px 36px;
-  }
-  /* Show all chapters at once — no JS toggling needed */
+  /* Text pane — one chapter at a time, swipe to advance */
+  .story-text{padding:12px 20px 8px}
   .story-chapter{
-    position:relative;inset:auto;
-    display:flex;flex-direction:column;justify-content:flex-start;
-    opacity:1!important;transform:none!important;pointer-events:auto;
+    position:relative;inset:auto;display:none;
+    opacity:1!important;transform:none!important;
+  }
+  .story-chapter.sc-active{
+    display:flex;flex-direction:column;
+    animation:sc-mob-in .35s ease both;
   }
   .sc-card{padding:24px 22px}
-  .sp-title{font-size:20px}
+  .sp-title{font-size:clamp(18px,5vw,22px)}
 
-  /* Hide progress strip — not meaningful without scroll tunnel */
-  .story-progress{display:none}
+  /* Progress dots — visible and centered below each chapter */
+  .story-progress{
+    display:flex;height:auto;
+    padding:14px 20px 32px;
+    background:none;border-top:none;
+    justify-content:center;align-items:center;
+  }
+  .sp-bar-wrap{display:none}
+  .sp-dots{gap:20px;justify-content:center}
 }
 
 /* ── NEUROSCIENCE ── */
@@ -2082,6 +2086,9 @@ function toggleLang(lang) {
     ctx.clearRect(0, 0, W, H);
     if (W === 0) { requestAnimationFrame(draw); return; }
 
+    // On mobile, smoothly animate scrollP toward the target state
+    if (window.innerWidth <= 768) scrollP += (targetScrollP - scrollP) * 0.06;
+
     const raw = scrollP * 4;
     const ch  = Math.min(Math.floor(raw), 3);
     const t   = easeInOut(Math.min(raw - ch, 1));
@@ -2155,6 +2162,25 @@ function toggleLang(lang) {
   const stateLabel = document.getElementById('sc-state-label');
   let lastCh = -1;
 
+  // ── Mobile swipe state ──────────────────────────────────────────
+  let mobileChIdx   = 0;
+  let targetScrollP = 0.125;                          // mid-point of state 0
+  const CHAPTER_SP  = [0.125, 0.375, 0.625, 0.875];  // canvas target per chapter
+
+  function setMobileChapter(i) {
+    i = Math.max(0, Math.min(3, i));
+    mobileChIdx   = i;
+    targetScrollP = CHAPTER_SP[i];
+    chapters.forEach((c, j) => c.classList.toggle('sc-active', j === i));
+    dots.forEach((d, j)     => d.classList.toggle('active',    j === i));
+    if (stateLabel) {
+      const lang = localStorage.getItem('synapse_lang') || 'en';
+      stateLabel.textContent = STATE_LABELS_MAP[lang][i];
+      stateLabel.classList.add('visible');
+    }
+  }
+  // ───────────────────────────────────────────────────────────────
+
   function getProgress() {
     const rect   = section.getBoundingClientRect();
     const maxS   = section.offsetHeight - window.innerHeight;
@@ -2162,14 +2188,13 @@ function toggleLang(lang) {
   }
 
   function onScroll() {
-    // On mobile all chapters are always visible — skip scroll-driven switching
-    if (window.innerWidth <= 768) return;
+    if (window.innerWidth <= 768) return; // mobile uses swipe instead
     scrollP = getProgress();
     const ch = Math.min(Math.floor(scrollP * 4), 3);
     if (barFill) barFill.style.width = (scrollP * 100) + '%';
     if (ch !== lastCh) {
       lastCh = ch;
-      dots.forEach((d, i)    => d.classList.toggle('active', i === ch));
+      dots.forEach((d, i)    => d.classList.toggle('active',    i === ch));
       chapters.forEach((c, i) => c.classList.toggle('sc-active', i === ch));
       if (stateLabel) {
         const lang = localStorage.getItem('synapse_lang') || 'en';
@@ -2179,18 +2204,35 @@ function toggleLang(lang) {
     }
   }
 
+  // Dots — scroll on desktop, switch chapter on mobile
   dots.forEach((dot, i) => {
     dot.addEventListener('click', () => {
-      if (window.innerWidth <= 768) return;
+      if (window.innerWidth <= 768) { setMobileChapter(i); return; }
       const maxS = section.offsetHeight - window.innerHeight;
       window.scrollTo({ top: section.offsetTop + (i/3)*maxS, behavior: 'smooth' });
     });
   });
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); resize(); onScroll(); });
+  // Touch swipe — left = next chapter, right = prev chapter
+  let touchX0 = 0;
+  section.addEventListener('touchstart', e => {
+    touchX0 = e.touches[0].clientX;
+  }, { passive: true });
+  section.addEventListener('touchend', e => {
+    if (window.innerWidth > 768) return;
+    const dx = e.changedTouches[0].clientX - touchX0;
+    if (Math.abs(dx) > 48) setMobileChapter(mobileChIdx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
 
-  resize(); onScroll(); requestAnimationFrame(draw);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    ctx.setTransform(1,0,0,1,0,0); resize(); onScroll();
+    if (window.innerWidth <= 768) setMobileChapter(mobileChIdx);
+  });
+
+  resize(); onScroll();
+  if (window.innerWidth <= 768) setMobileChapter(0);
+  requestAnimationFrame(draw);
 })();
 </script>
 </body>
