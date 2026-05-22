@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Synapse — Coming Soon</title>
 <meta name="description" content="Where thinking becomes a map. Synapse turns your notes into a living knowledge web — link ideas across books, thoughts, and media. Launching soon.">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -53,7 +54,7 @@ nav{
   white-space:nowrap;
 }
 .nav-logo{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:18px;color:var(--text1);text-decoration:none}
-.nav-logo svg{width:22px;height:22px;stroke:var(--teal);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-logo svg{width:30px;height:30px;flex-shrink:0}
 .nav-cta{
   background:linear-gradient(135deg,var(--sage),var(--teal));
   color:white;border:none;border-radius:50px;
@@ -657,7 +658,36 @@ footer{
   <!-- Nav -->
   <nav>
     <a class="nav-logo" href="#">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nl-bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stop-color="#7B9EAB"/>
+            <stop offset="100%" stop-color="#526E7A"/>
+          </linearGradient>
+          <radialGradient id="nl-sp" cx="38%" cy="35%" r="55%">
+            <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1024" height="1024" rx="230" fill="url(#nl-bg)"/>
+        <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="410" y2="809" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="205" y2="573" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="266" y2="287" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="184" x2="266" y2="287" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+        <line x1="799" y1="358" x2="768" y2="696" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+        <line x1="410" y1="809" x2="205" y2="573" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+        <circle cx="512" cy="184" r="38" fill="#EAE8E2"/>
+        <circle cx="799" cy="358" r="43" fill="#D6E6E4"/>
+        <circle cx="768" cy="696" r="32" fill="#EAE8E2"/>
+        <circle cx="410" cy="809" r="38" fill="#D6E6E4"/>
+        <circle cx="205" cy="573" r="43" fill="#EAE8E2"/>
+        <circle cx="266" cy="287" r="32" fill="#D6E6E4"/>
+        <circle cx="512" cy="491" r="96" fill="#E59A78"/>
+        <circle cx="512" cy="491" r="96" fill="url(#nl-sp)"/>
+      </svg>
       Synapse
     </a>
     <div class="lang-toggle" role="group" aria-label="Language">

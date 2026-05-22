@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background: teal gradient with subtle depth -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#7B9EAB"/>
+      <stop offset="100%" stop-color="#526E7A"/>
+    </linearGradient>
+    <!-- Soft glow behind central node -->
+    <radialGradient id="glow" cx="50%" cy="48%" r="20%">
+      <stop offset="0%"   stop-color="#E59A78" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#E59A78" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Specular on center node -->
+    <radialGradient id="spec" cx="38%" cy="35%" r="55%">
+      <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ── Background ── -->
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+
+  <!-- ── Terra glow behind hub ── -->
+  <circle cx="512" cy="491" r="200" fill="url(#glow)"/>
+
+  <!-- ── Hub spokes (center → each outer node) ── -->
+  <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+  <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+  <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+  <line x1="512" y1="491" x2="410" y2="809" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+  <line x1="512" y1="491" x2="205" y2="573" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+  <line x1="512" y1="491" x2="266" y2="287" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- ── Outer connecting edges ── -->
+  <line x1="512" y1="184" x2="266" y2="287" stroke="rgba(255,255,255,0.30)" stroke-width="7" stroke-linecap="round"/>
+  <line x1="799" y1="358" x2="768" y2="696" stroke="rgba(255,255,255,0.30)" stroke-width="7" stroke-linecap="round"/>
+  <line x1="410" y1="809" x2="205" y2="573" stroke="rgba(255,255,255,0.30)" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- ── Outer nodes ── -->
+  <!-- Top -->
+  <circle cx="512" cy="184" r="38" fill="#EAE8E2"/>
+  <!-- Upper-right (larger) -->
+  <circle cx="799" cy="358" r="43" fill="#D6E6E4"/>
+  <!-- Lower-right (smaller) -->
+  <circle cx="768" cy="696" r="32" fill="#EAE8E2"/>
+  <!-- Lower-left -->
+  <circle cx="410" cy="809" r="38" fill="#D6E6E4"/>
+  <!-- Left (larger) -->
+  <circle cx="205" cy="573" r="43" fill="#EAE8E2"/>
+  <!-- Upper-left (smaller) -->
+  <circle cx="266" cy="287" r="32" fill="#D6E6E4"/>
+
+  <!-- ── Central hub ── -->
+  <circle cx="512" cy="491" r="96" fill="#E59A78"/>
+  <!-- Specular gloss -->
+  <circle cx="512" cy="491" r="96" fill="url(#spec)"/>
+</svg>
