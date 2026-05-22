@@ -440,14 +440,35 @@ nav{
 .sp-dot.active::before{transform:scale(1.9)}
 .sp-dot:hover:not(.active){color:var(--text2)}
 @media(max-width:768px){
+  /* Section flows naturally — no sticky, no 500vh scroll tunnel */
   .story-section{height:auto}
-  .story-sticky{position:relative;height:auto;display:flex;flex-direction:column}
-  .story-visual{height:52vw;min-height:200px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.45)}
-  .sc-canvas-wrap{width:78%;aspect-ratio:3/2}
-  .story-text{padding:0}
-  .story-chapter{position:relative;inset:auto;padding:28px 20px;opacity:1!important;transform:none!important;display:none}
-  .story-chapter.sc-active{display:flex}
-  .sc-card{padding:28px 22px}
+  .story-sticky{position:relative;height:auto;display:flex;flex-direction:column;gap:0}
+
+  /* Canvas pane — auto height, padded, no divider line */
+  .story-visual{
+    height:auto;padding:28px 20px 20px;
+    border-right:none;border-bottom:none;
+  }
+  /* Canvas card fills available width */
+  .sc-canvas-wrap{width:100%;aspect-ratio:3/2;border-radius:18px}
+  .sc-state-label{font-size:9px;bottom:10px}
+
+  /* Text pane — vertical stack, all chapters visible */
+  .story-text{
+    position:relative;
+    display:flex;flex-direction:column;gap:12px;
+    padding:4px 20px 36px;
+  }
+  /* Show all chapters at once — no JS toggling needed */
+  .story-chapter{
+    position:relative;inset:auto;
+    display:flex;flex-direction:column;justify-content:flex-start;
+    opacity:1!important;transform:none!important;pointer-events:auto;
+  }
+  .sc-card{padding:24px 22px}
+  .sp-title{font-size:20px}
+
+  /* Hide progress strip — not meaningful without scroll tunnel */
   .story-progress{display:none}
 }
 
@@ -2141,6 +2162,8 @@ function toggleLang(lang) {
   }
 
   function onScroll() {
+    // On mobile all chapters are always visible — skip scroll-driven switching
+    if (window.innerWidth <= 768) return;
     scrollP = getProgress();
     const ch = Math.min(Math.floor(scrollP * 4), 3);
     if (barFill) barFill.style.width = (scrollP * 100) + '%';
@@ -2158,6 +2181,7 @@ function toggleLang(lang) {
 
   dots.forEach((dot, i) => {
     dot.addEventListener('click', () => {
+      if (window.innerWidth <= 768) return;
       const maxS = section.offsetHeight - window.innerHeight;
       window.scrollTo({ top: section.offsetTop + (i/3)*maxS, behavior: 'smooth' });
     });
