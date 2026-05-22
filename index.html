@@ -779,7 +779,7 @@ footer{
         <div class="av" style="background:linear-gradient(135deg,#C6BFA2,#A89C80)">S</div>
         <div class="av" style="background:linear-gradient(135deg,#6A8791,#4A6771)">R</div>
       </div>
-      <p class="sp-text"><strong id="counter">247</strong> readers already on the waitlist</p>
+      <p class="sp-text">readers already on the waitlist</p>
     </div>
   </section>
 
@@ -1297,18 +1297,6 @@ const observer = new IntersectionObserver(entries => {
 }, {threshold: 0.12});
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Counter animation
-function animateCounter(el, target, duration){
-  const start = parseInt(el.textContent) || 0;
-  const step = (target - start) / (duration / 16);
-  let cur = start;
-  const id = setInterval(() => {
-    cur = Math.min(cur + step, target);
-    el.textContent = Math.round(cur);
-    if(cur >= target) clearInterval(id);
-  }, 16);
-}
-setTimeout(() => animateCounter(document.getElementById('counter'), 247, 1200), 600);
 
 // Subscribe
 function subscribe(which) {
