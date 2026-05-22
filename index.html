@@ -1319,11 +1319,6 @@ function subscribe(which) {
   if(!list.includes(email)) list.push(email);
   localStorage.setItem('synapse_waitlist', JSON.stringify(list));
 
-  // Update counter
-  const counter = document.getElementById('counter');
-  const cur = parseInt(counter.textContent) || 247;
-  animateCounter(counter, cur + 1, 600);
-
   // Show success
   document.getElementById(formId).style.display = 'none';
   const msg = document.getElementById(msgId);
@@ -1358,8 +1353,8 @@ const T = [
     en: SVG_CHECK + 'You\'re on the list — we\'ll be in touch!',
     es: SVG_CHECK + '¡Estás en la lista — te contactaremos!' },
   { sel: '.social-proof .sp-text',
-    en: '<strong id="counter">247</strong> readers already on the waitlist',
-    es: '<strong id="counter">247</strong> lectores ya están en la lista' },
+    en: 'readers already on the waitlist',
+    es: 'lectores ya están en la lista' },
 
   // ── STORY DOTS ──
   { sel: '.sp-dot[data-i="0"]', en: 'The Obsession', es: 'La Obsesión' },
@@ -1582,12 +1577,6 @@ function applyLang(lang) {
     }
   });
 
-  // Re-attach counter value after sp-text innerHTML swap
-  const counter = document.getElementById('counter');
-  if (counter) {
-    const stored = JSON.parse(localStorage.getItem('synapse_waitlist') || '[]').length;
-    counter.textContent = 247 + stored;
-  }
 }
 
 function toggleLang(lang) {
