@@ -356,15 +356,14 @@ nav{
   background:transparent;
   border-right:1px solid rgba(255,255,255,0.48);overflow:hidden;
 }
-/* Floating rounded-square canvas card */
+/* Floating wide-rectangle canvas card */
 .sc-canvas-wrap{
   position:relative;
-  width:min(62%,52vh);
-  aspect-ratio:1;
+  width:84%;
+  aspect-ratio:3/2;
   border-radius:28px;
   background:linear-gradient(145deg,rgba(232,235,233,0.82),rgba(218,228,225,0.82));
-  border:1px solid rgba(255,255,255,0.68);
-  box-shadow:0 6px 40px rgba(106,135,145,0.13),0 1px 6px rgba(106,135,145,0.07);
+  box-shadow:0 12px 56px rgba(80,115,128,0.24),0 3px 16px rgba(80,115,128,0.12);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   overflow:hidden;
 }
@@ -444,7 +443,7 @@ nav{
   .story-section{height:auto}
   .story-sticky{position:relative;height:auto;display:flex;flex-direction:column}
   .story-visual{height:52vw;min-height:200px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.45)}
-  .sc-canvas-wrap{width:min(70%,40vw)}
+  .sc-canvas-wrap{width:78%;aspect-ratio:3/2}
   .story-text{padding:0}
   .story-chapter{position:relative;inset:auto;padding:28px 20px;opacity:1!important;transform:none!important;display:none}
   .story-chapter.sc-active{display:flex}
