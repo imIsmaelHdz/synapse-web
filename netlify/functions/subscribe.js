@@ -36,5 +36,5 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ success: true }) };
   }
 
-  return { statusCode: 500, body: JSON.stringify({ error: 'Failed to subscribe' }) };
+  return { statusCode: 500, body: JSON.stringify({ error: 'Failed to subscribe', detail: data }) };
 };
