@@ -92,7 +92,6 @@ nav{
 
 /* ── LOCKED FORM ── */
 .form-lock-wrap{width:100%;max-width:460px;animation:fade-up .7s .3s ease both}
-.form-lock-wrap .subscribe-form{opacity:.38;pointer-events:none;filter:grayscale(30%);user-select:none}
 .form-lock-msg{
   display:flex;align-items:center;justify-content:center;gap:7px;
   margin-top:14px;font-size:12.5px;font-weight:500;color:var(--text2);
@@ -770,13 +769,8 @@ footer{
           type="email"
           placeholder="your@email.com"
           autocomplete="email"
-          disabled
         >
-        <button class="subscribe-btn" disabled>Notify me</button>
-      </div>
-      <div class="form-lock-msg">
-        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        <span id="form-lock-text">Waitlist opens at launch — stay tuned</span>
+        <button class="subscribe-btn" onclick="subscribe('main')">Notify me</button>
       </div>
     </div>
 
@@ -1255,13 +1249,8 @@ footer{
             type="email"
             placeholder="your@email.com"
             autocomplete="email"
-            disabled
           >
-          <button class="subscribe-btn" disabled>Join waitlist</button>
-        </div>
-        <div class="form-lock-msg">
-          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          <span id="form-lock-text-2">Waitlist opens at launch — stay tuned</span>
+          <button class="subscribe-btn" onclick="subscribe('bottom')">Join waitlist</button>
         </div>
       </div>
     </div>
@@ -1308,7 +1297,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 
 // Subscribe
-function subscribe(which) {
+async function subscribe(which) {
   const inputId = which === 'main' ? 'main-email' : 'bottom-email';
   const formId  = which === 'main' ? 'subscribe-form' : 'subscribe-form-2';
   const msgId   = which === 'main' ? 'success-main' : 'success-bottom';
@@ -1323,15 +1312,31 @@ function subscribe(which) {
     return;
   }
 
-  // Save locally
-  const list = JSON.parse(localStorage.getItem('synapse_waitlist') || '[]');
-  if(!list.includes(email)) list.push(email);
-  localStorage.setItem('synapse_waitlist', JSON.stringify(list));
+  const btn = document.querySelector(`#${formId} .subscribe-btn`);
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '...';
 
-  // Show success
-  document.getElementById(formId).style.display = 'none';
-  const msg = document.getElementById(msgId);
-  msg.style.display = 'flex';
+  try {
+    const res = await fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.ok) {
+      document.getElementById(formId).style.display = 'none';
+      document.getElementById(msgId).style.display = 'flex';
+    } else {
+      btn.disabled = false;
+      btn.textContent = originalText;
+      input.style.outline = '2px solid rgba(229,90,90,0.4)';
+      setTimeout(() => input.style.outline = '', 1200);
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
 }
 
 // ── LANGUAGE TOGGLE ──────────────────────────────────────────────
