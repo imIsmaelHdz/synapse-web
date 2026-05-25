@@ -435,7 +435,7 @@ footer{
       <div class="chip"><span class="chip-dot" style="background:#E59A78"></span>Firebase Auth</div>
       <div class="chip"><span class="chip-dot" style="background:#C6BFA2"></span>Fastify</div>
       <div class="chip"><span class="chip-dot" style="background:#6A8791"></span>PostgreSQL</div>
-      <div class="chip"><span class="chip-dot" style="background:#92A8A5"></span>Claude claude-opus-4-5</div>
+      <div class="chip"><span class="chip-dot" style="background:#4285F4"></span>Gemini</div>
     </div>
   </section>
 
@@ -464,7 +464,7 @@ footer{
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
         <div class="principle-title" id="p3-title">AI as assistant</div>
-        <div class="principle-desc" id="p3-desc">Claude suggests connections between your notes — it never auto-creates them. Every AI suggestion requires a human accept. The graph is always a reflection of your thinking, not the model's.</div>
+        <div class="principle-desc" id="p3-desc">Gemini suggests connections between your notes — it never auto-creates them. Every AI suggestion requires a human accept. The graph is always a reflection of your thinking, not the model's.</div>
       </div>
     </div>
   </section>
@@ -548,16 +548,16 @@ footer{
 
       <div class="tech-card">
         <div class="tech-top">
-          <div class="tech-logo" style="background:linear-gradient(135deg,rgba(229,154,120,0.22),rgba(146,168,165,0.18));border:1px solid rgba(229,154,120,0.30)">
-            <span style="font-size:16px">✦</span>
+          <div class="tech-logo" style="background:linear-gradient(135deg,rgba(66,133,244,0.18),rgba(52,168,83,0.10));border:1px solid rgba(66,133,244,0.26)">
+            <span style="color:#4285F4;font-size:17px;font-weight:700">G</span>
           </div>
           <div>
-            <div class="tech-name">Claude claude-opus-4-5</div>
+            <div class="tech-name">Gemini</div>
             <div class="tech-layer" id="claude-layer">AI · Link suggestions</div>
           </div>
         </div>
-        <div class="tech-desc" id="claude-desc">The <code>POST /v1/ai/suggest</code> endpoint sends a JSONB snapshot of your graph to Anthropic's API and gets back a ranked list of suggested connections — each with a "Because:" explanation grounded in your own notes.</div>
-        <div class="tech-why" id="claude-why">Best reasoning for cross-domain connections</div>
+        <div class="tech-desc" id="claude-desc">The <code>POST /v1/ai/suggest</code> endpoint sends a JSONB snapshot of your graph to Google's AI API and gets back a ranked list of suggested connections — each with a "Because:" explanation grounded in your own notes.</div>
+        <div class="tech-why" id="claude-why">Fast, high-quality cross-domain reasoning</div>
       </div>
 
     </div>
@@ -657,8 +657,8 @@ footer{
 
           <!-- AI Cloud -->
           <rect x="590" y="175" width="200" height="90" rx="18" fill="rgba(229,154,120,0.10)" stroke="rgba(229,154,120,0.25)" stroke-width="1.5"/>
-          <text x="690" y="207" text-anchor="middle" fill="#C67050" font-size="10" font-weight="700" font-family="DM Sans,sans-serif" letter-spacing=".08em">ANTHROPIC API</text>
-          <text x="690" y="230" text-anchor="middle" fill="#C67050" font-size="13" font-weight="600" font-family="DM Sans,sans-serif">Claude claude-opus-4-5</text>
+          <text x="690" y="207" text-anchor="middle" fill="#C67050" font-size="10" font-weight="700" font-family="DM Sans,sans-serif" letter-spacing=".08em">GOOGLE AI API</text>
+          <text x="690" y="230" text-anchor="middle" fill="#C67050" font-size="13" font-weight="600" font-family="DM Sans,sans-serif">Gemini</text>
           <text x="690" y="249" text-anchor="middle" fill="#94A0B8" font-size="10" font-family="DM Sans,sans-serif">graph snapshot → link suggestions</text>
 
           <!-- Arrow: ai/suggest → Anthropic -->
@@ -740,6 +740,163 @@ footer{
         <div class="gm-canvas-hint" id="gm-hint">Tap a node to highlight its connections</div>
       </div>
     </div>
+
+    <!-- Hive schema diagram -->
+    <div style="margin-top:52px">
+      <div class="gm-subtitle" id="gm-schema-title">Actual Hive data schema</div>
+      <div class="arch-diagram" style="margin-top:16px;padding:36px 32px">
+        <div class="arch-svg-wrap">
+          <svg viewBox="0 0 840 260" xmlns="http://www.w3.org/2000/svg" aria-label="Hive data schema — books, notes, links boxes with relationships">
+            <defs>
+              <clipPath id="cc-books"><rect x="10"  y="15" width="230" height="200" rx="12"/></clipPath>
+              <clipPath id="cc-notes"><rect x="305" y="15" width="240" height="224" rx="12"/></clipPath>
+              <clipPath id="cc-links"><rect x="605" y="40" width="225" height="175" rx="12"/></clipPath>
+              <marker id="fk-arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <polygon points="0 0, 8 4, 0 8" fill="rgba(106,135,145,0.60)"/>
+              </marker>
+            </defs>
+
+            <!-- ══ BOOKS BOX ══ x=10 w=230 -->
+            <rect x="10"  y="15" width="230" height="200" rx="12" fill="rgba(255,255,255,0.22)" stroke="rgba(106,135,145,0.28)" stroke-width="1.2"/>
+            <rect x="10"  y="15" width="230" height="34"  fill="rgba(106,135,145,0.18)" clip-path="url(#cc-books)"/>
+            <text x="24" y="38" font-family="DM Sans,sans-serif" font-size="11.5" font-weight="700" fill="#6A8791" letter-spacing=".06em">BOOKS</text>
+            <line x1="10" y1="49" x2="240" y2="49" stroke="rgba(106,135,145,0.20)" stroke-width="1"/>
+            <!-- id PK -->
+            <rect x="10" y="49" width="230" height="25" fill="rgba(229,154,120,0.06)" clip-path="url(#cc-books)"/>
+            <text x="24" y="66"  font-family="'SF Mono','Fira Code',monospace" font-size="11" font-weight="600" fill="#1C1C1E">id</text>
+            <text x="52" y="66"  font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <rect x="207" y="53" width="27" height="14" rx="3" fill="rgba(229,154,120,0.22)" stroke="rgba(229,154,120,0.45)" stroke-width="1"/>
+            <text x="220.5" y="63.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="700" fill="#C67050">PK</text>
+            <line x1="22" y1="74" x2="232" y2="74" stroke="rgba(106,135,145,0.10)" stroke-width="0.8"/>
+            <!-- title -->
+            <text x="24" y="91"  font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">title</text>
+            <text x="65" y="91"  font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <line x1="22" y1="99" x2="232" y2="99" stroke="rgba(106,135,145,0.10)" stroke-width="0.8"/>
+            <!-- author -->
+            <rect x="10" y="99" width="230" height="25" fill="rgba(106,135,145,0.04)" clip-path="url(#cc-books)"/>
+            <text x="24" y="116" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">author</text>
+            <text x="78" y="116" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <line x1="22" y1="124" x2="232" y2="124" stroke="rgba(106,135,145,0.10)" stroke-width="0.8"/>
+            <!-- colorIndex -->
+            <text x="24" y="141" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">colorIndex</text>
+            <text x="105" y="141" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">int</text>
+            <line x1="22" y1="149" x2="232" y2="149" stroke="rgba(106,135,145,0.10)" stroke-width="0.8"/>
+            <!-- createdAt -->
+            <rect x="10" y="149" width="230" height="25" fill="rgba(106,135,145,0.04)" clip-path="url(#cc-books)"/>
+            <text x="24" y="166" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">createdAt</text>
+            <text x="104" y="166" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">DateTime</text>
+            <line x1="22" y1="174" x2="232" y2="174" stroke="rgba(106,135,145,0.10)" stroke-width="0.8"/>
+            <!-- type -->
+            <text x="24" y="191" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">type</text>
+            <text x="57"  y="191" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#6A8791">SourceType</text>
+
+            <!-- ══ NOTES BOX ══ x=305 w=240 -->
+            <rect x="305" y="15" width="240" height="224" rx="12" fill="rgba(255,255,255,0.22)" stroke="rgba(146,168,165,0.28)" stroke-width="1.2"/>
+            <rect x="305" y="15" width="240" height="34"  fill="rgba(146,168,165,0.18)" clip-path="url(#cc-notes)"/>
+            <text x="319" y="38" font-family="DM Sans,sans-serif" font-size="11.5" font-weight="700" fill="#6A8791" letter-spacing=".06em">NOTES</text>
+            <line x1="305" y1="49" x2="545" y2="49" stroke="rgba(146,168,165,0.22)" stroke-width="1"/>
+            <!-- id PK -->
+            <rect x="305" y="49" width="240" height="25" fill="rgba(229,154,120,0.06)" clip-path="url(#cc-notes)"/>
+            <text x="319" y="66"  font-family="'SF Mono','Fira Code',monospace" font-size="11" font-weight="600" fill="#1C1C1E">id</text>
+            <text x="347" y="66"  font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <rect x="502" y="53" width="27" height="14" rx="3" fill="rgba(229,154,120,0.22)" stroke="rgba(229,154,120,0.45)" stroke-width="1"/>
+            <text x="515.5" y="63.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="700" fill="#C67050">PK</text>
+            <line x1="317" y1="74" x2="537" y2="74" stroke="rgba(146,168,165,0.12)" stroke-width="0.8"/>
+            <!-- title -->
+            <text x="319" y="91"  font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">title</text>
+            <text x="358" y="91"  font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <line x1="317" y1="99" x2="537" y2="99" stroke="rgba(146,168,165,0.12)" stroke-width="0.8"/>
+            <!-- body -->
+            <rect x="305" y="99" width="240" height="25" fill="rgba(146,168,165,0.04)" clip-path="url(#cc-notes)"/>
+            <text x="319" y="116" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">body</text>
+            <text x="354" y="116" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <line x1="317" y1="124" x2="537" y2="124" stroke="rgba(146,168,165,0.12)" stroke-width="0.8"/>
+            <!-- bookId FK -->
+            <text x="319" y="141" font-family="'SF Mono','Fira Code',monospace" font-size="11" font-weight="600" fill="#6A8791">bookId</text>
+            <text x="376" y="141" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <rect x="502" y="128" width="27" height="14" rx="3" fill="rgba(106,135,145,0.16)" stroke="rgba(106,135,145,0.36)" stroke-width="1"/>
+            <text x="515.5" y="138.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="700" fill="#6A8791">FK</text>
+            <line x1="317" y1="149" x2="537" y2="149" stroke="rgba(146,168,165,0.12)" stroke-width="0.8"/>
+            <!-- topic -->
+            <rect x="305" y="149" width="240" height="25" fill="rgba(146,168,165,0.04)" clip-path="url(#cc-notes)"/>
+            <text x="319" y="166" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">topic</text>
+            <text x="361" y="166" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <line x1="317" y1="174" x2="537" y2="174" stroke="rgba(146,168,165,0.12)" stroke-width="0.8"/>
+            <!-- createdAt -->
+            <text x="319" y="191" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">createdAt</text>
+            <text x="396" y="191" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">DateTime</text>
+            <line x1="317" y1="199" x2="537" y2="199" stroke="rgba(146,168,165,0.12)" stroke-width="0.8"/>
+            <!-- updatedAt -->
+            <rect x="305" y="199" width="240" height="25" fill="rgba(146,168,165,0.04)" clip-path="url(#cc-notes)"/>
+            <text x="319" y="216" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">updatedAt</text>
+            <text x="399" y="216" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">DateTime</text>
+
+            <!-- ══ LINKS BOX ══ x=605 w=225 y=40 (vertically centered) -->
+            <rect x="605" y="40" width="225" height="175" rx="12" fill="rgba(255,255,255,0.22)" stroke="rgba(229,154,120,0.26)" stroke-width="1.2"/>
+            <rect x="605" y="40" width="225" height="34"  fill="rgba(229,154,120,0.15)" clip-path="url(#cc-links)"/>
+            <text x="619" y="63" font-family="DM Sans,sans-serif" font-size="11.5" font-weight="700" fill="#C67050" letter-spacing=".06em">LINKS</text>
+            <line x1="605" y1="74" x2="830" y2="74" stroke="rgba(229,154,120,0.20)" stroke-width="1"/>
+            <!-- id PK -->
+            <rect x="605" y="74" width="225" height="25" fill="rgba(229,154,120,0.06)" clip-path="url(#cc-links)"/>
+            <text x="619" y="91"  font-family="'SF Mono','Fira Code',monospace" font-size="11" font-weight="600" fill="#1C1C1E">id</text>
+            <text x="647" y="91"  font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <rect x="796" y="78" width="27" height="14" rx="3" fill="rgba(229,154,120,0.22)" stroke="rgba(229,154,120,0.45)" stroke-width="1"/>
+            <text x="809.5" y="88.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="700" fill="#C67050">PK</text>
+            <line x1="617" y1="99" x2="823" y2="99" stroke="rgba(229,154,120,0.12)" stroke-width="0.8"/>
+            <!-- sourceId FK -->
+            <text x="619" y="116" font-family="'SF Mono','Fira Code',monospace" font-size="11" font-weight="600" fill="#6A8791">sourceId</text>
+            <text x="680" y="116" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <rect x="796" y="103" width="27" height="14" rx="3" fill="rgba(106,135,145,0.16)" stroke="rgba(106,135,145,0.36)" stroke-width="1"/>
+            <text x="809.5" y="113.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="700" fill="#6A8791">FK</text>
+            <line x1="617" y1="124" x2="823" y2="124" stroke="rgba(229,154,120,0.12)" stroke-width="0.8"/>
+            <!-- targetId FK -->
+            <rect x="605" y="124" width="225" height="25" fill="rgba(229,154,120,0.04)" clip-path="url(#cc-links)"/>
+            <text x="619" y="141" font-family="'SF Mono','Fira Code',monospace" font-size="11" font-weight="600" fill="#6A8791">targetId</text>
+            <text x="680" y="141" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">String</text>
+            <rect x="796" y="128" width="27" height="14" rx="3" fill="rgba(106,135,145,0.16)" stroke="rgba(106,135,145,0.36)" stroke-width="1"/>
+            <text x="809.5" y="138.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="700" fill="#6A8791">FK</text>
+            <line x1="617" y1="149" x2="823" y2="149" stroke="rgba(229,154,120,0.12)" stroke-width="0.8"/>
+            <!-- isManual -->
+            <text x="619" y="166" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">isManual</text>
+            <text x="680" y="166" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">bool</text>
+            <line x1="617" y1="174" x2="823" y2="174" stroke="rgba(229,154,120,0.12)" stroke-width="0.8"/>
+            <!-- createdAt -->
+            <rect x="605" y="174" width="225" height="25" fill="rgba(229,154,120,0.04)" clip-path="url(#cc-links)"/>
+            <text x="619" y="191" font-family="'SF Mono','Fira Code',monospace" font-size="11" fill="#1C1C1E">createdAt</text>
+            <text x="687" y="191" font-family="'SF Mono','Fira Code',monospace" font-size="10" fill="#94A0B8">DateTime</text>
+
+            <!-- ══ RELATIONSHIP ARROWS ══ -->
+
+            <!-- Arrow 1: notes.bookId → books.id  (L-shaped, going left then up) -->
+            <path d="M305,136 L281,136 L281,61 L240,61"
+                  stroke="rgba(106,135,145,0.52)" stroke-width="1.7" fill="none"
+                  stroke-dasharray="5 3.5" marker-end="url(#fk-arr)"/>
+            <!-- Cardinality labels -->
+            <text x="255" y="58" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" fill="rgba(106,135,145,0.70)">1</text>
+            <text x="292" y="130" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" fill="rgba(106,135,145,0.70)">N</text>
+
+            <!-- Arrow 2: links.sourceId → notes.id -->
+            <path d="M605,111 L577,111 L577,61 L545,61"
+                  stroke="rgba(106,135,145,0.52)" stroke-width="1.7" fill="none"
+                  stroke-dasharray="5 3.5" marker-end="url(#fk-arr)"/>
+            <!-- Arrow 3: links.targetId → notes.id (slightly offset y) -->
+            <path d="M605,136 L560,136 L560,74 L545,74"
+                  stroke="rgba(106,135,145,0.40)" stroke-width="1.5" fill="none"
+                  stroke-dasharray="5 3.5" marker-end="url(#fk-arr)"/>
+            <!-- Cardinality labels -->
+            <text x="550" y="58" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" fill="rgba(106,135,145,0.70)">1</text>
+            <text x="588" y="107" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" fill="rgba(106,135,145,0.70)">N</text>
+          </svg>
+        </div>
+        <!-- Legend -->
+        <div class="arch-legend" style="margin-top:20px">
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#E59A78"></div> <span>PK — primary key (Hive box key)</span></div>
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#6A8791"></div> <span>FK — foreign key reference</span></div>
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#92A8A5"></div> <span>SourceType: book · movie · serie · personal · topic</span></div>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- Decision Log -->
@@ -797,14 +954,14 @@ footer{
       <summary class="decision-summary">
         <div class="ds-left">
           <div class="ds-badge" style="background:rgba(106,135,145,0.12);color:var(--teal)">04</div>
-          <div class="ds-question" id="d4-q">Why Claude claude-opus-4-5 for link suggestions?</div>
+          <div class="ds-question" id="d4-q">Why Gemini for link suggestions?</div>
         </div>
         <svg class="ds-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </summary>
       <div class="decision-body" id="d4-body">
         The AI feature is <em>cross-domain connection discovery</em> — finding links between a philosophy book note written six months ago and a film note from last week. This requires genuine reasoning, not keyword matching.<br><br>
-        Claude claude-opus-4-5 was chosen after testing: its suggestions were more specific and grounded than alternatives. The "Because:" explanation is the key feature — a model that just returns node pairs would be useless. The trade-off: cost per API call — which is why AI suggestions are on-demand, not automatic.
-        <div class="decision-verdict" id="d4-verdict">Claude claude-opus-4-5 — reasoning quality matters here</div>
+        Gemini was chosen for its balance of reasoning quality and speed — suggestions arrive fast enough to feel interactive while still being genuinely insightful. The "Because:" explanation is the key feature — a model that just returns node pairs would be useless. Google AI's API fits naturally alongside Firebase Auth already in the stack. The trade-off: cost per API call — which is why AI suggestions are on-demand, not automatic.
+        <div class="decision-verdict" id="d4-verdict">Gemini — speed, quality, and Google ecosystem fit</div>
       </div>
     </details>
 
@@ -899,7 +1056,7 @@ footer{
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <div>
               <div class="rm-text" id="rm-2-2">AI link suggestions</div>
-              <div class="rm-sub" id="rm-2-2s">Claude claude-opus-4-5 + "Because:" reasons</div>
+              <div class="rm-sub" id="rm-2-2s">Gemini + "Because:" reasons</div>
             </div>
           </div>
           <div class="rm-item inprogress">
@@ -1404,7 +1561,7 @@ const T = [
   { sel: '#p2-title', en: 'Privacy by default', es: 'Privacidad por defecto' },
   { sel: '#p2-desc',  en: 'Notes never leave your device without permission. Cloud sync is opt-in, encrypted in transit, and stored as opaque JSONB snapshots. The server never reads your content — it stores bytes.', es: 'Las notas nunca salen de tu dispositivo sin permiso. La sincronización en la nube es opcional, cifrada en tránsito y almacenada como snapshots JSONB opacos. El servidor nunca lee tu contenido — almacena bytes.' },
   { sel: '#p3-title', en: 'AI as assistant',    es: 'IA como asistente' },
-  { sel: '#p3-desc',  en: 'Claude suggests connections between your notes — it never auto-creates them. Every AI suggestion requires a human accept. The graph is always a reflection of your thinking, not the model\'s.', es: 'Claude sugiere conexiones entre tus notas — nunca las crea automáticamente. Cada sugerencia de IA requiere una aceptación humana. El grafo siempre es un reflejo de tu pensamiento, no del modelo.' },
+  { sel: '#p3-desc',  en: 'Gemini suggests connections between your notes — it never auto-creates them. Every AI suggestion requires a human accept. The graph is always a reflection of your thinking, not the model\'s.', es: 'Gemini sugiere conexiones entre tus notas — nunca las crea automáticamente. Cada sugerencia de IA requiere una aceptación humana. El grafo siempre es un reflejo de tu pensamiento, no del modelo.' },
   // Tech stack
   { sel: '#stack-tag',   en: 'Tech stack',                   es: 'Stack tecnológico' },
   { sel: '#stack-title', en: 'Six tools, one decision each',  es: 'Seis herramientas, una decisión cada una' },
@@ -1425,8 +1582,8 @@ const T = [
   { sel: '#pg-desc',        en: 'Stores <code>users</code> (Firebase UID as primary key) and <code>snapshots</code> (JSONB). JSONB means the graph schema can evolve without migrations — the app owns the shape, Postgres owns the durability. Keeps last 10 snapshots per user.', es: 'Almacena <code>users</code> (UID de Firebase como clave primaria) y <code>snapshots</code> (JSONB). JSONB significa que el esquema del grafo puede evolucionar sin migraciones — la app es dueña de la forma, Postgres de la durabilidad. Guarda los últimos 10 snapshots por usuario.' },
   { sel: '#pg-why',         en: 'JSONB flexibility + proven durability', es: 'Flexibilidad JSONB + durabilidad probada' },
   { sel: '#claude-layer',   en: 'AI · Link suggestions', es: 'IA · Sugerencias de enlaces' },
-  { sel: '#claude-desc',    en: 'The <code>POST /v1/ai/suggest</code> endpoint sends a JSONB snapshot of your graph to Anthropic\'s API and gets back a ranked list of suggested connections — each with a "Because:" explanation grounded in your own notes.', es: 'El endpoint <code>POST /v1/ai/suggest</code> envía un snapshot JSONB de tu grafo a la API de Anthropic y recibe una lista clasificada de conexiones sugeridas — cada una con una explicación "Porque:" basada en tus propias notas.' },
-  { sel: '#claude-why',     en: 'Best reasoning for cross-domain connections', es: 'Mejor razonamiento para conexiones entre dominios' },
+  { sel: '#claude-desc',    en: 'The <code>POST /v1/ai/suggest</code> endpoint sends a JSONB snapshot of your graph to Google\'s AI API and gets back a ranked list of suggested connections — each with a "Because:" explanation grounded in your own notes.', es: 'El endpoint <code>POST /v1/ai/suggest</code> envía un snapshot JSONB de tu grafo a la API de Google y recibe una lista clasificada de conexiones sugeridas — cada una con una explicación "Porque:" basada en tus propias notas.' },
+  { sel: '#claude-why',     en: 'Fast, high-quality cross-domain reasoning', es: 'Razonamiento entre dominios rápido y de alta calidad' },
   // Architecture
   { sel: '#arch-tag',   en: 'Architecture',              es: 'Arquitectura' },
   { sel: '#arch-title', en: 'Local-first, cloud-optional', es: 'Local primero, nube opcional' },
@@ -1449,6 +1606,7 @@ const T = [
   { sel: '#nt-media-name', en: 'Media', es: 'Media' },
   { sel: '#nt-media-desc', en: 'Films, podcasts, or articles treated as first-class nodes — same as books. Cross-media links are where the most surprising connections emerge.', es: 'Películas, podcasts o artículos tratados como nodos de primera clase — igual que los libros. Los enlaces entre medios son donde emergen las conexiones más sorprendentes.' },
   { sel: '#gm-hint', en: 'Tap a node to highlight its connections', es: 'Toca un nodo para resaltar sus conexiones' },
+  { sel: '#gm-schema-title', en: 'Actual Hive data schema', es: 'Esquema de datos Hive real' },
   // Decisions
   { sel: '#decisions-tag',   en: 'Decision log',      es: 'Registro de decisiones' },
   { sel: '#decisions-title', en: 'Why, not just what', es: 'Por qué, no solo qué' },
@@ -1456,7 +1614,7 @@ const T = [
   { sel: '#d1-q', en: 'Why Hive instead of SQLite or Firestore?', es: '¿Por qué Hive en lugar de SQLite o Firestore?' },
   { sel: '#d2-q', en: 'Why not use Firestore for the backend?', es: '¿Por qué no usar Firestore para el backend?' },
   { sel: '#d3-q', en: 'Why keep Firebase Auth if you dropped Firestore?', es: '¿Por qué mantener Firebase Auth si descartaste Firestore?' },
-  { sel: '#d4-q', en: 'Why Claude claude-opus-4-5 for link suggestions?', es: '¿Por qué Claude claude-opus-4-5 para sugerencias de enlaces?' },
+  { sel: '#d4-q', en: 'Why Gemini for link suggestions?', es: '¿Por qué Gemini para sugerencias de enlaces?' },
   { sel: '#d5-q', en: 'Why Flutter over React Native or SwiftUI?', es: '¿Por qué Flutter sobre React Native o SwiftUI?' },
   { sel: '#d6-q', en: 'Why keep the graph export as JSON?', es: '¿Por qué mantener la exportación del grafo como JSON?' },
   // Roadmap
@@ -1477,7 +1635,7 @@ const T = [
   { sel: '#rm-2-1',  en: 'Cloud sync',                es: 'Sincronización en la nube' },
   { sel: '#rm-2-1s', en: 'Railway backend + JSONB snapshots', es: 'Backend Railway + snapshots JSONB' },
   { sel: '#rm-2-2',  en: 'AI link suggestions',       es: 'Sugerencias de enlaces con IA' },
-  { sel: '#rm-2-2s', en: 'Claude claude-opus-4-5 + "Because:" reasons', es: 'Claude claude-opus-4-5 + razones "Porque:"' },
+  { sel: '#rm-2-2s', en: 'Gemini + "Because:" reasons', es: 'Gemini + razones "Porque:"' },
   { sel: '#rm-2-3',  en: 'Railway deployment',        es: 'Despliegue en Railway' },
   { sel: '#rm-2-3s', en: 'Backend + PostgreSQL live',  es: 'Backend + PostgreSQL en producción' },
   { sel: '#rm-3-1',  en: 'Android support',           es: 'Soporte Android' },
