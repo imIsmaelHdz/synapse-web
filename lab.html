@@ -349,6 +349,9 @@ footer{
 }
 .footer-back:hover{background:rgba(106,135,145,0.16);transform:translateX(-2px)}
 .footer-copy{font-size:12px;color:var(--text3)}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px}
+.footer-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--teal)}
 
 /* ── AI DEEP DIVE ── */
 .ai-deep-dive{padding:0 24px 100px;max-width:1100px;margin:0 auto;width:100%}
@@ -1482,6 +1485,12 @@ suggestions = parsed.suggestions
       </svg>
       <span class="footer-brand-name">Synapse</span>
     </a>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="support.html">Support</a>
+      <a href="delete-account.html">Delete account</a>
+      <a href="mailto:hello@usesynapse.io">Contact</a>
+    </div>
     <a class="footer-back" href="index.html">
       <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       Back to Waitlist

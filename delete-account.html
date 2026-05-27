@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete Account — Synapse</title>
+<meta name="description" content="How to permanently delete your Synapse account and all associated data.">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#6A8791;--sage:#92A8A5;--terra:#E59A78;
+  --text1:#1C1C1E;--text2:#5A5A6E;--text3:#94A0B8;
+  --glass:rgba(255,255,255,0.30);--glass-s:rgba(255,255,255,0.52);
+  --gb:rgba(255,255,255,0.60);
+  --blur:blur(20px);--r1:20px;--r2:14px;
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;font-family:'DM Sans',sans-serif;color:var(--text1);
+  background:linear-gradient(145deg,#F5F5F5,#EEEEEE,#F8F8F8);
+  overflow-x:hidden;
+}
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px)}
+nav{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:50px;
+  padding:10px 20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);
+  white-space:nowrap;
+}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:17px;color:var(--text1);text-decoration:none}
+.nav-back{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12.5px;font-weight:500;color:var(--text2);text-decoration:none;
+  padding:5px 14px;border-radius:50px;
+  background:rgba(106,135,145,0.08);border:1px solid rgba(106,135,145,0.18);
+  transition:background .18s,color .18s;
+}
+.nav-back:hover{background:rgba(106,135,145,0.16);color:var(--teal)}
+main{
+  position:relative;z-index:1;
+  max-width:720px;margin:0 auto;
+  padding:130px 24px 80px;
+}
+.page-tag{
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:14px;
+}
+h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(32px,5vw,48px);color:var(--text1);
+  line-height:1.1;margin-bottom:10px;
+}
+.meta{font-size:13px;color:var(--text3);margin-bottom:48px}
+.section{margin-bottom:40px}
+.section-title{
+  font-size:16px;font-weight:700;color:var(--text1);
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid rgba(106,135,145,0.15);
+  display:flex;align-items:center;gap:10px;
+}
+.section-title::before{
+  content:'';width:3px;height:18px;border-radius:2px;
+  background:var(--teal);flex-shrink:0;
+}
+p{font-size:14px;color:var(--text2);line-height:1.78;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Steps */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:18px 0;
+  border-bottom:1px solid rgba(106,135,145,0.10);
+}
+.step:last-child{border-bottom:none}
+.step-num{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal),var(--sage));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;
+  margin-top:1px;
+}
+.step-body{}
+.step-title{font-size:14px;font-weight:600;color:var(--text1);margin-bottom:4px}
+.step-desc{font-size:13.5px;color:var(--text2);line-height:1.7}
+.step-desc code{
+  font-family:'SF Mono',ui-monospace,monospace;font-size:12px;
+  background:rgba(106,135,145,0.10);border-radius:5px;
+  padding:1px 6px;color:var(--text1);
+}
+
+/* Data grid */
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.data-card{
+  background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:var(--r2);
+  padding:16px 18px;
+}
+.data-card-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.badge-deleted{color:#D05858}
+.badge-kept{color:#6A8791}
+.data-card ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:6px}
+.data-card ul li{font-size:13px;color:var(--text2);line-height:1.55;display:flex;align-items:flex-start;gap:8px}
+.data-card ul li::before{content:'';width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.badge-deleted ~ ul li::before{background:#D05858}
+.badge-kept ~ ul li::before{background:var(--teal)}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid rgba(106,135,145,0.10)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:5px}
+.tl-body{}
+.tl-time{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+.tl-desc{font-size:13.5px;color:var(--text2);line-height:1.65}
+
+/* Alert box */
+.alert{
+  background:rgba(208,88,88,0.06);border:1px solid rgba(208,88,88,0.18);
+  border-left:3px solid #D05858;border-radius:0 12px 12px 0;
+  padding:14px 18px;font-size:13.5px;color:var(--text2);line-height:1.72;
+  margin-bottom:20px;
+}
+.highlight{
+  background:rgba(106,135,145,0.07);border:1px solid rgba(106,135,145,0.18);
+  border-left:3px solid var(--teal);border-radius:0 12px 12px 0;
+  padding:14px 18px;font-size:13.5px;color:var(--text2);line-height:1.72;
+  margin-bottom:20px;
+}
+
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(107,114,128,0.10);
+  padding:28px 24px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;max-width:720px;margin:0 auto;
+}
+.footer-brand{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:15px;color:var(--text1);text-decoration:none}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px}
+.footer-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--teal)}
+.footer-copy{font-size:12px;color:var(--text3)}
+@media(max-width:600px){nav{top:12px;padding:8px 14px;gap:12px}main{padding:100px 20px 60px}footer{flex-direction:column;align-items:flex-start;padding:24px 20px}.data-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="orb" style="width:460px;height:460px;top:-160px;left:-120px;background:#D8D8D8;opacity:.45"></div>
+  <div class="orb" style="width:380px;height:380px;bottom:10%;right:-120px;background:#CECECE;opacity:.38"></div>
+</div>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px">
+      <defs>
+        <linearGradient id="n-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7B9EAB"/><stop offset="100%" stop-color="#526E7A"/>
+        </linearGradient>
+      </defs>
+      <rect width="1024" height="1024" rx="230" fill="url(#n-bg)"/>
+      <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="512" cy="184" r="52" fill="white" opacity=".88"/>
+      <circle cx="799" cy="358" r="44" fill="white" opacity=".72"/>
+      <circle cx="768" cy="696" r="44" fill="white" opacity=".72"/>
+      <circle cx="512" cy="491" r="56" fill="white"/>
+    </svg>
+    Synapse
+  </a>
+  <a class="nav-back" href="index.html">← Home</a>
+</nav>
+
+<main>
+  <div class="page-tag">Account</div>
+  <h1>Delete Account</h1>
+  <p class="meta">Permanent deletion · No questions asked</p>
+
+  <div class="alert">
+    <strong>This is permanent.</strong> Once your account is deleted, your cloud-synced data cannot be recovered. Export your data first if you want to keep a copy.
+  </div>
+
+  <div class="highlight">
+    Your local notes and library will remain on your device until you delete the app. Only cloud-synced data is removed from our servers.
+  </div>
+
+  <div class="section">
+    <div class="section-title">How to delete your account</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Export your data (optional)</div>
+          <div class="step-desc">Go to <code>Settings → Export data</code> to save a full JSON backup of your library — books, notes, links, and graph layout. This is the only way to recover your data after deletion.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Send a deletion request</div>
+          <div class="step-desc">Email <a href="mailto:hello@usesynapse.io?subject=Account%20deletion%20request">hello@usesynapse.io</a> with the subject line <strong>"Account deletion request"</strong>. Include the email address associated with your Synapse account. We will confirm receipt within 1–2 business days.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Confirmation</div>
+          <div class="step-desc">We'll send you a confirmation email when your account has been deleted from Firebase and your cloud data has been queued for permanent removal from our servers.</div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:var(--text3)">In-app account deletion (Settings → Delete account) is coming in a future update.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What gets deleted</div>
+    <div class="data-grid">
+      <div class="data-card">
+        <div class="data-card-label badge-deleted">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#D05858;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Permanently deleted
+        </div>
+        <ul>
+          <li>Your Firebase Auth account and credentials</li>
+          <li>All synced books and source metadata</li>
+          <li>All synced notes and note content</li>
+          <li>All note links and graph connections</li>
+          <li>Saved graph layout positions</li>
+          <li>Your user record in our PostgreSQL database</li>
+        </ul>
+      </div>
+      <div class="data-card">
+        <div class="data-card-label badge-kept">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--teal);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Stays on your device
+        </div>
+        <ul>
+          <li>Local Hive database (on-device copy of your library)</li>
+          <li>App files and cache</li>
+        </ul>
+        <p style="font-size:12px;color:var(--text3);margin-top:12px;line-height:1.55">To remove local data, delete the Synapse app from your device — this wipes the on-device Hive database along with all app files.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Deletion timeline</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <div class="tl-time">Immediately</div>
+          <div class="tl-desc">Your Firebase Auth account is disabled. You will be signed out of all devices and unable to sign back in.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <div class="tl-time">Within 30 days</div>
+          <div class="tl-desc">All cloud-synced data (books, notes, note links, graph layout) is permanently deleted from our PostgreSQL database on Railway. No backups are retained after this point.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <div class="tl-time">Per Google's policy</div>
+          <div class="tl-desc">Firebase Auth logs and metadata are deleted according to Google's own retention schedule, typically within 180 days. See the <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Privacy Policy ↗</a>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Questions</div>
+    <p>If you have any questions about account deletion or your data, email <a href="mailto:hello@usesynapse.io">hello@usesynapse.io</a>. We'll respond within 1–2 business days.</p>
+  </div>
+</main>
+
+<footer>
+  <a class="footer-brand" href="index.html">
+    <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--teal);fill:none;stroke-width:1.8;stroke-linecap:round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Synapse
+  </a>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy</a>
+    <a href="support.html">Support</a>
+    <a href="delete-account.html">Delete account</a>
+    <a href="mailto:hello@usesynapse.io">Contact</a>
+  </div>
+  <p class="footer-copy">© 2026 Synapse. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
