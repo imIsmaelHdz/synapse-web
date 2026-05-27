@@ -354,12 +354,12 @@ footer{
 .footer-links a:hover{color:var(--teal)}
 
 /* ── AI DEEP DIVE ── */
-.ai-deep-dive{padding:0 24px 100px;max-width:620px;margin:0 auto;width:100%;align-self:center}
-.ai-panels{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:24px}
+.ai-deep-dive{padding:0 24px 100px;max-width:620px;margin:0 auto;width:100%;align-self:center;overflow:hidden}
+.ai-panels{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-bottom:24px}
 .ai-panel{
   background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
   border:1px solid var(--gb);border-radius:var(--r1);padding:22px 20px;
-  box-shadow:var(--gshadow);display:flex;flex-direction:column;
+  box-shadow:var(--gshadow);display:flex;flex-direction:column;min-width:0;overflow:hidden;
 }
 .ai-panel-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
 .ai-panel-title{font-size:15px;font-weight:700;color:var(--text1);margin-bottom:5px;line-height:1.3}
