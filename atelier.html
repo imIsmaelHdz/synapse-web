@@ -26,7 +26,8 @@ a:hover{text-decoration:underline}
 
 /* ── NAV ── */
 nav{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);border-radius:50px;padding:10px 20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);white-space:nowrap}
-.nav-logo{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:17px;color:var(--text1);text-decoration:none}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:18px;color:var(--text1);text-decoration:none}
+.nav-logo svg{width:30px;height:30px;flex-shrink:0}
 .nav-links{display:flex;gap:2px}
 .nav-link{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;padding:6px 14px;border-radius:50px;transition:color .18s,background .18s}
 .nav-link:hover{color:var(--teal)}
@@ -334,16 +335,35 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="index.html">
-    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px">
-      <defs><linearGradient id="n-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7B9EAB"/><stop offset="100%" stop-color="#526E7A"/></linearGradient></defs>
-      <rect width="1024" height="1024" rx="230" fill="url(#n-bg)"/>
-      <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
-      <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
-      <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
-      <circle cx="512" cy="184" r="52" fill="white" opacity=".88"/>
-      <circle cx="799" cy="358" r="44" fill="white" opacity=".72"/>
-      <circle cx="768" cy="696" r="44" fill="white" opacity=".72"/>
-      <circle cx="512" cy="491" r="56" fill="white"/>
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="na-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"   stop-color="#7B9EAB"/>
+          <stop offset="100%" stop-color="#526E7A"/>
+        </linearGradient>
+        <radialGradient id="na-sp" cx="38%" cy="35%" r="55%">
+          <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="1024" height="1024" rx="230" fill="url(#na-bg)"/>
+      <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="410" y2="809" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="205" y2="573" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="266" y2="287" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+      <line x1="512" y1="184" x2="266" y2="287" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+      <line x1="799" y1="358" x2="768" y2="696" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+      <line x1="410" y1="809" x2="205" y2="573" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+      <circle cx="512" cy="184" r="38" fill="#EAE8E2"/>
+      <circle cx="799" cy="358" r="43" fill="#D6E6E4"/>
+      <circle cx="768" cy="696" r="32" fill="#EAE8E2"/>
+      <circle cx="410" cy="809" r="38" fill="#D6E6E4"/>
+      <circle cx="205" cy="573" r="43" fill="#EAE8E2"/>
+      <circle cx="266" cy="287" r="32" fill="#D6E6E4"/>
+      <circle cx="512" cy="491" r="96" fill="#E59A78"/>
+      <circle cx="512" cy="491" r="96" fill="url(#na-sp)"/>
     </svg>
     Synapse
   </a>
