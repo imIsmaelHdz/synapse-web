@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier — Synapse</title>
+<meta name="description" content="Design & motion of the Synapse iOS app — screens, transitions, and the thinking behind them.">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#6A8791;--sage:#92A8A5;--terra:#E59A78;
+  --text1:#1C1C1E;--text2:#5A5A6E;--text3:#94A0B8;
+  --glass:rgba(255,255,255,0.30);--glass-s:rgba(255,255,255,0.52);
+  --gb:rgba(255,255,255,0.60);
+  --blur:blur(20px);--r1:20px;--r2:14px;
+}
+html{scroll-behavior:smooth}
+body{min-height:100vh;font-family:'DM Sans',sans-serif;color:var(--text1);background:linear-gradient(145deg,#F5F5F5,#EEEEEE,#F8F8F8);overflow-x:hidden}
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px)}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── NAV ── */
+nav{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);border-radius:50px;padding:10px 20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);white-space:nowrap}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:17px;color:var(--text1);text-decoration:none}
+.nav-links{display:flex;gap:2px}
+.nav-link{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;padding:6px 14px;border-radius:50px;transition:color .18s,background .18s}
+.nav-link:hover{color:var(--teal)}
+.nav-link.active{color:var(--text1);background:rgba(255,255,255,0.60);font-weight:600}
+
+/* ── SHARED SECTION HEADINGS ── */
+.section-tag{text-align:center;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+.section-title{text-align:center;font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,42px);color:var(--text1);margin-bottom:16px;line-height:1.15}
+.section-sub{text-align:center;font-size:15px;color:var(--text2);line-height:1.72;max-width:520px;margin:0 auto 52px}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:130px 24px 80px;text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--teal);opacity:.45}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(42px,6vw,64px);color:var(--text1);line-height:1.05;margin-bottom:20px}
+.hero-sub{font-size:16px;color:var(--text2);line-height:1.72;max-width:460px;margin:0 auto}
+
+/* ── DESIGN LANGUAGE ── */
+.design-lang{position:relative;z-index:1;padding:0 24px 100px;max-width:860px;margin:0 auto;width:100%}
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.dl-card{background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);border-radius:var(--r1);padding:22px 24px}
+.dl-card.full{grid-column:1/-1}
+.dl-card-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+
+/* Color swatches */
+.swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.swatch{display:flex;flex-direction:column;align-items:center;gap:5px}
+.swatch-dot{width:40px;height:40px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 2px 8px rgba(0,0,0,0.10)}
+.swatch-name{font-size:9px;font-weight:600;color:var(--text3);text-align:center;line-height:1.3}
+
+/* Source type chips in design language */
+.type-chips{display:flex;flex-wrap:wrap;gap:8px}
+.type-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:12px;font-size:12px;font-weight:500;border:1px solid transparent}
+.type-chip svg{width:13px;height:13px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Typography strip */
+.type-rows{display:flex;flex-direction:column;gap:14px}
+.type-row{display:flex;align-items:baseline;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(106,135,145,0.10)}
+.type-row:last-child{border-bottom:none;padding-bottom:0}
+.type-meta{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);width:70px;flex-shrink:0;padding-top:4px}
+.type-sample-h{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text1);line-height:1}
+.type-sample-m{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text1)}
+.type-sample-b{font-size:14px;color:var(--text2);line-height:1.6}
+.type-sample-c{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+
+/* Glass recipe live demo */
+.glass-recipe{display:flex;flex-direction:column;gap:14px}
+.glass-row{display:flex;align-items:center;gap:12px}
+.glass-label{font-size:10.5px;font-weight:600;color:var(--text3);width:52px;flex-shrink:0}
+input[type=range].glass-track{flex:1;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;background:rgba(106,135,145,0.20);outline:none}
+input[type=range].glass-track::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--teal);cursor:pointer;box-shadow:0 2px 6px rgba(106,135,145,0.35)}
+.glass-val{font-size:10.5px;font-family:'SF Mono','Fira Code',monospace;color:var(--teal);width:32px;text-align:right}
+.glass-preview{margin-top:8px;height:72px;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(135deg,#E8A882,#7AADB8 50%,#AAC4C0)}
+.glass-card-preview{position:absolute;inset:8px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;color:#1C1C1E}
+
+/* ── SCREEN GALLERY ── */
+.screen-section{position:relative;z-index:1;padding:0 0 100px;width:100%;overflow:hidden}
+.screen-header{max-width:860px;margin:0 auto;padding:0 24px 48px;text-align:center}
+.screen-scroll{overflow-x:auto;padding:8px 48px 28px;display:flex;gap:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.screen-scroll::-webkit-scrollbar{height:3px}
+.screen-scroll::-webkit-scrollbar-track{background:rgba(106,135,145,0.06);border-radius:2px}
+.screen-scroll::-webkit-scrollbar-thumb{background:rgba(106,135,145,0.22);border-radius:2px}
+.screen-col{scroll-snap-align:start;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.screen-col-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.phone{
+  width:300px;
+  background:linear-gradient(160deg,#F6F6F6,#EDEDEE 55%,#F1F1F1);
+  border-radius:30px;overflow:hidden;position:relative;
+  box-shadow:0 32px 80px rgba(0,0,0,0.11),0 8px 24px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.90),inset 0 0 0 1px rgba(0,0,0,0.05);
+  font-family:'DM Sans',sans-serif;font-size:12px;
+}
+
+/* ── App chrome shared ── */
+.a-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 14px 10px;
+  background:rgba(255,255,255,0.44);backdrop-filter:blur(22px);
+  border-bottom:1px solid rgba(255,255,255,0.60);
+}
+.a-bar-title{font-family:'DM Serif Display',serif;font-size:17px;color:#1C1C1E;line-height:1}
+.a-bar-sub{font-size:9px;color:#94A0B8;margin-top:2px}
+.a-bar-actions{display:flex;gap:6px;align-items:center}
+.a-fab{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#92A8A5,#6A8791);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px rgba(106,135,145,0.28)}
+.a-fab svg,.a-btn svg{stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.a-btn{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);display:flex;align-items:center;justify-content:center}
+.a-btn svg{stroke:#5A5A6E}
+.a-back{display:flex;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#6A8791;background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);border-radius:9px;padding:5px 10px}
+.a-back svg{stroke:#6A8791;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.a-save{font-size:11px;font-weight:600;color:white;background:linear-gradient(135deg,#92A8A5,#6A8791);border-radius:9px;padding:5px 12px}
+
+/* Content area */
+.a-content{padding:10px 10px 76px;display:flex;flex-direction:column;gap:8px}
+
+/* Stats row */
+.a-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.a-stat{background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);border-radius:12px;padding:10px 4px;text-align:center}
+.a-stat-n{font-family:'DM Serif Display',serif;font-size:22px;color:#1C1C1E}
+.a-stat-l{font-size:8.5px;color:#94A0B8;margin-top:1px}
+
+/* Graph banner */
+.a-banner{background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:11px 12px;display:flex;align-items:center;gap:10px}
+.a-banner-icon{width:36px;height:36px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#C6BFA2,#EECAB5);display:flex;align-items:center;justify-content:center}
+.a-banner-icon svg{width:17px;height:17px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.a-banner-t{font-size:12.5px;font-weight:700;color:#1C1C1E}
+.a-banner-s{font-size:9px;color:#94A0B8;margin-top:1px}
+.a-banner-c{color:#94A0B8;margin-left:auto;font-size:13px}
+
+/* Section label */
+.a-label{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94A0B8;display:flex;align-items:center;justify-content:space-between;padding:4px 0 2px}
+
+/* Book cards */
+.a-book{background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);border-radius:12px;padding:10px 11px;display:flex;align-items:center;gap:9px}
+.a-book-icon{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.a-book-icon svg{width:14px;height:14px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.a-book-t{font-size:11.5px;font-weight:700;color:#1C1C1E}
+.a-book-a{font-size:9px;color:#94A0B8;margin-top:1px}
+.a-book-n{font-size:9.5px;color:#6A8791;margin-left:auto;background:rgba(106,135,145,0.10);padding:2px 7px;border-radius:20px;white-space:nowrap}
+
+/* Glass nav bar inside screen */
+.a-nav{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.52);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.65);border-radius:50px;padding:5px 6px;display:flex;gap:1px;box-shadow:0 4px 18px rgba(0,0,0,0.08)}
+.a-nav-it{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 10px;border-radius:40px}
+.a-nav-it.on{background:rgba(106,135,145,0.14)}
+.a-nav-it svg{width:14px;height:14px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.a-nav-it.on svg{stroke:#6A8791}
+.a-nav-it:not(.on) svg{stroke:#5A5A6E}
+.a-nav-l{font-size:7.5px;font-weight:500}
+.a-nav-it.on .a-nav-l{color:#6A8791}
+.a-nav-it:not(.on) .a-nav-l{color:#5A5A6E}
+
+/* ── GRAPH SCREEN ── */
+.graph-canvas{width:100%;height:440px;position:relative;overflow:hidden;background:linear-gradient(160deg,#F5F5F5,#EDEDED,#F0F0F2)}
+.graph-filter-row{position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5}
+.g-chip{font-size:9.5px;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);color:#5A5A6E}
+.g-chip.on{background:rgba(106,135,145,0.14);border-color:rgba(106,135,145,0.30);color:#6A8791}
+.graph-info-chip{position:absolute;bottom:72px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.80);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.80);border-radius:20px;padding:7px 14px;white-space:nowrap;font-size:10.5px;font-weight:600;color:#1C1C1E;box-shadow:0 4px 14px rgba(0,0,0,0.08)}
+.graph-info-sub{font-size:9px;color:#94A0B8;margin-top:1px;text-align:center}
+
+/* ── DISCOVER SCREEN ── */
+.discover-bg{height:180px;background:linear-gradient(160deg,#F5F5F5,#EDEDEE);overflow:hidden;position:relative}
+.discover-sheet{background:rgba(249,249,251,0.96);backdrop-filter:blur(20px);border-radius:22px 22px 0 0;border-top:1px solid rgba(255,255,255,0.85);padding-bottom:16px}
+.disc-handle{width:28px;height:3px;border-radius:2px;background:rgba(0,0,0,0.12);margin:8px auto 12px}
+.disc-header{padding:0 14px 10px;display:flex;align-items:center;justify-content:space-between}
+.disc-title{font-family:'DM Serif Display',serif;font-size:19px;color:#1C1C1E}
+.disc-pill{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:20px;background:rgba(229,154,120,0.13);border:1px solid rgba(229,154,120,0.28);color:#C67050}
+.disc-tabs{display:flex;gap:5px;padding:0 14px;margin-bottom:10px}
+.disc-tab{font-size:10px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,0.70);background:rgba(255,255,255,0.40);color:#5A5A6E}
+.disc-tab.on{background:rgba(106,135,145,0.13);border-color:rgba(106,135,145,0.26);color:#6A8791}
+.disc-card{margin:0 10px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);border-radius:16px;padding:12px}
+.disc-card-type{font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#94A0B8;margin-bottom:5px}
+.disc-card-t{font-size:14px;font-weight:700;color:#1C1C1E;margin-bottom:1px}
+.disc-card-cr{font-size:10px;color:#5A5A6E;margin-bottom:8px}
+.disc-card-r{font-size:10.5px;color:#5A5A6E;line-height:1.6;background:rgba(106,135,145,0.07);border-left:2px solid rgba(106,135,145,0.35);border-radius:0 7px 7px 0;padding:7px 9px}
+.disc-hint{text-align:center;font-size:9px;color:#94A0B8;margin-top:10px}
+
+/* ── SUGGESTION CARD SCREEN ── */
+.sugg-wrap{padding:10px 10px 72px}
+.sugg-card{background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);border-radius:20px;backdrop-filter:blur(18px);padding:14px}
+.sugg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sugg-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:30px;background:linear-gradient(135deg,#E59A78,#C67050);font-size:9px;font-weight:700;color:white}
+.sugg-actions{display:flex;align-items:center;gap:6px}
+.sugg-accept{padding:4px 11px;border-radius:30px;background:linear-gradient(135deg,#92A8A5,#6A8791);font-size:10px;font-weight:700;color:white}
+.sugg-x{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:10px;color:#94A0B8}
+.sugg-nodes{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.sugg-node{flex:1;background:rgba(255,255,255,0.44);border:1px solid rgba(106,135,145,0.22);border-radius:11px;padding:8px 9px}
+.sugg-dot{width:7px;height:7px;border-radius:50%;background:#6A8791;display:inline-block;margin-right:5px;flex-shrink:0}
+.sugg-nt{font-size:10.5px;font-weight:600;color:#1C1C1E;margin-bottom:1px}
+.sugg-ns{font-size:9px;color:#94A0B8}
+.sugg-arr{display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:1px}
+.sugg-arr svg{width:12px;height:12px;stroke:#94A0B8;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sugg-arr-l{font-size:7.5px;color:#94A0B8}
+.sugg-because{background:rgba(106,135,145,0.07);border-left:2.5px solid rgba(106,135,145,0.38);border-radius:0 9px 9px 0;padding:9px 10px;font-size:10.5px;color:#5A5A6E;line-height:1.65;margin-bottom:10px}
+.sugg-hint{display:flex;align-items:center;justify-content:center;gap:3px;font-size:9px;color:#94A0B8}
+.sugg-hint svg{width:10px;height:10px;stroke:#94A0B8;fill:none;stroke-width:1.8}
+
+/* ── NOTE EDITOR SCREEN ── */
+.note-content{padding:12px 12px 72px;display:flex;flex-direction:column;gap:10px}
+.note-fl{font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#94A0B8;margin-bottom:4px}
+.note-title-input{font-size:15px;font-weight:700;color:#1C1C1E;border-bottom:1px solid rgba(106,135,145,0.16);padding-bottom:7px}
+.note-src-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;background:rgba(229,154,120,0.11);border:1px solid rgba(229,154,120,0.24);font-size:10px;font-weight:600;color:#C67050}
+.note-src-chip svg{width:11px;height:11px;stroke:#C67050;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.note-body{font-size:11.5px;color:#5A5A6E;line-height:1.68;padding:6px 0}
+.note-conns{border-top:1px solid rgba(106,135,145,0.10);padding-top:10px;margin-top:2px}
+.note-conn-pill{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);border-radius:9px;padding:7px 9px;margin-top:6px}
+.note-conn-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.note-conn-t{font-size:10.5px;font-weight:600;color:#1C1C1E}
+.note-conn-s{font-size:9px;color:#94A0B8}
+
+/* ── MOTION SECTION ── */
+.motion-section{position:relative;z-index:1;padding:0 24px 100px;max-width:860px;margin:0 auto;width:100%}
+.motion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.motion-card{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);border-radius:var(--r1);padding:20px 18px;display:flex;flex-direction:column}
+.motion-label{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:7px}
+.motion-title{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:4px}
+.motion-sub{font-size:11.5px;color:var(--text2);line-height:1.60;margin-bottom:16px}
+.motion-demo{flex:1;background:linear-gradient(145deg,#F2F2F2,#EAEAEA);border-radius:14px;min-height:190px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.motion-spec{font-size:10px;font-family:'SF Mono','Fira Code',monospace;color:var(--text3);margin-top:12px;line-height:1.7}
+.replay-btn{position:absolute;bottom:9px;right:9px;font-size:10px;font-weight:600;color:var(--teal);background:rgba(255,255,255,0.75);border:1px solid rgba(106,135,145,0.18);border-radius:20px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(8px);transition:background .15s;z-index:10}
+.replay-btn:hover{background:rgba(255,255,255,0.95)}
+
+/* FAB demo */
+.fab-stage{display:flex;flex-direction:column;align-items:flex-end;padding:16px;width:100%;position:relative;z-index:1}
+.fab-items{display:flex;flex-direction:column;gap:8px;align-items:flex-end;margin-bottom:10px}
+.fab-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.84);border:1px solid rgba(255,255,255,0.95);border-radius:13px;padding:7px 11px;box-shadow:0 4px 14px rgba(0,0,0,0.07);opacity:0;transform:translateY(-14px)}
+.fab-item-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fab-item-ic svg{width:12px;height:12px;fill:none;stroke-width:2;stroke-linecap:round}
+.fab-item-t{font-size:11.5px;font-weight:600;color:#1C1C1E}
+.fab-item-s{font-size:9.5px;color:#94A0B8}
+.fab-trigger{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#92A8A5,#6A8791);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(106,135,145,0.30);transition:transform .15s,box-shadow .15s;position:relative;z-index:2}
+.fab-trigger:hover{transform:scale(1.06);box-shadow:0 6px 16px rgba(106,135,145,0.38)}
+.fab-trigger svg{width:18px;height:18px;stroke:white;fill:none;stroke-width:2.5;stroke-linecap:round;transition:transform .2s}
+.fab-trigger.open svg{transform:rotate(45deg)}
+
+@keyframes fabItemIn{
+  from{opacity:0;transform:translateY(-14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+/* New source leads: Interval(0.0, 0.85) → 0ms delay, 187ms */
+.fab-item.fab-new.play{animation:fabItemIn 187ms cubic-bezier(0.33,1,0.66,1) forwards}
+/* Discover follows: Interval(0.15, 1.0) → 33ms delay, 187ms */
+.fab-item.fab-disc.play{animation:fabItemIn 187ms cubic-bezier(0.33,1,0.66,1) 33ms forwards}
+
+/* Suggestion swipe demo */
+.swipe-stage{position:absolute;inset:14px;display:flex;flex-direction:column;gap:0}
+.swipe-card{position:absolute;inset:0;background:rgba(255,255,255,0.84);border:1px solid rgba(255,255,255,0.95);border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,0.09);padding:12px;cursor:grab;user-select:none;touch-action:none;will-change:transform}
+.swipe-card:active{cursor:grabbing}
+.swipe-ov-a{position:absolute;inset:0;border-radius:16px;background:linear-gradient(90deg,rgba(106,135,145,0.24),transparent);opacity:0;pointer-events:none;transition:opacity .08s}
+.swipe-ov-d{position:absolute;inset:0;border-radius:16px;background:linear-gradient(270deg,rgba(176,48,48,0.20),transparent);opacity:0;pointer-events:none;transition:opacity .08s}
+.swipe-hint-tag{position:absolute;top:8px;font-size:9.5px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .1s}
+.swipe-hint-a{left:8px;background:rgba(106,135,145,0.15);color:#6A8791;border:1px solid rgba(106,135,145,0.25)}
+.swipe-hint-d{right:8px;background:rgba(176,48,48,0.09);color:#B03030;border:1px solid rgba(176,48,48,0.20)}
+
+/* Graph node emergence demo */
+.graph-stage{position:absolute;inset:0}
+.graph-stage svg{width:100%;height:100%}
+.gn{transform-origin:center center;transform:scale(0);opacity:0}
+@keyframes nodeIn{
+  0%  {transform:scale(0);opacity:0}
+  55% {transform:scale(1.20);opacity:1}
+  75% {transform:scale(0.93);opacity:1}
+  100%{transform:scale(1.0);opacity:1}
+}
+.ge{stroke-dashoffset:1;opacity:0}
+@keyframes edgeIn{
+  0%  {stroke-dashoffset:1;opacity:0}
+  20% {opacity:.6}
+  100%{stroke-dashoffset:0;opacity:1}
+}
+
+/* ── COMPONENT STRIP ── */
+.comp-section{position:relative;z-index:1;padding:0 24px 100px;max-width:860px;margin:0 auto;width:100%}
+.comp-strip{background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);border-radius:var(--r1);padding:22px 24px;display:flex;flex-direction:column;gap:20px}
+.comp-row-label{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.comp-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* Nav bar preview */
+.nav-preview{display:inline-flex;gap:1px;align-items:center;background:rgba(255,255,255,0.52);border:1px solid rgba(255,255,255,0.68);border-radius:50px;padding:5px 6px;box-shadow:0 4px 14px rgba(0,0,0,0.07)}
+.np-it{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 10px;border-radius:40px}
+.np-it.on{background:rgba(106,135,145,0.14)}
+.np-it svg{width:14px;height:14px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.np-it.on svg{stroke:#6A8791}
+.np-it:not(.on) svg{stroke:#5A5A6E}
+.np-l{font-size:8px;font-weight:500}
+.np-it.on .np-l{color:#6A8791}
+.np-it:not(.on) .np-l{color:#5A5A6E}
+
+/* Source type chips */
+.s-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:12px;font-size:12px;font-weight:500;border:1px solid transparent}
+.s-chip svg{width:13px;height:13px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Book color swatches */
+.b-swatch{width:26px;height:26px;border-radius:8px;border:1px solid rgba(0,0,0,0.07);box-shadow:0 2px 6px rgba(0,0,0,0.09)}
+
+/* Buttons */
+.btn-p{display:inline-flex;align-items:center;padding:9px 17px;border-radius:11px;background:linear-gradient(135deg,#92A8A5,#6A8791);font-size:13px;font-weight:500;color:white}
+.btn-g{display:inline-flex;align-items:center;padding:8px 17px;border-radius:11px;background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);font-size:13px;font-weight:500;color:#5A5A6E}
+.btn-d{display:inline-flex;align-items:center;padding:8px 17px;border-radius:11px;background:rgba(176,48,48,0.07);border:1px solid rgba(176,48,48,0.18);font-size:13px;font-weight:500;color:#B03030}
+.badge-terra{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:30px;background:linear-gradient(135deg,#E59A78,#C67050);font-size:10px;font-weight:700;color:white}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);padding:28px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;max-width:860px;margin:0 auto}
+.footer-brand{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:15px;color:var(--text1);text-decoration:none}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px}
+.footer-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--teal)}
+.footer-copy{font-size:12px;color:var(--text3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){.motion-grid{grid-template-columns:1fr}.dl-grid{grid-template-columns:1fr}.swatch-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:500px){nav{top:12px;padding:8px 14px;gap:12px}.swatch-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="orb" style="width:500px;height:500px;top:-180px;left:-140px;background:#E8A882;opacity:.28"></div>
+  <div class="orb" style="width:420px;height:420px;bottom:15%;right:-130px;background:#7AADB8;opacity:.22"></div>
+  <div class="orb" style="width:300px;height:300px;top:40%;left:60%;background:#AAC4C0;opacity:.18"></div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px">
+      <defs><linearGradient id="n-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7B9EAB"/><stop offset="100%" stop-color="#526E7A"/></linearGradient></defs>
+      <rect width="1024" height="1024" rx="230" fill="url(#n-bg)"/>
+      <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
+      <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.62)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="512" cy="184" r="52" fill="white" opacity=".88"/>
+      <circle cx="799" cy="358" r="44" fill="white" opacity=".72"/>
+      <circle cx="768" cy="696" r="44" fill="white" opacity=".72"/>
+      <circle cx="512" cy="491" r="56" fill="white"/>
+    </svg>
+    Synapse
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Waitlist</a>
+    <a class="nav-link" href="lab.html">Lab</a>
+    <a class="nav-link active" href="atelier.html">Atelier</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">Design &amp; Motion</div>
+  <h1>Atelier</h1>
+  <p class="hero-sub">The craft behind the Synapse iOS app — screens built from the real Flutter code, transitions that match the actual animation values, and the design decisions that connect them.</p>
+</section>
+
+<!-- ── DESIGN LANGUAGE ── -->
+<section class="design-lang">
+  <div class="section-tag">Design Language</div>
+  <h2 class="section-title">Tokens, not decoration</h2>
+  <p class="section-sub">Every colour, blur, and radius is a semantic decision rooted in the app's purpose.</p>
+
+  <div class="dl-grid">
+
+    <!-- Color system -->
+    <div class="dl-card full">
+      <div class="dl-card-label">Source palette · 12 book colours</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-dot" style="background:#E59A78"></div><div class="swatch-name">Terracotta</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#92A8A5"></div><div class="swatch-name">Sage</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#6A8791"></div><div class="swatch-name">Teal</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#B08898"></div><div class="swatch-name">Mauve</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#8898B0"></div><div class="swatch-name">Slate</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#C47858"></div><div class="swatch-name">Rust</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#BDA58E"></div><div class="swatch-name">Sand</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#9A88A8"></div><div class="swatch-name">Lavender</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#8DA88A"></div><div class="swatch-name">Moss</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#78A8A0"></div><div class="swatch-name">Seafoam</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#B0A87A"></div><div class="swatch-name">Khaki</div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#887888"></div><div class="swatch-name">Plum</div></div>
+      </div>
+    </div>
+
+    <!-- Source types -->
+    <div class="dl-card">
+      <div class="dl-card-label">Source types &amp; colour mapping</div>
+      <div class="type-chips">
+        <span class="type-chip" style="background:rgba(229,154,120,0.12);border-color:rgba(229,154,120,0.25);color:#C67050">
+          <svg viewBox="0 0 24 24" style="stroke:#C67050"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Book
+        </span>
+        <span class="type-chip" style="background:rgba(106,135,145,0.11);border-color:rgba(106,135,145,0.24);color:#6A8791">
+          <svg viewBox="0 0 24 24" style="stroke:#6A8791"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/></svg>Movie
+        </span>
+        <span class="type-chip" style="background:rgba(176,136,152,0.11);border-color:rgba(176,136,152,0.24);color:#B08898">
+          <svg viewBox="0 0 24 24" style="stroke:#B08898"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>Serie
+        </span>
+        <span class="type-chip" style="background:rgba(146,168,165,0.11);border-color:rgba(146,168,165,0.24);color:#5A7A78">
+          <svg viewBox="0 0 24 24" style="stroke:#5A7A78"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Personal
+        </span>
+        <span class="type-chip" style="background:rgba(176,168,122,0.11);border-color:rgba(176,168,122,0.24);color:#8A7A30">
+          <svg viewBox="0 0 24 24" style="stroke:#8A7A30"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>Topic
+        </span>
+      </div>
+      <p style="font-size:12px;color:var(--text3);margin-top:14px;line-height:1.65">Each type biases the colour picker toward a curated subset — warm/earthy for books, cool/cinematic for movies, dramatic for series. The colour isn't random; it carries the source's emotional register.</p>
+    </div>
+
+    <!-- Typography -->
+    <div class="dl-card">
+      <div class="dl-card-label">Type scale</div>
+      <div class="type-rows">
+        <div class="type-row">
+          <span class="type-meta">Display</span>
+          <span class="type-sample-h">Synapse</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">Title</span>
+          <span class="type-sample-m">Open Graph View</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">Body</span>
+          <span class="type-sample-b">Connect ideas across what you read</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">Caption</span>
+          <span class="type-sample-c">Your Library · 8 sources</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Glass recipe -->
+    <div class="dl-card full">
+      <div class="dl-card-label">Glass recipe — live</div>
+      <div class="glass-recipe">
+        <div class="glass-row">
+          <span class="glass-label">Blur</span>
+          <input type="range" class="glass-track" id="blurSlider" min="4" max="32" value="20">
+          <span class="glass-val" id="blurVal">20px</span>
+        </div>
+        <div class="glass-row">
+          <span class="glass-label">Fill</span>
+          <input type="range" class="glass-track" id="fillSlider" min="10" max="80" value="44">
+          <span class="glass-val" id="fillVal">44%</span>
+        </div>
+        <div class="glass-preview">
+          <div class="glass-card-preview" id="glassPreview">glassFillStrong · glassBorder</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SCREEN GALLERY ── -->
+<section class="screen-section">
+  <div class="screen-header">
+    <div class="section-tag">Screens</div>
+    <h2 class="section-title">Five views, one system</h2>
+    <p class="section-sub" style="margin-bottom:0">Every screen rendered from the real component structure — GlassTopBar, GlassNavBar, GlassCard — with the actual type scale, colours, and spacing.</p>
+  </div>
+
+  <div class="screen-scroll">
+
+    <!-- Screen 1: Library (Home) -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="a-bar">
+          <div>
+            <div class="a-bar-title">Synapse</div>
+            <div class="a-bar-sub">Connect ideas across what you read</div>
+          </div>
+          <div class="a-bar-actions">
+            <div class="a-fab">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <div class="a-btn">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="a-content">
+          <div class="a-stats">
+            <div class="a-stat"><div class="a-stat-n">24</div><div class="a-stat-l">Notes</div></div>
+            <div class="a-stat"><div class="a-stat-n">18</div><div class="a-stat-l">Links</div></div>
+            <div class="a-stat"><div class="a-stat-n">8</div><div class="a-stat-l">Sources</div></div>
+          </div>
+          <div class="a-banner">
+            <div class="a-banner-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/></svg>
+            </div>
+            <div style="flex:1">
+              <div class="a-banner-t">Open Graph View</div>
+              <div class="a-banner-s">Explore your knowledge connections</div>
+            </div>
+            <div class="a-banner-c">›</div>
+          </div>
+          <div class="a-label">YOUR LIBRARY <span style="font-size:9px;color:#94A0B8">⊞</span></div>
+          <div class="a-book">
+            <div class="a-book-icon" style="background:rgba(229,154,120,0.14)">
+              <svg viewBox="0 0 24 24" style="stroke:#E59A78"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div style="flex:1">
+              <div class="a-book-t">Meditations</div>
+              <div class="a-book-a">Marcus Aurelius</div>
+            </div>
+            <div class="a-book-n">7 notes</div>
+          </div>
+          <div class="a-book">
+            <div class="a-book-icon" style="background:rgba(106,135,145,0.13)">
+              <svg viewBox="0 0 24 24" style="stroke:#6A8791"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div style="flex:1">
+              <div class="a-book-t">Thinking, Fast and Slow</div>
+              <div class="a-book-a">Daniel Kahneman</div>
+            </div>
+            <div class="a-book-n">5 notes</div>
+          </div>
+          <div class="a-book">
+            <div class="a-book-icon" style="background:rgba(146,168,165,0.13)">
+              <svg viewBox="0 0 24 24" style="stroke:#92A8A5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+            </div>
+            <div style="flex:1">
+              <div class="a-book-t">Inception</div>
+              <div class="a-book-a">Christopher Nolan</div>
+            </div>
+            <div class="a-book-n">3 notes</div>
+          </div>
+          <div class="a-book">
+            <div class="a-book-icon" style="background:rgba(176,168,122,0.12)">
+              <svg viewBox="0 0 24 24" style="stroke:#B0A87A"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <div style="flex:1">
+              <div class="a-book-t">Stoicism</div>
+              <div class="a-book-a">Philosophy</div>
+            </div>
+            <div class="a-book-n">4 notes</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-it on">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="a-nav-l">Home</span>
+          </div>
+          <div class="a-nav-it">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/></svg>
+            <span class="a-nav-l">Graph</span>
+          </div>
+          <div class="a-nav-it">
+            <svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" rx="200" fill="none"/><circle cx="512" cy="512" r="100" fill="#94A0B8"/><line x1="512" y1="412" x2="512" y2="180" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="750" y2="300" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="720" y2="640" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/></svg>
+            <span class="a-nav-l">Synapse</span>
+          </div>
+          <div class="a-nav-it">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <span class="a-nav-l">Settings</span>
+          </div>
+        </div>
+      </div>
+      <div class="screen-col-label">Library</div>
+    </div>
+
+    <!-- Screen 2: Graph Canvas -->
+    <div class="screen-col">
+      <div class="phone" style="height:auto">
+        <div class="a-bar">
+          <div class="a-back">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px"><polyline points="15 18 9 12 15 6"/></svg>
+            Home
+          </div>
+          <div style="font-family:'DM Serif Display',serif;font-size:16px;color:#1C1C1E;position:absolute;left:50%;transform:translateX(-50%)">Graph</div>
+          <div style="width:52px"></div>
+        </div>
+        <div class="graph-canvas">
+          <div class="graph-filter-row">
+            <span class="g-chip on">All</span>
+            <span class="g-chip">Meditations</span>
+            <span class="g-chip">TF&amp;S</span>
+          </div>
+          <!-- Force-directed graph SVG -->
+          <svg viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <!-- Edges (drawn under nodes) -->
+            <line x1="152" y1="158" x2="96" y2="102" stroke="rgba(180,175,165,0.32)" stroke-width="1.5"/>
+            <line x1="152" y1="158" x2="198" y2="98" stroke="rgba(180,175,165,0.32)" stroke-width="1.5"/>
+            <line x1="152" y1="158" x2="210" y2="215" stroke="rgba(180,175,165,0.32)" stroke-width="1.5"/>
+            <line x1="152" y1="158" x2="88" y2="218" stroke="rgba(180,175,165,0.32)" stroke-width="1.5"/>
+            <line x1="96" y1="102" x2="88" y2="218" stroke="rgba(180,175,165,0.25)" stroke-width="1.2"/>
+            <line x1="198" y1="98" x2="248" y2="150" stroke="rgba(180,175,165,0.25)" stroke-width="1.2"/>
+            <line x1="210" y1="215" x2="248" y2="150" stroke="rgba(180,175,165,0.25)" stroke-width="1.2"/>
+            <!-- Highlighted edge -->
+            <line x1="152" y1="158" x2="88" y2="218" stroke="rgba(106,135,145,0.70)" stroke-width="2"/>
+
+            <!-- Nodes — degree: center=4, others=1-2 -->
+            <!-- Center node (Meditations note, degree 4, r≈29) -->
+            <circle cx="152" cy="158" r="26" fill="rgba(229,154,120,0.16)" stroke="#E59A78" stroke-width="1.5"/>
+            <circle cx="152" cy="158" r="14" fill="#E59A78" opacity=".90"/>
+            <!-- Node B (Meditations, degree 2, r=19) -->
+            <circle cx="96" cy="102" r="17" fill="rgba(229,154,120,0.13)" stroke="#E59A78" stroke-width="1.3"/>
+            <circle cx="96" cy="102" r="9" fill="#E59A78" opacity=".75"/>
+            <!-- Node C (Meditations, degree 2, r=19) -->
+            <circle cx="198" cy="98" r="17" fill="rgba(229,154,120,0.13)" stroke="#E59A78" stroke-width="1.3"/>
+            <circle cx="198" cy="98" r="9" fill="#E59A78" opacity=".75"/>
+            <!-- Selected node (TF&S, degree 2, r=19) — highlighted -->
+            <circle cx="88" cy="218" r="19" fill="rgba(106,135,145,0.20)" stroke="#6A8791" stroke-width="2"/>
+            <circle cx="88" cy="218" r="7" fill="#6A8791"/>
+            <!-- Node E (TF&S, degree 2) -->
+            <circle cx="210" cy="215" r="17" fill="rgba(106,135,145,0.13)" stroke="#6A8791" stroke-width="1.3"/>
+            <circle cx="210" cy="215" r="9" fill="#6A8791" opacity=".75"/>
+            <!-- Node F (Seafoam topic, degree 1) -->
+            <circle cx="248" cy="150" r="14" fill="rgba(120,168,160,0.13)" stroke="#78A8A0" stroke-width="1.3"/>
+            <circle cx="248" cy="150" r="7" fill="#78A8A0" opacity=".75"/>
+
+            <!-- Labels -->
+            <text x="152" y="193" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5A5A6E">The Obstacle Is the Way</text>
+            <text x="88" y="245" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#6A8791" font-weight="600">System 1 thinking</text>
+          </svg>
+          <div class="graph-info-chip">
+            System 1 thinking
+            <div class="graph-info-sub">Thinking, Fast and Slow · 2 links</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-it">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="a-nav-l">Home</span>
+          </div>
+          <div class="a-nav-it on">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/></svg>
+            <span class="a-nav-l">Graph</span>
+          </div>
+          <div class="a-nav-it">
+            <svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="100" fill="#94A0B8"/><line x1="512" y1="412" x2="512" y2="180" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="750" y2="300" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="720" y2="640" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/></svg>
+            <span class="a-nav-l">Synapse</span>
+          </div>
+          <div class="a-nav-it">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <span class="a-nav-l">Settings</span>
+          </div>
+        </div>
+      </div>
+      <div class="screen-col-label">Graph</div>
+    </div>
+
+    <!-- Screen 3: Discover Modal -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="a-bar">
+          <div><div class="a-bar-title">Synapse</div><div class="a-bar-sub">Connect ideas across what you read</div></div>
+          <div class="a-bar-actions">
+            <div class="a-fab"><svg viewBox="0 0 24 24" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+        </div>
+        <!-- Dimmed background -->
+        <div style="height:60px;background:rgba(0,0,0,0.28)"></div>
+        <!-- DraggableScrollableSheet at ~72% -->
+        <div class="discover-sheet">
+          <div class="disc-handle"></div>
+          <div class="disc-header">
+            <div class="disc-title">Discover</div>
+            <div class="disc-pill">Meditations</div>
+          </div>
+          <div class="disc-tabs">
+            <div class="disc-tab on">Books</div>
+            <div class="disc-tab">Movies</div>
+            <div class="disc-tab">Series</div>
+          </div>
+          <div class="disc-card">
+            <div class="disc-card-type">Recommended Book</div>
+            <div class="disc-card-t">The Obstacle Is the Way</div>
+            <div class="disc-card-cr">Ryan Holiday</div>
+            <div class="disc-card-r">Both explore the Stoic practice of reframing adversity — Marcus Aurelius from lived experience, Holiday through historical narrative.</div>
+          </div>
+          <div class="disc-hint">← swipe to dismiss · tap + to add →</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-it on">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="a-nav-l">Home</span>
+          </div>
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/></svg><span class="a-nav-l">Graph</span></div>
+          <div class="a-nav-it"><svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="100" fill="#94A0B8"/><line x1="512" y1="412" x2="512" y2="180" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="750" y2="300" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/></svg><span class="a-nav-l">Synapse</span></div>
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="20" y1="21" x2="20" y2="16"/></svg><span class="a-nav-l">Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-col-label">Discover</div>
+    </div>
+
+    <!-- Screen 4: Suggestion Card -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="a-bar">
+          <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#1C1C1E">Connections</div>
+          <div class="a-bar-actions">
+            <div class="a-btn"><svg viewBox="0 0 24 24" style="width:12px;height:12px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.5"/></svg></div>
+          </div>
+        </div>
+        <div class="sugg-wrap">
+          <!-- Suggestion count -->
+          <div style="font-size:10px;color:#94A0B8;margin-bottom:8px;text-align:center">3 suggestions · swipe to review</div>
+          <div class="sugg-card">
+            <div class="sugg-head">
+              <div class="sugg-badge">✦ AI Suggestion</div>
+              <div class="sugg-actions">
+                <div class="sugg-accept">Accept</div>
+                <div class="sugg-x">✕</div>
+              </div>
+            </div>
+            <div class="sugg-nodes">
+              <div class="sugg-node">
+                <div style="display:flex;align-items:center"><span class="sugg-dot"></span><div class="sugg-nt">The Discipline of Not Reacting</div></div>
+                <div class="sugg-ns">Meditations</div>
+              </div>
+              <div class="sugg-arr">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span class="sugg-arr-l">links to</span>
+              </div>
+              <div class="sugg-node">
+                <div style="display:flex;align-items:center"><span class="sugg-dot" style="background:#6A8791"></span><div class="sugg-nt">Cognitive Ease &amp; Fluency</div></div>
+                <div class="sugg-ns">Thinking, Fast and Slow</div>
+              </div>
+            </div>
+            <div class="sugg-because">
+              <strong style="color:#1C1C1E;font-weight:700">Because: </strong>Both describe how the mind defaults to the path of least resistance — Marcus through the lens of reason, Kahneman through cognitive science.
+            </div>
+            <div class="sugg-hint">
+              <svg viewBox="0 0 24 24"><path d="M5 9l4-4 4 4"/><path d="M5 15l4 4 4-4"/><line x1="9" y1="5" x2="9" y2="19"/><line x1="19" y1="9" x2="19" y2="15"/><line x1="16" y1="12" x2="22" y2="12"/></svg>
+              Swipe right to accept · left to dismiss
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="a-nav-l">Home</span></div>
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/></svg><span class="a-nav-l">Graph</span></div>
+          <div class="a-nav-it on">
+            <svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="100" fill="#6A8791"/><line x1="512" y1="412" x2="512" y2="180" stroke="#6A8791" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="750" y2="300" stroke="#6A8791" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="720" y2="640" stroke="#6A8791" stroke-width="50" stroke-linecap="round"/></svg>
+            <span class="a-nav-l">Synapse</span>
+          </div>
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="20" y1="21" x2="20" y2="16"/></svg><span class="a-nav-l">Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-col-label">Connections</div>
+    </div>
+
+    <!-- Screen 5: Note Editor -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="a-bar" style="justify-content:space-between">
+          <div class="a-back">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px"><polyline points="15 18 9 12 15 6"/></svg>
+            Meditations
+          </div>
+          <div style="font-family:'DM Serif Display',serif;font-size:15px;color:#1C1C1E">Note</div>
+          <div class="a-save">Save</div>
+        </div>
+        <div class="note-content">
+          <div>
+            <div class="note-fl">Title</div>
+            <div class="note-title-input">The Discipline of Not Reacting</div>
+          </div>
+          <div>
+            <div class="note-fl">Source</div>
+            <div class="note-src-chip">
+              <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Meditations
+            </div>
+          </div>
+          <div>
+            <div class="note-fl">Content</div>
+            <div class="note-body">Book VI.2 — Marcus emphasises pausing before reacting to external events. The practice is not indifference but deliberate space between stimulus and response.</div>
+          </div>
+          <div class="note-conns">
+            <div class="a-label">Connections <span style="color:#6A8791;font-size:9px;font-weight:700">+ Add</span></div>
+            <div class="note-conn-pill">
+              <div class="note-conn-dot" style="background:#6A8791"></div>
+              <div>
+                <div class="note-conn-t">Cognitive Ease &amp; Fluency</div>
+                <div class="note-conn-s">Thinking, Fast and Slow</div>
+              </div>
+            </div>
+            <div class="note-conn-pill">
+              <div class="note-conn-dot" style="background:#E59A78"></div>
+              <div>
+                <div class="note-conn-t">The Obstacle Is the Way</div>
+                <div class="note-conn-s">Meditations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-it on"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="a-nav-l">Home</span></div>
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/></svg><span class="a-nav-l">Graph</span></div>
+          <div class="a-nav-it"><svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="100" fill="#94A0B8"/><line x1="512" y1="412" x2="512" y2="180" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/></svg><span class="a-nav-l">Synapse</span></div>
+          <div class="a-nav-it"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="20" y1="21" x2="20" y2="16"/></svg><span class="a-nav-l">Settings</span></div>
+        </div>
+      </div>
+      <div class="screen-col-label">Note Editor</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── MOTION & TRANSITIONS ── -->
+<section class="motion-section">
+  <div class="section-tag">Motion</div>
+  <h2 class="section-title">Transitions from the source</h2>
+  <p class="section-sub">Every timing, easing, and spring value below is taken directly from the Flutter code — not approximated.</p>
+
+  <div class="motion-grid">
+
+    <!-- Demo 1: FAB expand -->
+    <div class="motion-card">
+      <div class="motion-label">Home Screen · FAB</div>
+      <div class="motion-title">Expandable action menu</div>
+      <div class="motion-sub">Two items emerge with a staggered easeOutCubic. "New source" leads the motion; "Discover" follows 33 ms later.</div>
+      <div class="motion-demo" id="fabDemo">
+        <div class="fab-stage">
+          <div class="fab-items" id="fabItems">
+            <div class="fab-item fab-disc" id="fabDisc">
+              <div class="fab-item-ic" style="background:rgba(229,154,120,0.14)">
+                <svg viewBox="0 0 24 24" style="stroke:#C67050"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div><div class="fab-item-t">Discover</div><div class="fab-item-s">AI recommendations</div></div>
+            </div>
+            <div class="fab-item fab-new" id="fabNew">
+              <div class="fab-item-ic" style="background:rgba(106,135,145,0.14)">
+                <svg viewBox="0 0 24 24" style="stroke:#6A8791"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </div>
+              <div><div class="fab-item-t">New source</div><div class="fab-item-s">Book, movie, topic…</div></div>
+            </div>
+          </div>
+          <div class="fab-trigger" id="fabTrigger">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+        <button class="replay-btn" id="fabReplay">Replay</button>
+      </div>
+      <div class="motion-spec">duration: 220ms / 160ms reverse<br>curve: Interval(0.0, 0.85) easeOutCubic<br>slide: Offset(0, -0.4) → Offset.zero</div>
+    </div>
+
+    <!-- Demo 2: Suggestion swipe -->
+    <div class="motion-card">
+      <div class="motion-label">Connections Screen · Card</div>
+      <div class="motion-title">Swipe to accept or dismiss</div>
+      <div class="motion-sub">Drag the card. At ±72 px it exits with a fade + upward slide. Rotation is capped at 2.3° (0.04 rad).</div>
+      <div class="motion-demo" id="swipeDemo">
+        <div class="swipe-stage">
+          <div class="swipe-card" id="swipeCard">
+            <div class="swipe-ov-a" id="swipeOvA"></div>
+            <div class="swipe-ov-d" id="swipeOvD"></div>
+            <div class="swipe-hint-tag swipe-hint-a" id="swipeHintA">Accept ✓</div>
+            <div class="swipe-hint-tag swipe-hint-d" id="swipeHintD">Dismiss ✕</div>
+            <div class="sugg-head" style="margin-bottom:8px">
+              <div class="sugg-badge">✦ AI Suggestion</div>
+              <div class="sugg-actions"><div class="sugg-accept">Accept</div><div class="sugg-x">✕</div></div>
+            </div>
+            <div class="sugg-nodes" style="margin-bottom:7px">
+              <div class="sugg-node"><div style="display:flex;align-items:center"><span class="sugg-dot"></span><div class="sugg-nt" style="font-size:9.5px">Discipline of Not Reacting</div></div><div class="sugg-ns">Meditations</div></div>
+              <div class="sugg-arr"><svg viewBox="0 0 24 24" style="width:10px;height:10px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span class="sugg-arr-l">links to</span></div>
+              <div class="sugg-node"><div style="display:flex;align-items:center"><span class="sugg-dot" style="background:#6A8791"></span><div class="sugg-nt" style="font-size:9.5px">Cognitive Ease</div></div><div class="sugg-ns">TF&amp;S</div></div>
+            </div>
+            <div class="sugg-because" style="font-size:9.5px">Both describe the mind's default to the path of least resistance.</div>
+          </div>
+        </div>
+        <button class="replay-btn" id="swipeReplay">Reset</button>
+      </div>
+      <div class="motion-spec">exit: 320ms easeOut<br>rotate: dragX/120 × 0.04 rad<br>exit slide: Offset(0, -0.18)</div>
+    </div>
+
+    <!-- Demo 3: Graph node emergence -->
+    <div class="motion-card">
+      <div class="motion-label">Graph Screen · Canvas</div>
+      <div class="motion-title">Node spring emergence</div>
+      <div class="motion-sub">Nodes pop in with spring physics (stiffness 200, damping 14). Edges draw in after their two endpoints are visible.</div>
+      <div class="motion-demo" id="graphDemo">
+        <div class="graph-stage">
+          <svg id="graphSvg" viewBox="0 0 240 190" xmlns="http://www.w3.org/2000/svg">
+            <!-- Edges (animated after nodes) -->
+            <line class="ge" id="ge1" x1="120" y1="90" x2="68" y2="48" stroke="rgba(180,175,165,0.38)" stroke-width="1.5" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <line class="ge" id="ge2" x1="120" y1="90" x2="172" y2="50" stroke="rgba(180,175,165,0.38)" stroke-width="1.5" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <line class="ge" id="ge3" x1="120" y1="90" x2="60" y2="145" stroke="rgba(106,135,145,0.65)" stroke-width="2" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <line class="ge" id="ge4" x1="120" y1="90" x2="180" y2="145" stroke="rgba(180,175,165,0.38)" stroke-width="1.5" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <line class="ge" id="ge5" x1="172" y1="50" x2="210" y2="110" stroke="rgba(180,175,165,0.30)" stroke-width="1.2" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Nodes -->
+            <g class="gn" id="gn1" style="transform-box:fill-box"><circle cx="120" cy="90" r="20" fill="rgba(229,154,120,0.16)" stroke="#E59A78" stroke-width="1.5"/><circle cx="120" cy="90" r="11" fill="#E59A78" opacity=".90"/></g>
+            <g class="gn" id="gn2" style="transform-box:fill-box"><circle cx="68" cy="48" r="14" fill="rgba(229,154,120,0.12)" stroke="#E59A78" stroke-width="1.3"/><circle cx="68" cy="48" r="7" fill="#E59A78" opacity=".75"/></g>
+            <g class="gn" id="gn3" style="transform-box:fill-box"><circle cx="172" cy="50" r="14" fill="rgba(106,135,145,0.12)" stroke="#6A8791" stroke-width="1.3"/><circle cx="172" cy="50" r="7" fill="#6A8791" opacity=".75"/></g>
+            <g class="gn" id="gn4" style="transform-box:fill-box"><circle cx="60" cy="145" r="16" fill="rgba(106,135,145,0.18)" stroke="#6A8791" stroke-width="2"/><circle cx="60" cy="145" r="7" fill="#6A8791"/></g>
+            <g class="gn" id="gn5" style="transform-box:fill-box"><circle cx="180" cy="145" r="14" fill="rgba(146,168,165,0.12)" stroke="#92A8A5" stroke-width="1.3"/><circle cx="180" cy="145" r="7" fill="#92A8A5" opacity=".75"/></g>
+            <g class="gn" id="gn6" style="transform-box:fill-box"><circle cx="210" cy="110" r="12" fill="rgba(120,168,160,0.12)" stroke="#78A8A0" stroke-width="1.3"/><circle cx="210" cy="110" r="6" fill="#78A8A0" opacity=".75"/></g>
+          </svg>
+        </div>
+        <button class="replay-btn" id="graphReplay">Replay</button>
+      </div>
+      <div class="motion-spec">spring: stiffness 200, damping 14<br>node stagger: 90ms per node<br>edges: draw after both endpoints</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── COMPONENT STRIP ── -->
+<section class="comp-section">
+  <div class="section-tag">Components</div>
+  <h2 class="section-title">Quick reference</h2>
+  <p class="section-sub">The shared primitives behind every screen.</p>
+
+  <div class="comp-strip">
+
+    <!-- Nav bar -->
+    <div>
+      <div class="comp-row-label">Glass nav bar · pill · backdrop blur 18</div>
+      <div class="comp-row">
+        <div class="nav-preview">
+          <div class="np-it on">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="np-l">Home</span>
+          </div>
+          <div class="np-it">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/></svg>
+            <span class="np-l">Graph</span>
+          </div>
+          <div class="np-it" style="position:relative">
+            <svg viewBox="0 0 1024 1024" style="width:14px;height:14px"><circle cx="512" cy="512" r="100" fill="#94A0B8"/><line x1="512" y1="412" x2="512" y2="180" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="750" y2="300" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/><line x1="512" y1="412" x2="720" y2="640" stroke="#94A0B8" stroke-width="50" stroke-linecap="round"/></svg>
+            <!-- badge -->
+            <div style="position:absolute;top:-1px;right:5px;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#E59A78,#C67050);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:white">3</div>
+            <span class="np-l">Synapse</span>
+          </div>
+          <div class="np-it">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <span class="np-l">Settings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Source type chips -->
+    <div>
+      <div class="comp-row-label">Source type chips · selected state</div>
+      <div class="comp-row">
+        <span class="s-chip" style="background:rgba(229,154,120,0.12);border-color:rgba(229,154,120,0.28);color:#C67050"><svg viewBox="0 0 24 24" style="stroke:#C67050"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Book</span>
+        <span class="s-chip" style="background:rgba(106,135,145,0.11);border-color:rgba(106,135,145,0.24);color:#6A8791"><svg viewBox="0 0 24 24" style="stroke:#6A8791"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/></svg>Movie</span>
+        <span class="s-chip" style="background:rgba(176,136,152,0.11);border-color:rgba(176,136,152,0.24);color:#B08898"><svg viewBox="0 0 24 24" style="stroke:#B08898"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>Serie</span>
+        <span class="s-chip" style="background:rgba(141,168,138,0.11);border-color:rgba(141,168,138,0.24);color:#5A7A58"><svg viewBox="0 0 24 24" style="stroke:#5A7A58"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Personal</span>
+        <span class="s-chip" style="background:rgba(176,168,122,0.11);border-color:rgba(176,168,122,0.24);color:#8A7A30"><svg viewBox="0 0 24 24" style="stroke:#8A7A30"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>Topic</span>
+      </div>
+    </div>
+
+    <!-- Book colors -->
+    <div>
+      <div class="comp-row-label">Book colour palette · AppColors.bookColors[0…11]</div>
+      <div class="comp-row">
+        <div class="b-swatch" style="background:#E59A78" title="bookTerracotta"></div>
+        <div class="b-swatch" style="background:#92A8A5" title="bookSage"></div>
+        <div class="b-swatch" style="background:#6A8791" title="bookTeal"></div>
+        <div class="b-swatch" style="background:#B08898" title="bookMauve"></div>
+        <div class="b-swatch" style="background:#8898B0" title="bookSlate"></div>
+        <div class="b-swatch" style="background:#C47858" title="bookRust"></div>
+        <div class="b-swatch" style="background:#BDA58E" title="bookSand"></div>
+        <div class="b-swatch" style="background:#9A88A8" title="bookLavender"></div>
+        <div class="b-swatch" style="background:#8DA88A" title="bookMoss"></div>
+        <div class="b-swatch" style="background:#78A8A0" title="bookSeafoam"></div>
+        <div class="b-swatch" style="background:#B0A87A" title="bookKhaki"></div>
+        <div class="b-swatch" style="background:#887888" title="bookPlum"></div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div>
+      <div class="comp-row-label">Buttons &amp; badges</div>
+      <div class="comp-row">
+        <span class="btn-p">Save</span>
+        <span class="btn-g">Cancel</span>
+        <span class="btn-d">Delete resource</span>
+        <span class="badge-terra">✦ AI Suggestion</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a class="footer-brand" href="index.html">
+    <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--teal);fill:none;stroke-width:1.8;stroke-linecap:round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Synapse
+  </a>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy</a>
+    <a href="support.html">Support</a>
+    <a href="delete-account.html">Delete account</a>
+    <a href="mailto:imismaelhdz@gmail.com">Contact</a>
+  </div>
+  <p class="footer-copy">© 2026 Synapse. All rights reserved.</p>
+</footer>
+
+<script>
+// ── Glass recipe live demo ──────────────────────────────────────────────────
+const blurSlider = document.getElementById('blurSlider');
+const fillSlider = document.getElementById('fillSlider');
+const blurVal    = document.getElementById('blurVal');
+const fillVal    = document.getElementById('fillVal');
+const glassPreview = document.getElementById('glassPreview');
+
+function updateGlass() {
+  const b = blurSlider.value;
+  const f = fillSlider.value;
+  blurVal.textContent = b + 'px';
+  fillVal.textContent = f + '%';
+  glassPreview.style.backdropFilter = `blur(${b}px)`;
+  glassPreview.style.webkitBackdropFilter = `blur(${b}px)`;
+  glassPreview.style.background = `rgba(255,255,255,${f/100})`;
+  glassPreview.style.border = `1px solid rgba(255,255,255,${Math.min(0.95, f/100 + 0.25)})`;
+}
+blurSlider.addEventListener('input', updateGlass);
+fillSlider.addEventListener('input', updateGlass);
+updateGlass();
+
+// ── FAB expand demo ─────────────────────────────────────────────────────────
+const fabTrigger = document.getElementById('fabTrigger');
+const fabDisc    = document.getElementById('fabDisc');
+const fabNew     = document.getElementById('fabNew');
+const fabReplay  = document.getElementById('fabReplay');
+let fabOpen = false;
+
+function openFab() {
+  fabOpen = true;
+  fabTrigger.classList.add('open');
+  // Reset first
+  fabDisc.classList.remove('play');
+  fabNew.classList.remove('play');
+  void fabDisc.offsetWidth; // reflow
+  // New source leads: Interval(0.0, 0.85) — no delay
+  fabNew.classList.add('play');
+  // Discover follows: Interval(0.15, 1.0) — 33ms delay (220ms * 0.15)
+  fabDisc.classList.add('play');
+  // Persist state after animation
+  setTimeout(() => {
+    fabNew.style.opacity = '1';
+    fabNew.style.transform = 'translateY(0)';
+    fabDisc.style.opacity = '1';
+    fabDisc.style.transform = 'translateY(0)';
+  }, 250);
+}
+
+function closeFab() {
+  fabOpen = false;
+  fabTrigger.classList.remove('open');
+  fabDisc.classList.remove('play');
+  fabNew.classList.remove('play');
+  fabNew.style.opacity = '0';
+  fabNew.style.transform = 'translateY(-14px)';
+  fabDisc.style.opacity = '0';
+  fabDisc.style.transform = 'translateY(-14px)';
+}
+
+fabTrigger.addEventListener('click', () => fabOpen ? closeFab() : openFab());
+fabReplay.addEventListener('click', () => { closeFab(); setTimeout(openFab, 60); });
+
+// ── Suggestion swipe demo ───────────────────────────────────────────────────
+const swipeCard  = document.getElementById('swipeCard');
+const swipeOvA   = document.getElementById('swipeOvA');
+const swipeOvD   = document.getElementById('swipeOvD');
+const swipeHintA = document.getElementById('swipeHintA');
+const swipeHintD = document.getElementById('swipeHintD');
+const swipeReplay = document.getElementById('swipeReplay');
+
+let dragX = 0, dragStartX = 0, isDragging = false, exited = false;
+
+function resetSwipe() {
+  exited = false; dragX = 0;
+  swipeCard.style.transition = 'none';
+  swipeCard.style.transform = 'none';
+  swipeCard.style.opacity = '1';
+  swipeOvA.style.opacity = '0';
+  swipeOvD.style.opacity = '0';
+  swipeHintA.style.opacity = '0';
+  swipeHintD.style.opacity = '0';
+  swipeCard.style.display = 'block';
+}
+
+function applyDrag(x) {
+  if (exited) return;
+  dragX = x;
+  const ratio = Math.max(-1, Math.min(1, x / 120));
+  const rot = ratio * 0.04 * (180 / Math.PI); // to degrees
+  swipeCard.style.transition = 'none';
+  swipeCard.style.transform = `translateX(${x}px) rotate(${rot}deg)`;
+  // Overlays at threshold 0.15
+  const absR = Math.abs(ratio);
+  const ovAmt = Math.max(0, absR - 0.15) / 0.85;
+  if (x > 0) { swipeOvA.style.opacity = ovAmt; swipeOvD.style.opacity = 0; swipeHintA.style.opacity = ovAmt; swipeHintD.style.opacity = 0; }
+  else        { swipeOvD.style.opacity = ovAmt; swipeOvA.style.opacity = 0; swipeHintD.style.opacity = ovAmt; swipeHintA.style.opacity = 0; }
+}
+
+function exitCard(dir) {
+  if (exited) return; exited = true;
+  // 320ms easeOut, slide up (translateY -18%) + translateX off screen + fade
+  swipeCard.style.transition = 'transform 320ms ease-out, opacity 320ms ease-out';
+  const exitX = dir > 0 ? 300 : -300;
+  const rot = dir * 2.3;
+  swipeCard.style.transform = `translateX(${exitX}px) rotate(${rot}deg) translateY(-18%)`;
+  swipeCard.style.opacity = '0';
+  swipeOvA.style.opacity = '0';
+  swipeOvD.style.opacity = '0';
+  swipeHintA.style.opacity = '0';
+  swipeHintD.style.opacity = '0';
+}
+
+// Mouse events
+swipeCard.addEventListener('mousedown', e => {
+  if (exited) return;
+  isDragging = true; dragStartX = e.clientX - dragX;
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  applyDrag(e.clientX - dragStartX);
+});
+document.addEventListener('mouseup', () => {
+  if (!isDragging) return; isDragging = false;
+  if (dragX > 72) exitCard(1);
+  else if (dragX < -72) exitCard(-1);
+  else { dragX = 0; swipeCard.style.transition = 'transform 200ms cubic-bezier(0.33,1,0.66,1)'; swipeCard.style.transform = 'none'; swipeOvA.style.opacity='0'; swipeOvD.style.opacity='0'; swipeHintA.style.opacity='0'; swipeHintD.style.opacity='0'; }
+});
+// Touch events
+swipeCard.addEventListener('touchstart', e => { if (exited) return; isDragging = true; dragStartX = e.touches[0].clientX - dragX; }, {passive:true});
+swipeCard.addEventListener('touchmove', e => { if (!isDragging) return; applyDrag(e.touches[0].clientX - dragStartX); }, {passive:true});
+swipeCard.addEventListener('touchend', () => {
+  if (!isDragging) return; isDragging = false;
+  if (dragX > 72) exitCard(1);
+  else if (dragX < -72) exitCard(-1);
+  else { dragX = 0; swipeCard.style.transition = 'transform 200ms cubic-bezier(0.33,1,0.66,1)'; swipeCard.style.transform = 'none'; swipeOvA.style.opacity='0'; swipeOvD.style.opacity='0'; swipeHintA.style.opacity='0'; swipeHintD.style.opacity='0'; }
+});
+// Button events
+swipeCard.querySelector('.sugg-accept').addEventListener('click', e => { e.stopPropagation(); exitCard(1); });
+swipeCard.querySelector('.sugg-x').addEventListener('click', e => { e.stopPropagation(); exitCard(-1); });
+swipeReplay.addEventListener('click', resetSwipe);
+
+// ── Graph node emergence demo ───────────────────────────────────────────────
+const graphReplay = document.getElementById('graphReplay');
+
+const nodeOrder = ['gn1','gn2','gn3','gn4','gn5','gn6'];
+// Each edge fires when both its nodes are visible: rough timing
+const edgeTiming = {
+  ge1: 90*2 + 300,  // after gn1, gn2
+  ge2: 90*3 + 300,  // after gn1, gn3
+  ge3: 90*4 + 300,  // after gn1, gn4
+  ge4: 90*5 + 300,  // after gn1, gn5
+  ge5: 90*5 + 300,  // after gn3, gn6
+};
+
+function getEdgeLength(id) {
+  const el = document.getElementById(id);
+  if (!el) return 1;
+  const x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+  const x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+  return Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+}
+
+function playGraphAnim() {
+  // Reset
+  nodeOrder.forEach(id => {
+    const el = document.getElementById(id);
+    el.style.animation = 'none'; el.style.opacity = '0'; el.style.transform = 'scale(0)';
+  });
+  Object.keys(edgeTiming).forEach(id => {
+    const el = document.getElementById(id);
+    const len = getEdgeLength(id);
+    el.setAttribute('stroke-dasharray', len);
+    el.setAttribute('stroke-dashoffset', len);
+    el.style.animation = 'none'; el.style.opacity = '0';
+  });
+  void document.getElementById('graphSvg').offsetWidth; // reflow
+
+  // Animate nodes with spring-like keyframes
+  nodeOrder.forEach((id, i) => {
+    const el = document.getElementById(id);
+    const delay = i * 90;
+    setTimeout(() => {
+      el.style.animation = `nodeIn 500ms cubic-bezier(0.34,1.56,0.64,1) forwards`;
+    }, delay);
+  });
+
+  // Animate edges
+  Object.entries(edgeTiming).forEach(([id, t]) => {
+    const el = document.getElementById(id);
+    const len = getEdgeLength(id);
+    el.setAttribute('stroke-dasharray', len);
+    el.setAttribute('stroke-dashoffset', len);
+    setTimeout(() => {
+      el.style.opacity = '1';
+      el.style.animation = 'none';
+      el.style.transition = `stroke-dashoffset 350ms cubic-bezier(0.33,1,0.66,1)`;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { el.setAttribute('stroke-dashoffset', '0'); });
+      });
+    }, t);
+  });
+}
+
+graphReplay.addEventListener('click', playGraphAnim);
+// Auto-play on load after a small delay
+setTimeout(playGraphAnim, 600);
+</script>
+
+</body>
+</html>
