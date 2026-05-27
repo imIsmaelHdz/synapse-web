@@ -350,6 +350,56 @@ footer{
 .footer-back:hover{background:rgba(106,135,145,0.16);transform:translateX(-2px)}
 .footer-copy{font-size:12px;color:var(--text3)}
 
+/* ── AI DEEP DIVE ── */
+.ai-deep-dive{padding:0 24px 100px;max-width:1100px;margin:0 auto;width:100%}
+.ai-panels{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+.ai-panel{
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:var(--r1);padding:30px 28px;
+  box-shadow:var(--gshadow);display:flex;flex-direction:column;
+}
+.ai-panel-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ai-panel-title{font-size:17px;font-weight:700;color:var(--text1);margin-bottom:6px;line-height:1.3}
+.ai-panel-sub{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:20px}
+.ai-flow-wrap{width:100%;overflow-x:auto;margin-bottom:20px;padding-bottom:2px}
+.ai-flow-wrap svg{min-width:480px;width:100%;height:auto;display:block}
+.ai-section-label{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.prompt-block{
+  background:rgba(106,135,145,0.07);border:1px solid rgba(106,135,145,0.20);
+  border-left:3px solid var(--teal);border-radius:0 10px 10px 0;
+  padding:13px 16px;font-size:12.5px;color:var(--text2);line-height:1.75;font-style:italic;
+  margin-bottom:18px;
+}
+.prompt-block strong{color:var(--teal);font-style:normal;font-weight:600}
+.resp-block{
+  background:rgba(28,28,30,0.82);border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:14px 16px;
+  font-family:'SF Mono','Fira Code',monospace;font-size:11.5px;line-height:1.7;color:#D4D4D8;
+  margin-bottom:18px;overflow-x:auto;white-space:pre;
+}
+.resp-block .rk{color:#7DD3FC}.resp-block .rv{color:#86EFAC}.resp-block .rc{color:#6B7280;font-style:italic}
+.ai-cache-note{
+  display:flex;align-items:flex-start;gap:9px;
+  background:rgba(106,135,145,0.06);border:1px solid rgba(106,135,145,0.16);
+  border-radius:10px;padding:11px 14px;font-size:12px;color:var(--text2);
+  line-height:1.6;margin-top:auto;
+}
+.ai-cache-note svg{width:14px;height:14px;flex-shrink:0;margin-top:1px;stroke:var(--teal);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ai-cache-note code{background:rgba(106,135,145,0.14);border-radius:3px;padding:0 4px;font-size:11px;color:var(--teal);font-family:'SF Mono','Fira Code',monospace}
+.ai-callout{
+  background:rgba(106,135,145,0.05);border:1px solid rgba(106,135,145,0.18);
+  border-radius:var(--r2);padding:28px 32px;
+}
+.ai-callout-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.ai-callout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.ai-callout-item{display:flex;align-items:flex-start;gap:11px}
+.ai-callout-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:6px}
+.ai-callout-label{font-size:13px;font-weight:600;color:var(--text1);margin-bottom:3px}
+.ai-callout-desc{font-size:12.5px;color:var(--text2);line-height:1.62}
+.ai-callout-desc code{background:rgba(106,135,145,0.12);border-radius:3px;padding:0 5px;font-size:11.5px;color:var(--teal);font-family:'SF Mono','Fira Code',monospace}
+@media(max-width:880px){.ai-panels{grid-template-columns:1fr}}
+@media(max-width:640px){.ai-callout-grid{grid-template-columns:1fr}}
+
 /* ── ANIMATIONS ── */
 @keyframes fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
@@ -921,6 +971,267 @@ footer{
           <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#E59A78"></div> <span>PK — primary key (Hive box key)</span></div>
           <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#6A8791"></div> <span>FK — foreign key reference</span></div>
           <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#92A8A5"></div> <span>SourceType: book · movie · serie · personal · topic</span></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- AI Deep Dive -->
+  <section class="ai-deep-dive reveal">
+    <div class="section-tag" id="ai-tag">AI · Under the hood</div>
+    <h2 class="section-title" id="ai-title">Two features, one model</h2>
+    <p class="section-sub" id="ai-sub">Discover and Suggested Connections both call Gemini 2.5 Flash — but the prompts, payloads, caches, and user interactions are completely different.</p>
+
+    <div class="ai-panels">
+
+      <!-- ── Panel A: Discover ─────────────────────────────────────────── -->
+      <div class="ai-panel">
+        <div class="ai-panel-label" style="color:#C67050">✦ Discover</div>
+        <div class="ai-panel-title">AI-powered source recommendations</div>
+        <div class="ai-panel-sub">Pick a source from your library. The app fires three parallel calls — one per return type — and each card appears as soon as its own response arrives.</div>
+
+        <!-- Flow diagram -->
+        <div class="ai-flow-wrap">
+          <svg viewBox="0 0 556 100" xmlns="http://www.w3.org/2000/svg" aria-label="Discover feature pipeline">
+            <!-- Step 1 -->
+            <circle cx="40" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="40" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">1</text>
+            <text x="40" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">Library</text>
+            <text x="40" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">source</text>
+            <line x1="58" y1="30" x2="117" y2="30" stroke="rgba(106,135,145,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 2 -->
+            <circle cx="135" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="135" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">2</text>
+            <text x="135" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">3× parallel</text>
+            <text x="135" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">API calls</text>
+            <line x1="153" y1="30" x2="212" y2="30" stroke="rgba(106,135,145,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 3 -->
+            <circle cx="230" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="230" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">3</text>
+            <text x="230" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">Theme</text>
+            <text x="230" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">prompt built</text>
+            <line x1="248" y1="30" x2="307" y2="30" stroke="rgba(229,154,120,0.38)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 4: Gemini -->
+            <circle cx="325" cy="30" r="20" fill="rgba(229,154,120,0.16)" stroke="rgba(229,154,120,0.50)" stroke-width="1.8"/>
+            <text x="325" y="36" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#C67050">✦</text>
+            <text x="325" y="61" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#C67050">Gemini</text>
+            <text x="325" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#C67050" opacity=".75">2.5 Flash</text>
+            <line x1="345" y1="30" x2="402" y2="30" stroke="rgba(106,135,145,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 5 -->
+            <circle cx="420" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="420" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">4</text>
+            <text x="420" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">Swipe</text>
+            <text x="420" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">deck · add</text>
+            <line x1="438" y1="30" x2="497" y2="30" stroke="rgba(229,154,120,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 6 -->
+            <circle cx="515" cy="30" r="18" fill="rgba(229,154,120,0.10)" stroke="rgba(229,154,120,0.32)" stroke-width="1.5"/>
+            <text x="515" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#C67050">5</text>
+            <text x="515" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#C67050">Book →</text>
+            <text x="515" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#C67050" opacity=".75">Hive</text>
+          </svg>
+        </div>
+
+        <!-- Dart snippet -->
+        <div class="ai-section-label">Flutter · discover_modal.dart</div>
+        <div class="code-block" style="margin-bottom:18px">
+          <pre><span class="c-comment">// 3 calls fire in parallel — cards appear as each resolves</span>
+<span class="c-key">void</span> _fetchAll() {
+  <span class="c-key">for</span> (<span class="c-key">var</span> i = <span class="c-str">0</span>; i &lt; <span class="c-str">3</span>; i++) {
+    _fetchCard(i, _returnTypes[i]); <span class="c-comment">// ['book','movie','serie']</span>
+  }
+}
+
+<span class="c-comment">// Full library sent as exclusions — never re-suggest owned items</span>
+<span class="c-key">final</span> existing = db.books.map((b) =&gt; {
+  <span class="c-str">'title'</span>: b.title, <span class="c-str">'creator'</span>: b.author, <span class="c-str">'type'</span>: b.type.name
+}).toList();
+<span class="c-key">final</span> result = <span class="c-key">await</span> ApiService.discoverSingle(
+  title: book.title, creator: book.author,
+  type: book.type.name, returnType: returnType, existing: existing,
+);</pre>
+        </div>
+
+        <!-- Backend snippet -->
+        <div class="ai-section-label">Backend · ai.ts</div>
+        <div class="code-block" style="margin-bottom:18px">
+          <pre><span class="c-comment">// Prompt analyses 5 dimensions before choosing a recommendation</span>
+<span class="c-key">function</span> <span class="c-type">buildDiscoverSinglePrompt</span>(title, creator, sourceType, returnType, existing) {
+  <span class="c-key">const</span> source = <span class="c-str">`"${title}" by ${creator} (${sourceType})`</span>
+  <span class="c-key">const</span> exclusions = existing.map(
+    e =&gt; <span class="c-str">`- "${e.title}" by ${e.creator} (${e.type})`</span>
+  ).join(<span class="c-str">'\n'</span>)
+  <span class="c-key">return</span> loadPrompt(<span class="c-str">'discover-single'</span>,
+    { returnTypeLabel, source, exclusions, creatorLabel })
+}</pre>
+        </div>
+
+        <!-- Prompt quote -->
+        <div class="ai-section-label">Prompt · discover-single.md</div>
+        <div class="prompt-block">
+          "Recommend based on <strong>genre / themes / emotional tone / cultural context / narrative structure</strong> — NEVER on shared words in the title.<br><br>
+          ❌ WRONG — 'The Exorcist' for 'Demon Slayer' (matched the word 'demon')<br>
+          ✅ RIGHT — 'Kagurabachi' for 'Demon Slayer' (both: shonen manga, grief-driven protagonist, samurai-era Japan)"
+        </div>
+
+        <!-- Response shape -->
+        <div class="ai-section-label">Response (per card)</div>
+        <div class="resp-block"><span class="rk">{</span>
+  <span class="rk">"title"</span>:   <span class="rv">"Kagurabachi"</span>,
+  <span class="rk">"creator"</span>: <span class="rv">"Takeru Hokazono"</span>,
+  <span class="rk">"reason"</span>: <span class="rv">"Because both are shonen manga set in samurai-era Japan, driven by a protagonist whose grief over a slain parent becomes the engine of duty and vengeance."</span>
+<span class="rk">}</span></div>
+
+        <!-- Cache note -->
+        <div class="ai-cache-note">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>Session cache keyed <code>bookId_returnType</code> — switching books fires new calls; switching back to a previous book is instant.</span>
+        </div>
+      </div>
+
+      <!-- ── Panel B: Suggested Connections ────────────────────────────── -->
+      <div class="ai-panel">
+        <div class="ai-panel-label" style="color:var(--teal)">Suggested Connections</div>
+        <div class="ai-panel-title">Semantic links found across your notes</div>
+        <div class="ai-panel-sub">Once per day, your notes are serialised and sent in a single call. Gemini finds three non-obvious cross-domain connections and explains each. You accept or dismiss them individually.</div>
+
+        <!-- Flow diagram -->
+        <div class="ai-flow-wrap">
+          <svg viewBox="0 0 556 100" xmlns="http://www.w3.org/2000/svg" aria-label="Suggested connections pipeline">
+            <!-- Step 1 -->
+            <circle cx="40" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="40" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">1</text>
+            <text x="40" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">All</text>
+            <text x="40" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">notes</text>
+            <line x1="58" y1="30" x2="117" y2="30" stroke="rgba(106,135,145,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 2 -->
+            <circle cx="135" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="135" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">2</text>
+            <text x="135" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">Serialize</text>
+            <text x="135" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">≤60 × 400ch</text>
+            <line x1="153" y1="30" x2="212" y2="30" stroke="rgba(106,135,145,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 3 -->
+            <circle cx="230" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="230" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">3</text>
+            <text x="230" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">POST</text>
+            <text x="230" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">/v1/ai/suggest</text>
+            <line x1="248" y1="30" x2="307" y2="30" stroke="rgba(229,154,120,0.38)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 4: Gemini -->
+            <circle cx="325" cy="30" r="20" fill="rgba(229,154,120,0.16)" stroke="rgba(229,154,120,0.50)" stroke-width="1.8"/>
+            <text x="325" y="36" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#C67050">✦</text>
+            <text x="325" y="61" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#C67050">Gemini</text>
+            <text x="325" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#C67050" opacity=".75">2.5 Flash</text>
+            <line x1="345" y1="30" x2="402" y2="30" stroke="rgba(106,135,145,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 5 -->
+            <circle cx="420" cy="30" r="18" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.38)" stroke-width="1.5"/>
+            <text x="420" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#6A8791">4</text>
+            <text x="420" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#5A5A6E">Filter</text>
+            <text x="420" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">pairs</text>
+            <line x1="438" y1="30" x2="497" y2="30" stroke="rgba(229,154,120,0.32)" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- Step 6 -->
+            <circle cx="515" cy="30" r="18" fill="rgba(229,154,120,0.10)" stroke="rgba(229,154,120,0.32)" stroke-width="1.5"/>
+            <text x="515" y="35" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#C67050">5</text>
+            <text x="515" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="600" fill="#C67050">NoteLink →</text>
+            <text x="515" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#C67050" opacity=".75">Hive</text>
+          </svg>
+        </div>
+
+        <!-- Dart snippet -->
+        <div class="ai-section-label">Flutter · suggestions_screen.dart</div>
+        <div class="code-block" style="margin-bottom:18px">
+          <pre><span class="c-comment">// Guard: skip if already have today's cached suggestions</span>
+<span class="c-key">if</span> (db.hasTodaySuggestions) { _loadCachedIfAvailable(); <span class="c-key">return</span>; }
+
+<span class="c-comment">// Serialize: id + title + topic joined with body</span>
+<span class="c-key">final</span> notes = db.notes.map((n) =&gt; {
+  <span class="c-str">'id'</span>: n.id, <span class="c-str">'title'</span>: n.title,
+  <span class="c-str">'content'</span>: [n.topic, n.body].where((s) =&gt; s.isNotEmpty).join(<span class="c-str">'\n'</span>),
+}).toList();
+
+<span class="c-key">final</span> raw = <span class="c-key">await</span> ApiService.getSuggestions(notes);
+<span class="c-key">await</span> db.saveDailySuggestions(raw); <span class="c-comment">// cached in _settingsBox</span>
+
+<span class="c-comment">// Filter before display</span>
+<span class="c-key">if</span> (db.areLinked(fromId, toId))       <span class="c-key">continue</span>; <span class="c-comment">// already connected</span>
+<span class="c-key">if</span> (db.isDismissedPair(fromId, toId)) <span class="c-key">continue</span>; <span class="c-comment">// user dismissed before</span></pre>
+        </div>
+
+        <!-- Backend snippet -->
+        <div class="ai-section-label">Backend · ai.ts</div>
+        <div class="code-block" style="margin-bottom:18px">
+          <pre><span class="c-key">const</span> MAX_NOTES = <span class="c-str">60</span>, MAX_CONTENT = <span class="c-str">400</span> <span class="c-comment">// chars per note</span>
+
+<span class="c-key">const</span> formatted = notes
+  .slice(<span class="c-str">0</span>, MAX_NOTES)
+  .map(n =&gt; <span class="c-str">`[${n.id}] ${n.title}\n${n.content.slice(0, MAX_CONTENT)}`</span>)
+  .join(<span class="c-str">'\n\n---\n\n'</span>)
+
+<span class="c-comment">// Validate IDs in the response match IDs we actually sent</span>
+suggestions = parsed.suggestions
+  .filter(s =&gt; noteIds.has(s.source_note_id)
+             &amp;&amp; noteIds.has(s.target_note_id)
+             &amp;&amp; s.source_note_id !== s.target_note_id)
+  .slice(<span class="c-str">0</span>, <span class="c-str">3</span>)</pre>
+        </div>
+
+        <!-- Prompt quote -->
+        <div class="ai-section-label">Prompt · suggest.md</div>
+        <div class="prompt-block">
+          "Suggest <strong>EXACTLY 3 connections</strong> — no more, no fewer.<br>
+          Prioritise <strong>surprising cross-domain connections</strong> over obvious same-topic links.<br>
+          Every suggestion must include a short 'Because:' explanation <strong>grounded in the actual note content</strong> — no generic filler.<br>
+          Write the reason field in the same language the notes are written in."
+        </div>
+
+        <!-- Response shape -->
+        <div class="ai-section-label">Response</div>
+        <div class="resp-block"><span class="rk">{</span> <span class="rk">"suggestions"</span>: [
+  <span class="rk">{</span>
+    <span class="rk">"source_note_id"</span>: <span class="rv">"abc123"</span>,
+    <span class="rk">"target_note_id"</span>: <span class="rv">"xyz789"</span>,
+    <span class="rk">"reason"</span>: <span class="rv">"Because both explore how the language we use about ourselves quietly shapes long-term behaviour and identity."</span>
+  <span class="rk">}</span>
+] <span class="rk">}</span></div>
+
+        <!-- Cache note -->
+        <div class="ai-cache-note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>One API call per day. Accept → <code>addManualLink()</code> → NoteLink in Hive. Dismiss → <code>dismissPair()</code> → never resurfaces.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shared infrastructure callout -->
+    <div class="ai-callout">
+      <div class="ai-callout-title">Shared infrastructure</div>
+      <div class="ai-callout-grid">
+        <div class="ai-callout-item">
+          <div class="ai-callout-dot"></div>
+          <div>
+            <div class="ai-callout-label">gemini-2.5-flash</div>
+            <div class="ai-callout-desc">Both routes use <code>@google/generative-ai</code> with <code>responseMimeType: 'application/json'</code> so Gemini returns valid JSON natively — no parsing gymnastics needed.</div>
+          </div>
+        </div>
+        <div class="ai-callout-item">
+          <div class="ai-callout-dot"></div>
+          <div>
+            <div class="ai-callout-label">Defensive JSON extraction</div>
+            <div class="ai-callout-desc"><code>raw.indexOf('{')</code> + <code>raw.lastIndexOf('}')</code> slices the first and last braces — catches any preamble text Gemini occasionally leaks around the payload.</div>
+          </div>
+        </div>
+        <div class="ai-callout-item">
+          <div class="ai-callout-dot"></div>
+          <div>
+            <div class="ai-callout-label">Firebase JWT on every call</div>
+            <div class="ai-callout-desc">Flutter attaches <code>Authorization: Bearer &lt;token&gt;</code> via <code>AuthService.getIdToken()</code>. The Fastify plugin verifies it with <code>firebase-admin</code> before any route handler runs.</div>
+          </div>
+        </div>
+        <div class="ai-callout-item">
+          <div class="ai-callout-dot"></div>
+          <div>
+            <div class="ai-callout-label">Prompts as .md files</div>
+            <div class="ai-callout-desc"><code>prompt-loader.ts</code> reads <code>suggest.md</code> and <code>discover-single.md</code> at startup. Variables (<code>{{notes}}</code>, <code>{{source}}</code>, <code>{{exclusions}}</code>) are interpolated at call time.</div>
+          </div>
         </div>
       </div>
     </div>
