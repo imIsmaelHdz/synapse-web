@@ -457,19 +457,38 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
     <!-- Glass recipe -->
     <div class="dl-card full">
       <div class="dl-card-label">Glass recipe — live</div>
+
+      <!-- Mode toggle -->
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button id="modeLight" onclick="setMode('light')" style="font-size:11px;font-weight:600;padding:4px 14px;border-radius:50px;border:1px solid #E4E4E9;background:rgba(106,135,145,0.14);color:#6A8791;cursor:pointer">☀️ Light</button>
+        <button id="modeDark"  onclick="setMode('dark')"  style="font-size:11px;font-weight:600;padding:4px 14px;border-radius:50px;border:1px solid rgba(255,255,255,0.12);background:rgba(13,17,23,0.10);color:#94A0B8;cursor:pointer">🌙 Dark</button>
+      </div>
+
       <div class="glass-recipe">
         <div class="glass-row">
-          <span class="glass-label">Blur</span>
-          <input type="range" class="glass-track" id="blurSlider" min="4" max="32" value="20">
-          <span class="glass-val" id="blurVal">20px</span>
+          <span class="glass-label">Blur σ</span>
+          <input type="range" class="glass-track" id="blurSlider" min="4" max="32" value="8">
+          <span class="glass-val" id="blurVal">8px</span>
         </div>
         <div class="glass-row">
           <span class="glass-label">Fill</span>
-          <input type="range" class="glass-track" id="fillSlider" min="10" max="80" value="44">
-          <span class="glass-val" id="fillVal">44%</span>
+          <input type="range" class="glass-track" id="fillSlider" min="10" max="90" value="52">
+          <span class="glass-val" id="fillVal">52%</span>
         </div>
-        <div class="glass-preview">
-          <div class="glass-card-preview" id="glassPreview">glassFillStrong · glassBorder</div>
+        <div class="glass-row">
+          <span class="glass-label">Border</span>
+          <input type="range" class="glass-track" id="borderSlider" min="0" max="100" value="60">
+          <span class="glass-val" id="borderVal">#E4E4E9</span>
+        </div>
+        <div class="glass-preview" id="glassPreviewBg">
+          <div class="glass-card-preview" id="glassPreview">glassFill · glassBorder</div>
+        </div>
+        <!-- Token reference -->
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
+          <div style="font-size:10px;color:var(--text3)"><code style="background:rgba(106,135,145,0.10);border-radius:4px;padding:1px 6px;color:var(--teal)">glassFill</code> rgba(255,255,255, 0.52) light · rgba(13,17,23, 0.55) dark</div>
+          <div style="font-size:10px;color:var(--text3)"><code style="background:rgba(106,135,145,0.10);border-radius:4px;padding:1px 6px;color:var(--teal)">glassBorder</code> #E4E4E9 light · rgba(59,130,246, 0.16) dark</div>
+          <div style="font-size:10px;color:var(--text3)"><code style="background:rgba(106,135,145,0.10);border-radius:4px;padding:1px 6px;color:var(--teal)">sigma</code> 8 σ light · 18 σ dark</div>
+          <div style="font-size:10px;color:var(--text3)"><code style="background:rgba(106,135,145,0.10);border-radius:4px;padding:1px 6px;color:var(--teal)">pill fill</code> glassFill × 0.55 ≈ 28.6%</div>
         </div>
       </div>
     </div>
@@ -1019,24 +1038,48 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
 
 <script>
 // ── Glass recipe live demo ──────────────────────────────────────────────────
-const blurSlider = document.getElementById('blurSlider');
-const fillSlider = document.getElementById('fillSlider');
+const blurSlider   = document.getElementById('blurSlider');
+const fillSlider   = document.getElementById('fillSlider');
+const borderSlider = document.getElementById('borderSlider');
 const blurVal    = document.getElementById('blurVal');
 const fillVal    = document.getElementById('fillVal');
-const glassPreview = document.getElementById('glassPreview');
+const borderVal  = document.getElementById('borderVal');
+const glassPreview   = document.getElementById('glassPreview');
+const glassPreviewBg = document.getElementById('glassPreviewBg');
+
+// True light/dark token values from app_colors.dart
+const MODES = {
+  light: { blur:8,  fill:52, fillColor:'255,255,255', border:'#E4E4E9',          bg:'linear-gradient(135deg,#E8A882,#7AADB8 50%,#AAC4C0)' },
+  dark:  { blur:18, fill:55, fillColor:'13,17,23',    border:'rgba(59,130,246,0.16)', bg:'linear-gradient(135deg,#1A2535,#0D1117 50%,#111827)' },
+};
+let currentMode = 'light';
+
+function setMode(mode) {
+  currentMode = mode;
+  const m = MODES[mode];
+  blurSlider.value   = m.blur;
+  fillSlider.value   = m.fill;
+  borderSlider.value = mode === 'light' ? 60 : 16;
+  updateGlass();
+}
 
 function updateGlass() {
   const b = blurSlider.value;
   const f = fillSlider.value;
-  blurVal.textContent = b + 'px';
-  fillVal.textContent = f + '%';
+  const m = MODES[currentMode];
+  blurVal.textContent   = b + 'px';
+  fillVal.textContent   = f + '%';
+  borderVal.textContent = currentMode === 'light' ? '#E4E4E9' : 'rgba(59,130,246,0.16)';
+  glassPreviewBg.style.background = m.bg;
   glassPreview.style.backdropFilter = `blur(${b}px)`;
   glassPreview.style.webkitBackdropFilter = `blur(${b}px)`;
-  glassPreview.style.background = `rgba(255,255,255,${f/100})`;
-  glassPreview.style.border = `1px solid rgba(255,255,255,${Math.min(0.95, f/100 + 0.25)})`;
+  glassPreview.style.background = `rgba(${m.fillColor},${f/100})`;
+  glassPreview.style.border = `1px solid ${m.border}`;
+  glassPreview.style.color  = currentMode === 'dark' ? '#F1F5F9' : '#1C1C1E';
 }
 blurSlider.addEventListener('input', updateGlass);
 fillSlider.addEventListener('input', updateGlass);
+borderSlider.addEventListener('input', updateGlass);
 updateGlass();
 
 // ── FAB expand demo ─────────────────────────────────────────────────────────
