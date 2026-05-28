@@ -1068,28 +1068,35 @@ footer{
   }
 }
 
-<span class="c-comment">// Full library sent as exclusions — never re-suggest owned items</span>
-<span class="c-key">final</span> existing = db.books.map((b) =&gt; {
-  <span class="c-str">'title'</span>: b.title, <span class="c-str">'creator'</span>: b.author, <span class="c-str">'type'</span>: b.type.name
-}).toList();
+<span class="c-comment">// On manual Refresh: library + all previously shown items sent as</span>
+<span class="c-comment">// exclusions; forceRefresh=true bypasses the 24 h server cache.</span>
+<span class="c-key">final</span> existing = [...libraryItems, ..._seenItems];
 <span class="c-key">final</span> result = <span class="c-key">await</span> ApiService.discoverSingle(
   title: book.title, creator: book.author,
-  type: book.type.name, returnType: returnType, existing: existing,
+  type: book.type.name, returnType: returnType,
+  existing: existing, forceRefresh: isRefresh,
 );</pre>
         </div>
 
         <!-- Backend snippet -->
         <div class="ai-section-label">Backend · ai.ts</div>
         <div class="code-block" style="margin-bottom:18px">
-          <pre><span class="c-comment">// Prompt analyses 5 dimensions before choosing a recommendation</span>
-<span class="c-key">function</span> <span class="c-type">buildDiscoverSinglePrompt</span>(title, creator, sourceType, returnType, existing) {
-  <span class="c-key">const</span> source = <span class="c-str">`"${title}" by ${creator} (${sourceType})`</span>
-  <span class="c-key">const</span> exclusions = existing.map(
-    e =&gt; <span class="c-str">`- "${e.title}" by ${e.creator} (${e.type})`</span>
-  ).join(<span class="c-str">'\n'</span>)
-  <span class="c-key">return</span> loadPrompt(<span class="c-str">'discover-single'</span>,
-    { returnTypeLabel, source, exclusions, creatorLabel })
-}</pre>
+          <pre><span class="c-comment">// forceRefresh=true deletes the cache entry so the AI is called fresh.</span>
+<span class="c-comment">// Without it, the 24 h server cache returns an instant response.</span>
+<span class="c-key">if</span> (!forceRefresh) {
+  <span class="c-key">const</span> cached = cacheGet(key)
+  <span class="c-key">if</span> (cached) <span class="c-key">return</span> cached
+} <span class="c-key">else</span> {
+  _discoverCache.delete(key) <span class="c-comment">// evict stale entry</span>
+}
+<span class="c-comment">// Exclusion list = library + every card shown this session</span>
+<span class="c-key">const</span> exclusions = existing.map(
+  e =&gt; <span class="c-str">`- "${e.title}" by ${e.creator} (${e.type})`</span>
+).join(<span class="c-str">'\n'</span>)
+<span class="c-key">const</span> result = <span class="c-key">await</span> discoverModel.generateContent(
+  buildDiscoverSinglePrompt(title, creator, type, returnType, existing)
+)
+cacheSet(key, item)</pre>
         </div>
 
         <!-- Prompt quote -->
@@ -1623,6 +1630,27 @@ suggestions = parsed.suggestions
               <div class="rm-sub" id="rm-1-5s">Full graph portability</div>
             </div>
           </div>
+          <div class="rm-item launching">
+            <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+            <div>
+              <div class="rm-text">AI Discover</div>
+              <div class="rm-sub">Deck UI · 3 daily refreshes · smart exclusions</div>
+            </div>
+          </div>
+          <div class="rm-item launching">
+            <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+            <div>
+              <div class="rm-text">Auto-save notes</div>
+              <div class="rm-sub">1.5 s debounce · Saving / Saved status chip</div>
+            </div>
+          </div>
+          <div class="rm-item launching">
+            <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+            <div>
+              <div class="rm-text">Persistent nav bar</div>
+              <div class="rm-sub">Visible in all views · hides on keyboard</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1648,15 +1676,15 @@ suggestions = parsed.suggestions
           <div class="rm-item inprogress">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <div>
-              <div class="rm-text" id="rm-2-3">AI Discover</div>
-              <div class="rm-sub" id="rm-2-3s">Browse + accept AI connections</div>
+              <div class="rm-text" id="rm-2-4">Graph canvas polish</div>
+              <div class="rm-sub" id="rm-2-4s">Performance + new interactions</div>
             </div>
           </div>
           <div class="rm-item inprogress">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <div>
-              <div class="rm-text" id="rm-2-4">Graph canvas polish</div>
-              <div class="rm-sub" id="rm-2-4s">Performance + new interactions</div>
+              <div class="rm-text">Daily reminders</div>
+              <div class="rm-sub">Push notifications for review streaks</div>
             </div>
           </div>
         </div>
