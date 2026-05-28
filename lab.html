@@ -1592,42 +1592,35 @@ suggestions = parsed.suggestions
 
       <div class="rm-col">
         <div class="rm-col-header">
-          <div class="rm-status launching" id="rm-status-1">Launching</div>
+          <div class="rm-status launching">Launching</div>
         </div>
         <div class="rm-items">
           <div class="rm-item launching">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
             <div>
-              <div class="rm-text" id="rm-1-1">Knowledge graph (iOS)</div>
-              <div class="rm-sub" id="rm-1-1s">Sources, notes, graph canvas</div>
+              <div class="rm-text">Knowledge graph (iOS)</div>
+              <div class="rm-sub">Sources, notes, graph canvas</div>
             </div>
           </div>
           <div class="rm-item launching">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
             <div>
-              <div class="rm-text" id="rm-1-2">Cloud sync</div>
-              <div class="rm-sub" id="rm-1-2s">Railway backend + JSONB snapshots</div>
+              <div class="rm-text">Cloud sync</div>
+              <div class="rm-sub">Railway backend + JSONB snapshots</div>
             </div>
           </div>
           <div class="rm-item launching">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
             <div>
-              <div class="rm-text" id="rm-1-3">AI link suggestions</div>
-              <div class="rm-sub" id="rm-1-3s">Gemini + "Because:" reasons</div>
+              <div class="rm-text">AI link suggestions</div>
+              <div class="rm-sub">Gemini + "Because:" reasons</div>
             </div>
           </div>
           <div class="rm-item launching">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
             <div>
-              <div class="rm-text" id="rm-1-4">Railway deployment</div>
-              <div class="rm-sub" id="rm-1-4s">Backend + PostgreSQL live</div>
-            </div>
-          </div>
-          <div class="rm-item launching">
-            <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
-            <div>
-              <div class="rm-text" id="rm-1-5">JSON export</div>
-              <div class="rm-sub" id="rm-1-5s">Full graph portability</div>
+              <div class="rm-text">Railway deployment</div>
+              <div class="rm-sub">Backend + PostgreSQL live</div>
             </div>
           </div>
           <div class="rm-item launching">
@@ -1644,40 +1637,33 @@ suggestions = parsed.suggestions
               <div class="rm-sub">1.5 s debounce · Saving / Saved status chip</div>
             </div>
           </div>
-          <div class="rm-item launching">
-            <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
-            <div>
-              <div class="rm-text">Persistent nav bar</div>
-              <div class="rm-sub">Visible in all views · hides on keyboard</div>
-            </div>
-          </div>
         </div>
       </div>
 
       <div class="rm-col">
         <div class="rm-col-header">
-          <div class="rm-status inprogress" id="rm-status-2">In progress</div>
+          <div class="rm-status inprogress">In progress</div>
         </div>
         <div class="rm-items">
           <div class="rm-item inprogress">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <div>
-              <div class="rm-text" id="rm-2-1">App Store validation</div>
-              <div class="rm-sub" id="rm-2-1s">Review + submission pipeline</div>
+              <div class="rm-text">App Store validation</div>
+              <div class="rm-sub">Review + submission pipeline</div>
             </div>
           </div>
           <div class="rm-item inprogress">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <div>
-              <div class="rm-text" id="rm-2-2">Android support</div>
-              <div class="rm-sub" id="rm-2-2s">Same codebase, new target</div>
+              <div class="rm-text">Android support</div>
+              <div class="rm-sub">Same codebase, new target</div>
             </div>
           </div>
           <div class="rm-item inprogress">
             <svg class="rm-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <div>
-              <div class="rm-text" id="rm-2-4">Graph canvas polish</div>
-              <div class="rm-sub" id="rm-2-4s">Performance + new interactions</div>
+              <div class="rm-text">Graph canvas polish</div>
+              <div class="rm-sub">Performance + new interactions</div>
             </div>
           </div>
           <div class="rm-item inprogress">
@@ -2268,31 +2254,15 @@ const T = [
   { sel: '#roadmap-tag',   en: 'Roadmap',       es: 'Hoja de ruta' },
   { sel: '#roadmap-title', en: "What's coming",  es: 'Lo que viene' },
   { sel: '#roadmap-sub',   en: 'Honest status on every milestone. No vaporware — if it\'s planned, it has a reason to exist.', es: 'Estado honesto de cada hito. Sin humo — si está planeado, tiene una razón para existir.' },
-  { sel: '#rm-status-1', en: 'Launching',    es: 'Lanzando' },
-  { sel: '#rm-status-2', en: 'In progress',  es: 'En progreso' },
-  { sel: '#rm-status-3', en: 'Planned',      es: 'Planeado' },
-  { sel: '#rm-1-1',  en: 'Knowledge graph (iOS)',    es: 'Grafo de conocimiento (iOS)' },
-  { sel: '#rm-1-1s', en: 'Create nodes, edges, view graph', es: 'Crear nodos, aristas, ver grafo' },
-  { sel: '#rm-1-2',  en: 'Wikilink [[syntax]]',      es: 'Wikiligas [[sintaxis]]' },
-  { sel: '#rm-1-2s', en: 'Auto-create edges from notes', es: 'Crear aristas desde notas automáticamente' },
-  { sel: '#rm-1-3',  en: 'Firebase Auth',             es: 'Firebase Auth' },
-  { sel: '#rm-1-3s', en: 'Email + password, guest mode', es: 'Email + contraseña, modo invitado' },
-  { sel: '#rm-1-4',  en: 'JSON export',               es: 'Exportación JSON' },
-  { sel: '#rm-1-4s', en: 'Full graph portability',    es: 'Portabilidad completa del grafo' },
-  { sel: '#rm-2-1',  en: 'Cloud sync',                es: 'Sincronización en la nube' },
-  { sel: '#rm-2-1s', en: 'Railway backend + JSONB snapshots', es: 'Backend Railway + snapshots JSONB' },
-  { sel: '#rm-2-2',  en: 'AI link suggestions',       es: 'Sugerencias de enlaces con IA' },
-  { sel: '#rm-2-2s', en: 'Gemini + "Because:" reasons', es: 'Gemini + razones "Porque:"' },
-  { sel: '#rm-2-3',  en: 'Railway deployment',        es: 'Despliegue en Railway' },
-  { sel: '#rm-2-3s', en: 'Backend + PostgreSQL live',  es: 'Backend + PostgreSQL en producción' },
-  { sel: '#rm-3-1',  en: 'Android support',           es: 'Soporte Android' },
-  { sel: '#rm-3-1s', en: 'Same codebase, new target', es: 'Mismo codebase, nuevo objetivo' },
-  { sel: '#rm-3-2',  en: 'Book import (Kindle / Readwise)', es: 'Importar libros (Kindle / Readwise)' },
-  { sel: '#rm-3-2s', en: 'Highlights → nodes automatically', es: 'Resaltados → nodos automáticamente' },
-  { sel: '#rm-3-3',  en: 'Collaborative graphs',      es: 'Grafos colaborativos' },
-  { sel: '#rm-3-3s', en: 'Share a subgraph with a friend', es: 'Compartir un subgrafo con un amigo' },
-  { sel: '#rm-3-4',  en: 'macOS / iPad',              es: 'macOS / iPad' },
-  { sel: '#rm-3-4s', en: 'Flutter desktop target',    es: 'Flutter objetivo escritorio' },
+  { sel: '#rm-status-3', en: 'Planned', es: 'Planeado' },
+  { sel: '#rm-3-1',  en: 'Book import (Kindle / Readwise)', es: 'Importar libros (Kindle / Readwise)' },
+  { sel: '#rm-3-1s', en: 'Highlights → nodes automatically', es: 'Resaltados → nodos automáticamente' },
+  { sel: '#rm-3-2',  en: 'Collaborative graphs',      es: 'Grafos colaborativos' },
+  { sel: '#rm-3-2s', en: 'Share a subgraph with a friend', es: 'Compartir un subgrafo con un amigo' },
+  { sel: '#rm-3-3',  en: 'macOS / iPad',              es: 'macOS / iPad' },
+  { sel: '#rm-3-3s', en: 'Flutter desktop target',    es: 'Flutter objetivo escritorio' },
+  { sel: '#rm-3-4',  en: 'Web graph explorer',        es: 'Explorador de grafo web' },
+  { sel: '#rm-3-4s', en: 'Read-only browser view',    es: 'Vista de solo lectura en navegador' },
 ];
 
 function applyLang(lang) {
