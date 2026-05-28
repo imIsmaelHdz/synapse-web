@@ -87,6 +87,8 @@ input[type=range].glass-track::-webkit-slider-thumb{-webkit-appearance:none;widt
 .screen-section{position:relative;z-index:1;padding:0 0 100px;width:100%;overflow:hidden}
 .screen-header{max-width:860px;margin:0 auto;padding:0 24px 48px;text-align:center}
 .screen-scroll{overflow-x:auto;padding:8px 48px 28px;display:flex;gap:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+/* Center on wide screens where all 5 phones fit (5×300 + 4×24 + 2×48 ≈ 1692px) */
+@media(min-width:1700px){.screen-scroll{justify-content:center}}
 .screen-scroll::-webkit-scrollbar{height:3px}
 .screen-scroll::-webkit-scrollbar-track{background:rgba(106,135,145,0.06);border-radius:2px}
 .screen-scroll::-webkit-scrollbar-thumb{background:rgba(106,135,145,0.22);border-radius:2px}
