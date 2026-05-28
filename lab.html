@@ -1330,7 +1330,7 @@ suggestions = parsed.suggestions
         <div class="enc-card-title" id="enc-cloud-title">Note fields encrypted with AES-256-GCM</div>
         <div class="enc-card-sub" id="enc-cloud-sub">title, body, and topic are encrypted by the API before writing to Postgres. Pull decrypts before returning to Flutter. A DB dump shows unreadable ciphertext.</div>
         <div class="enc-svg-wrap">
-          <svg viewBox="0 0 340 292" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 372 292" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="enc-cloud-g" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#92A8A5" stop-opacity=".14"/>
@@ -1381,23 +1381,22 @@ suggestions = parsed.suggestions
             <line x1="248" y1="170" x2="222" y2="170" stroke="rgba(229,154,120,0.55)" stroke-width="1.5" marker-end="url(#enc-arr-t)" class="flow-line-rev"/>
             <text x="235" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">read</text>
 
-            <!-- PostgreSQL box -->
-            <rect x="250" y="70" width="82" height="152" rx="12" fill="rgba(51,103,145,0.09)" stroke="rgba(51,103,145,0.24)" stroke-width="1.3"/>
-            <text x="291" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".05em" fill="#336791">POSTGRES</text>
+            <!-- PostgreSQL box — widened to 108px -->
+            <rect x="250" y="70" width="112" height="152" rx="12" fill="rgba(51,103,145,0.09)" stroke="rgba(51,103,145,0.24)" stroke-width="1.3"/>
+            <text x="306" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".05em" fill="#336791">POSTGRES</text>
             <!-- notes.title -->
-            <rect x="260" y="104" width="62" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
-            <text x="291" y="116" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="8" fill="#336791">title: enc</text>
+            <rect x="260" y="104" width="92" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
+            <text x="306" y="116" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="9" fill="#336791">title: enc</text>
             <!-- notes.body -->
-            <rect x="260" y="125" width="62" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
-            <text x="291" y="137" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="8" fill="#336791">body: enc</text>
+            <rect x="260" y="125" width="92" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
+            <text x="306" y="137" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="9" fill="#336791">body: enc</text>
             <!-- notes.topic -->
-            <rect x="260" y="146" width="62" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
-            <text x="291" y="158" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="8" fill="#336791">topic: enc</text>
+            <rect x="260" y="146" width="92" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
+            <text x="306" y="158" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="9" fill="#336791">topic: enc</text>
 
-            <text x="291" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">AES-256-GCM</text>
-            <text x="291" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">ciphertext</text>
-            <text x="291" y="215" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#94A0B8">IV random</text>
-            <text x="291" y="227" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#94A0B8">per write</text>
+            <text x="306" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">AES-256-GCM</text>
+            <text x="306" y="197" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">ciphertext</text>
+            <text x="306" y="215" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">IV random per write</text>
           </svg>
         </div>
         <div class="enc-layer-badge" style="background:rgba(106,135,145,0.09);border:1px solid rgba(106,135,145,0.22);color:var(--teal)" id="enc-cloud-badge">DB dump shows only unreadable ciphertext</div>
