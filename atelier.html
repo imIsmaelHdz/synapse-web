@@ -105,20 +105,36 @@ input[type=range].glass-track::-webkit-slider-thumb{-webkit-appearance:none;widt
 /* ── App chrome shared ── */
 .a-bar{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 14px 10px;
-  background:rgba(255,255,255,0.44);backdrop-filter:blur(22px);
-  border-bottom:1px solid rgba(255,255,255,0.60);
+  padding:12px 12px 10px;
+  background:transparent;
+  position:relative;z-index:2;
 }
-.a-bar-title{font-family:'DM Serif Display',serif;font-size:17px;color:#1C1C1E;line-height:1}
-.a-bar-sub{font-size:9px;color:#94A0B8;margin-top:2px}
+.a-bar-title{font-family:'DM Serif Display',serif;font-size:15px;color:#1C1C1E;line-height:1}
+.a-bar-sub{font-size:8.5px;color:#94A0B8;margin-top:2px}
 .a-bar-actions{display:flex;gap:6px;align-items:center}
-.a-fab{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#92A8A5,#6A8791);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px rgba(106,135,145,0.28)}
-.a-fab svg,.a-btn svg{stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.a-btn{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);display:flex;align-items:center;justify-content:center}
-.a-btn svg{stroke:#5A5A6E}
-.a-back{display:flex;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#6A8791;background:rgba(255,255,255,0.44);border:1px solid rgba(255,255,255,0.65);border-radius:9px;padding:5px 10px}
+/* Floating pill — title / back pill */
+.a-back{
+  display:flex;align-items:center;gap:3px;
+  font-size:11px;font-weight:500;color:#1C1C1E;
+  background:rgba(255,255,255,0.52);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid #E4E4E9;border-radius:16px;padding:6px 11px;
+}
 .a-back svg{stroke:#6A8791;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.a-save{font-size:11px;font-weight:600;color:white;background:linear-gradient(135deg,#92A8A5,#6A8791);border-radius:9px;padding:5px 12px}
+/* Floating pill — action buttons */
+.a-btn-pill{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.52);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid #E4E4E9;border-radius:16px;padding:6px 12px;
+}
+.a-btn-pill svg{stroke:#1C1C1E;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;width:13px;height:13px}
+.a-fab{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#92A8A5,#6A8791);display:flex;align-items:center;justify-content:center}
+.a-fab svg{stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.a-btn{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,0.52);border:1px solid #E4E4E9;display:flex;align-items:center;justify-content:center}
+.a-btn svg{stroke:#5A5A6E;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Save / Done pill */
+.a-save{font-size:11px;font-weight:600;color:white;background:linear-gradient(135deg,#92A8A5,#6A8791);border-radius:16px;padding:6px 14px}
 
 /* Content area */
 .a-content{padding:10px 10px 76px;display:flex;flex-direction:column;gap:8px}
@@ -503,7 +519,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
   <div class="screen-header">
     <div class="section-tag">Screens</div>
     <h2 class="section-title">Five views, one system</h2>
-    <p class="section-sub" style="margin-bottom:0">Every screen rendered from the real component structure — GlassTopBar, GlassNavBar, GlassCard — with the actual type scale, colours, and spacing.</p>
+    <p class="section-sub" style="margin-bottom:0">Every screen rendered from the real component structure — floating glass pills, GlassNavBar, GlassCard — with the actual type scale, colours, and spacing.</p>
   </div>
 
   <div class="screen-scroll">
@@ -512,17 +528,10 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
     <div class="screen-col">
       <div class="phone">
         <div class="a-bar">
-          <div>
-            <div class="a-bar-title">Synapse</div>
-            <div class="a-bar-sub">Connect ideas across what you read</div>
-          </div>
-          <div class="a-bar-actions">
-            <div class="a-fab">
-              <svg viewBox="0 0 24 24" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-            <div class="a-btn">
-              <svg viewBox="0 0 24 24" style="width:12px;height:12px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </div>
+          <div class="a-back" style="font-family:'DM Serif Display',serif;font-size:14px;border:none;background:rgba(255,255,255,0.52);backdrop-filter:blur(8px)">Synapse</div>
+          <div class="a-btn-pill">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </div>
         </div>
         <div class="a-content">
@@ -613,8 +622,6 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
             <svg viewBox="0 0 24 24" style="width:11px;height:11px"><polyline points="15 18 9 12 15 6"/></svg>
             Home
           </div>
-          <div style="font-family:'DM Serif Display',serif;font-size:16px;color:#1C1C1E;position:absolute;left:50%;transform:translateX(-50%)">Graph</div>
-          <div style="width:52px"></div>
         </div>
         <div class="graph-canvas">
           <div class="graph-filter-row">
@@ -690,9 +697,10 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
     <div class="screen-col">
       <div class="phone">
         <div class="a-bar">
-          <div><div class="a-bar-title">Synapse</div><div class="a-bar-sub">Connect ideas across what you read</div></div>
-          <div class="a-bar-actions">
-            <div class="a-fab"><svg viewBox="0 0 24 24" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <div class="a-back" style="font-family:'DM Serif Display',serif;font-size:14px;border:none;background:rgba(255,255,255,0.52);backdrop-filter:blur(8px)">Synapse</div>
+          <div class="a-btn-pill">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </div>
         </div>
         <!-- Dimmed background -->
@@ -734,9 +742,9 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(107,114,128,0.10);p
     <div class="screen-col">
       <div class="phone">
         <div class="a-bar">
-          <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#1C1C1E">Connections</div>
-          <div class="a-bar-actions">
-            <div class="a-btn"><svg viewBox="0 0 24 24" style="width:12px;height:12px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.5"/></svg></div>
+          <div class="a-back" style="font-family:'DM Serif Display',serif;font-size:13px">Connections</div>
+          <div class="a-btn-pill">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.5"/></svg>
           </div>
         </div>
         <div class="sugg-wrap">
