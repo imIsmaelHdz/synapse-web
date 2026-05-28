@@ -403,6 +403,29 @@ footer{
 @media(max-width:560px){.ai-panel{padding:18px 16px}}
 @media(max-width:560px){.ai-callout-grid{grid-template-columns:1fr}}
 
+/* ── ENCRYPTION SECTION ── */
+.enc-section{padding:0 24px 100px;max-width:1000px;margin:0 auto;width:100%}
+.enc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.enc-card{
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:var(--r1);padding:32px 28px;
+  box-shadow:var(--gshadow);
+}
+.enc-card-label{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:14px;display:flex;align-items:center;gap:7px;
+}
+.enc-card-label::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;display:block}
+.enc-card-title{font-size:15px;font-weight:700;color:var(--text1);margin-bottom:6px}
+.enc-card-sub{font-size:12.5px;color:var(--text2);line-height:1.68;margin-bottom:22px}
+.enc-svg-wrap{width:100%;overflow:hidden}
+.enc-svg-wrap svg{width:100%;height:auto;display:block}
+.enc-layer-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:50px;padding:4px 12px;font-size:11px;font-weight:600;margin-top:18px;
+}
+@media(max-width:680px){.enc-grid{grid-template-columns:1fr}}
+
 /* ── ANIMATIONS ── */
 @keyframes fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
@@ -1242,6 +1265,221 @@ suggestions = parsed.suggestions
   </section>
 
   <!-- Decision Log -->
+  <!-- Encryption Architecture -->
+  <section class="enc-section reveal">
+    <div class="section-tag" id="enc-tag">Security</div>
+    <h2 class="section-title" id="enc-title">Encrypted at every layer</h2>
+    <p class="section-sub" id="enc-sub">Notes are personal — thoughts, reflections, ideas. They're protected independently on the device and in the cloud, so a breach of one layer doesn't expose the other.</p>
+
+    <div class="enc-grid">
+
+      <!-- ── On-Device card ── -->
+      <div class="enc-card">
+        <div class="enc-card-label" style="color:#C67050" id="enc-local-label">On-Device · Local Encryption</div>
+        <div class="enc-card-title" id="enc-local-title">Hive boxes encrypted with AES-256</div>
+        <div class="enc-card-sub" id="enc-local-sub">A 32-byte key is generated once and stored in the OS keychain. Every Hive box opens with that key — notes never touch the filesystem in plain text.</div>
+        <div class="enc-svg-wrap">
+          <svg viewBox="0 0 340 292" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="enc-phone-g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7B9EAB" stop-opacity=".12"/>
+                <stop offset="100%" stop-color="#526E7A" stop-opacity=".05"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Phone shell -->
+            <rect x="60" y="8" width="220" height="276" rx="22" fill="url(#enc-phone-g)" stroke="rgba(106,135,145,0.28)" stroke-width="1.5"/>
+            <rect x="138" y="16" width="64" height="7" rx="3.5" fill="rgba(106,135,145,0.20)"/>
+            <text x="170" y="36" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".08em" fill="#6A8791">FLUTTER APP</text>
+
+            <!-- Hive box -->
+            <rect x="82" y="46" width="176" height="68" rx="12" fill="rgba(229,154,120,0.14)" stroke="rgba(229,154,120,0.38)" stroke-width="1.3"/>
+            <!-- Lock icon -->
+            <rect x="95" y="58" width="16" height="12" rx="2" fill="none" stroke="#C67050" stroke-width="1.4"/>
+            <path d="M98 58v-3a5 5 0 0110 0v3" fill="none" stroke="#C67050" stroke-width="1.4"/>
+            <circle cx="103" cy="64" r="1.5" fill="#C67050"/>
+            <text x="170" y="68" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="700" fill="#C67050">Hive Boxes</text>
+            <text x="170" y="84" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10.5" fill="#C67050" opacity=".80">AES-256 encrypted</text>
+            <text x="170" y="100" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#94A0B8">books · notes · links · settings</text>
+
+            <!-- Connector: Hive → secure_storage -->
+            <line x1="170" y1="114" x2="170" y2="138" stroke="rgba(106,135,145,0.40)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="182" y="129" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">32-byte key</text>
+
+            <!-- flutter_secure_storage box -->
+            <rect x="82" y="138" width="176" height="52" rx="12" fill="rgba(106,135,145,0.11)" stroke="rgba(106,135,145,0.28)" stroke-width="1.3"/>
+            <text x="170" y="160" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11.5" font-weight="700" fill="#6A8791">flutter_secure_storage</text>
+            <text x="170" y="177" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#94A0B8">reads / writes to OS keychain</text>
+
+            <!-- Connector: secure_storage → keychain -->
+            <line x1="170" y1="190" x2="170" y2="214" stroke="rgba(106,135,145,0.40)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="182" y="205" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">backed by OS</text>
+
+            <!-- Keychain box -->
+            <rect x="82" y="214" width="176" height="52" rx="12" fill="rgba(28,28,30,0.07)" stroke="rgba(28,28,30,0.16)" stroke-width="1.3"/>
+            <text x="170" y="236" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11.5" font-weight="700" fill="#1C1C1E">iOS Keychain</text>
+            <text x="170" y="253" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5A5A6E">Android Keystore</text>
+          </svg>
+        </div>
+        <div class="enc-layer-badge" style="background:rgba(229,154,120,0.10);border:1px solid rgba(229,154,120,0.28);color:#C67050" id="enc-local-badge">Data never written to disk in plain text</div>
+      </div>
+
+      <!-- ── Cloud card ── -->
+      <div class="enc-card">
+        <div class="enc-card-label" style="color:#6A8791" id="enc-cloud-label">In the Cloud · PostgreSQL Encryption</div>
+        <div class="enc-card-title" id="enc-cloud-title">Note fields encrypted with AES-256-GCM</div>
+        <div class="enc-card-sub" id="enc-cloud-sub">title, body, and topic are encrypted by the API before writing to Postgres. Pull decrypts before returning to Flutter. A DB dump shows unreadable ciphertext.</div>
+        <div class="enc-svg-wrap">
+          <svg viewBox="0 0 340 292" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="enc-cloud-g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#92A8A5" stop-opacity=".14"/>
+                <stop offset="100%" stop-color="#6A8791" stop-opacity=".05"/>
+              </linearGradient>
+              <marker id="enc-arr" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                <polygon points="0 0, 7 3.5, 0 7" fill="rgba(106,135,145,0.55)"/>
+              </marker>
+              <marker id="enc-arr-t" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                <polygon points="0 0, 7 3.5, 0 7" fill="rgba(229,154,120,0.55)"/>
+              </marker>
+            </defs>
+
+            <!-- Flutter box -->
+            <rect x="10" y="96" width="80" height="100" rx="12" fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.26)" stroke-width="1.3"/>
+            <text x="50" y="126" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="700" fill="#6A8791">Flutter</text>
+            <text x="50" y="143" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">plain text</text>
+            <text x="50" y="157" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">in memory</text>
+            <text x="50" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#94A0B8">HTTPS / TLS</text>
+
+            <!-- Push arrow -->
+            <line x1="90" y1="122" x2="118" y2="122" stroke="rgba(106,135,145,0.55)" stroke-width="1.5" marker-end="url(#enc-arr)" class="flow-line"/>
+            <text x="104" y="114" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">push</text>
+
+            <!-- Pull arrow -->
+            <line x1="118" y1="170" x2="90" y2="170" stroke="rgba(229,154,120,0.55)" stroke-width="1.5" marker-end="url(#enc-arr-t)" class="flow-line-rev"/>
+            <text x="104" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">pull</text>
+
+            <!-- Fastify box -->
+            <rect x="118" y="70" width="104" height="152" rx="12" fill="rgba(229,154,120,0.09)" stroke="rgba(229,154,120,0.28)" stroke-width="1.3"/>
+            <text x="170" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".07em" fill="#C67050">FASTIFY API</text>
+            <!-- encrypt box -->
+            <rect x="130" y="104" width="80" height="32" rx="8" fill="rgba(229,154,120,0.16)" stroke="rgba(229,154,120,0.38)" stroke-width="1"/>
+            <text x="170" y="121" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="700" fill="#C67050">encrypt()</text>
+            <!-- key badge -->
+            <rect x="130" y="148" width="80" height="26" rx="7" fill="rgba(28,28,30,0.08)" stroke="rgba(28,28,30,0.14)" stroke-width="1"/>
+            <text x="170" y="165" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#5A5A6E">DB_ENCRYPTION_KEY</text>
+            <text x="170" y="191" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">Railway env var</text>
+            <!-- decrypt box -->
+            <rect x="130" y="203" width="80" height="32" rx="8" fill="rgba(106,135,145,0.13)" stroke="rgba(106,135,145,0.30)" stroke-width="1"/>
+            <text x="170" y="222" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="700" fill="#6A8791">decrypt()</text>
+
+            <!-- write arrow -->
+            <line x1="222" y1="122" x2="248" y2="122" stroke="rgba(106,135,145,0.55)" stroke-width="1.5" marker-end="url(#enc-arr)" class="flow-line"/>
+            <text x="235" y="114" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">write</text>
+
+            <!-- read arrow -->
+            <line x1="248" y1="170" x2="222" y2="170" stroke="rgba(229,154,120,0.55)" stroke-width="1.5" marker-end="url(#enc-arr-t)" class="flow-line-rev"/>
+            <text x="235" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">read</text>
+
+            <!-- PostgreSQL box -->
+            <rect x="250" y="70" width="82" height="152" rx="12" fill="rgba(51,103,145,0.09)" stroke="rgba(51,103,145,0.24)" stroke-width="1.3"/>
+            <text x="291" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".05em" fill="#336791">POSTGRES</text>
+            <!-- notes.title -->
+            <rect x="260" y="104" width="62" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
+            <text x="291" y="116" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="8" fill="#336791">title: enc</text>
+            <!-- notes.body -->
+            <rect x="260" y="125" width="62" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
+            <text x="291" y="137" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="8" fill="#336791">body: enc</text>
+            <!-- notes.topic -->
+            <rect x="260" y="146" width="62" height="17" rx="4" fill="rgba(51,103,145,0.10)" stroke="rgba(51,103,145,0.18)" stroke-width=".8"/>
+            <text x="291" y="158" text-anchor="middle" font-family="'SF Mono','Fira Code',monospace" font-size="8" fill="#336791">topic: enc</text>
+
+            <text x="291" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">AES-256-GCM</text>
+            <text x="291" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">ciphertext</text>
+            <text x="291" y="215" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#94A0B8">IV random</text>
+            <text x="291" y="227" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#94A0B8">per write</text>
+          </svg>
+        </div>
+        <div class="enc-layer-badge" style="background:rgba(106,135,145,0.09);border:1px solid rgba(106,135,145,0.22);color:var(--teal)" id="enc-cloud-badge">DB dump shows only unreadable ciphertext</div>
+      </div>
+    </div>
+
+    <!-- End-to-end summary row -->
+    <div class="arch-diagram">
+      <div style="margin-bottom:20px">
+        <div class="section-tag" style="margin-bottom:8px" id="enc-e2e-tag">End-to-end view</div>
+      </div>
+      <div class="arch-svg-wrap">
+        <svg viewBox="0 0 820 130" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="e2e-arr" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+              <polygon points="0 0,7 3.5,0 7" fill="rgba(106,135,145,0.60)"/>
+            </marker>
+          </defs>
+
+          <!-- Layer 1: Device -->
+          <rect x="10" y="20" width="140" height="90" rx="14" fill="rgba(229,154,120,0.09)" stroke="rgba(229,154,120,0.28)" stroke-width="1.3"/>
+          <text x="80" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".08em" fill="#C67050" id="e2e-l1">DEVICE</text>
+          <text x="80" y="63" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#1C1C1E">Hive</text>
+          <text x="80" y="79" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5A5A6E">AES-256</text>
+          <text x="80" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#94A0B8">key in Keychain</text>
+
+          <!-- Arrow 1 -->
+          <line x1="150" y1="65" x2="196" y2="65" stroke="rgba(106,135,145,0.50)" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#e2e-arr)"/>
+          <text x="173" y="57" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">HTTPS</text>
+          <text x="173" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">plain text</text>
+
+          <!-- Layer 2: Transit -->
+          <rect x="198" y="20" width="120" height="90" rx="14" fill="rgba(106,135,145,0.08)" stroke="rgba(106,135,145,0.22)" stroke-width="1.3"/>
+          <text x="258" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".08em" fill="#6A8791" id="e2e-l2">TRANSIT</text>
+          <text x="258" y="63" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#1C1C1E">TLS 1.3</text>
+          <text x="258" y="79" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5A5A6E">HTTPS</text>
+          <text x="258" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#94A0B8">Railway cert</text>
+
+          <!-- Arrow 2 -->
+          <line x1="318" y1="65" x2="364" y2="65" stroke="rgba(106,135,145,0.50)" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#e2e-arr)"/>
+          <text x="341" y="57" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">API</text>
+          <text x="341" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">encrypt()</text>
+
+          <!-- Layer 3: API -->
+          <rect x="366" y="20" width="140" height="90" rx="14" fill="rgba(229,154,120,0.08)" stroke="rgba(229,154,120,0.22)" stroke-width="1.3"/>
+          <text x="436" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".08em" fill="#C67050" id="e2e-l3">API LAYER</text>
+          <text x="436" y="63" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#1C1C1E">Fastify</text>
+          <text x="436" y="79" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5A5A6E">AES-256-GCM</text>
+          <text x="436" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#94A0B8">Firebase JWT auth</text>
+
+          <!-- Arrow 3 -->
+          <line x1="506" y1="65" x2="552" y2="65" stroke="rgba(106,135,145,0.50)" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#e2e-arr)"/>
+          <text x="529" y="57" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">write</text>
+          <text x="529" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">ciphertext</text>
+
+          <!-- Layer 4: DB -->
+          <rect x="554" y="20" width="140" height="90" rx="14" fill="rgba(51,103,145,0.09)" stroke="rgba(51,103,145,0.22)" stroke-width="1.3"/>
+          <text x="624" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".08em" fill="#336791" id="e2e-l4">DATABASE</text>
+          <text x="624" y="63" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#1C1C1E">PostgreSQL</text>
+          <text x="624" y="79" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5A5A6E">App-level enc.</text>
+          <text x="624" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#94A0B8">+ disk AES-256</text>
+
+          <!-- Arrow 4 -->
+          <line x1="694" y1="65" x2="740" y2="65" stroke="rgba(106,135,145,0.50)" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#e2e-arr)"/>
+          <text x="717" y="57" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#94A0B8">Railway</text>
+          <text x="717" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">private net</text>
+
+          <!-- Layer 5: Infra -->
+          <rect x="742" y="20" width="68" height="90" rx="14" fill="rgba(146,168,165,0.10)" stroke="rgba(146,168,165,0.24)" stroke-width="1.3"/>
+          <text x="776" y="56" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#6A8791">Railway</text>
+          <text x="776" y="71" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#5A5A6E">infra</text>
+          <text x="776" y="87" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#94A0B8">disk enc.</text>
+        </svg>
+      </div>
+      <div class="arch-legend" style="margin-top:20px">
+        <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#E59A78"></div> <span id="enc-leg1">Device — Hive + iOS Keychain / Android Keystore</span></div>
+        <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#6A8791"></div> <span id="enc-leg2">Cloud — AES-256-GCM field encryption before DB write</span></div>
+        <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#336791"></div> <span id="enc-leg3">A credential leak or DB dump yields only ciphertext</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="decisions reveal">
     <div class="section-tag" id="decisions-tag">Decision log</div>
     <h2 class="section-title" id="decisions-title">Why, not just what</h2>
@@ -1969,6 +2207,26 @@ const T = [
   { sel: '#nt-media-desc', en: 'Films, podcasts, or articles treated as first-class nodes — same as books. Cross-media links are where the most surprising connections emerge.', es: 'Películas, podcasts o artículos tratados como nodos de primera clase — igual que los libros. Los enlaces entre medios son donde emergen las conexiones más sorprendentes.' },
   { sel: '#gm-hint', en: 'Tap a node to highlight its connections', es: 'Toca un nodo para resaltar sus conexiones' },
   { sel: '#gm-schema-title', en: 'Actual Hive data schema', es: 'Esquema de datos Hive real' },
+  // Encryption
+  { sel: '#enc-tag',          en: 'Security',              es: 'Seguridad' },
+  { sel: '#enc-title',        en: 'Encrypted at every layer', es: 'Encriptado en cada capa' },
+  { sel: '#enc-sub',          en: 'Notes are personal — thoughts, reflections, ideas. They\'re protected independently on the device and in the cloud, so a breach of one layer doesn\'t expose the other.', es: 'Las notas son personales — pensamientos, reflexiones, ideas. Se protegen de forma independiente en el dispositivo y en la nube, para que una brecha en una capa no exponga la otra.' },
+  { sel: '#enc-local-label',  en: 'On-Device · Local Encryption',    es: 'En dispositivo · Cifrado local' },
+  { sel: '#enc-local-title',  en: 'Hive boxes encrypted with AES-256', es: 'Cajas Hive cifradas con AES-256' },
+  { sel: '#enc-local-sub',    en: 'A 32-byte key is generated once and stored in the OS keychain. Every Hive box opens with that key — notes never touch the filesystem in plain text.', es: 'Se genera una clave de 32 bytes y se almacena en el llavero del SO. Cada caja Hive se abre con esa clave — las notas nunca tocan el sistema de archivos en texto plano.' },
+  { sel: '#enc-local-badge',  en: 'Data never written to disk in plain text', es: 'Los datos nunca se escriben en disco en texto plano' },
+  { sel: '#enc-cloud-label',  en: 'In the Cloud · PostgreSQL Encryption', es: 'En la nube · Cifrado PostgreSQL' },
+  { sel: '#enc-cloud-title',  en: 'Note fields encrypted with AES-256-GCM', es: 'Campos de notas cifrados con AES-256-GCM' },
+  { sel: '#enc-cloud-sub',    en: 'title, body, and topic are encrypted by the API before writing to Postgres. Pull decrypts before returning to Flutter. A DB dump shows unreadable ciphertext.', es: 'title, body y topic son cifrados por la API antes de escribir en Postgres. Pull descifra antes de retornar a Flutter. Un volcado de BD muestra texto cifrado ilegible.' },
+  { sel: '#enc-cloud-badge',  en: 'DB dump shows only unreadable ciphertext', es: 'Un volcado de BD muestra solo texto cifrado ilegible' },
+  { sel: '#enc-e2e-tag',      en: 'End-to-end view', es: 'Vista extremo a extremo' },
+  { sel: '#e2e-l1',           en: 'DEVICE',    es: 'DISPOSITIVO' },
+  { sel: '#e2e-l2',           en: 'TRANSIT',   es: 'TRÁNSITO' },
+  { sel: '#e2e-l3',           en: 'API LAYER', es: 'CAPA API' },
+  { sel: '#e2e-l4',           en: 'DATABASE',  es: 'BASE DE DATOS' },
+  { sel: '#enc-leg1',         en: 'Device — Hive + iOS Keychain / Android Keystore', es: 'Dispositivo — Hive + iOS Keychain / Android Keystore' },
+  { sel: '#enc-leg2',         en: 'Cloud — AES-256-GCM field encryption before DB write', es: 'Nube — cifrado de campos AES-256-GCM antes de escribir en BD' },
+  { sel: '#enc-leg3',         en: 'A credential leak or DB dump yields only ciphertext', es: 'Una filtración de credenciales o volcado de BD solo produce texto cifrado' },
   // Decisions
   { sel: '#decisions-tag',   en: 'Decision log',      es: 'Registro de decisiones' },
   { sel: '#decisions-title', en: 'Why, not just what', es: 'Por qué, no solo qué' },
