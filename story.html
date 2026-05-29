@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Making of Synapse — A Founder's Letter</title>
+<meta name="description" content="Every decision, every wrong turn, and every pivot in building Synapse — a local-first knowledge graph for iOS. An honest account.">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="canonical" href="https://usesynapse.io/story.html">
+<meta property="og:type"        content="article">
+<meta property="og:url"         content="https://usesynapse.io/story.html">
+<meta property="og:title"       content="The Making of Synapse — A Founder's Letter">
+<meta property="og:description" content="Every decision, every wrong turn, and every pivot in building Synapse. An honest account.">
+<meta property="og:image"       content="https://usesynapse.io/og-image.png">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="The Making of Synapse — A Founder's Letter">
+<meta name="twitter:image"       content="https://usesynapse.io/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#6A8791;
+  --sage:#92A8A5;
+  --terra:#E59A78;
+  --sand:#C6BFA2;
+  --text1:#1C1C1E;
+  --text2:#5A5A6E;
+  --text3:#94A0B8;
+  --glass:rgba(255,255,255,0.30);
+  --glass-s:rgba(255,255,255,0.48);
+  --gb:rgba(255,255,255,0.58);
+  --gshadow:0 8px 40px rgba(0,0,0,0.06),0 2px 8px rgba(0,0,0,0.03);
+  --blur:blur(20px);
+  --r1:24px;--r2:18px;--r3:14px;
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;font-family:'DM Sans',sans-serif;color:var(--text1);
+  background:linear-gradient(145deg,#F5F5F5,#EEEEEE,#F8F8F8);
+  overflow-x:hidden;
+}
+
+/* ── BACKGROUND ── */
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);animation:orb-drift linear infinite}
+@keyframes orb-drift{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(22px,-18px) scale(1.05)}
+  66%{transform:translate(-14px,22px) scale(0.96)}
+  100%{transform:translate(0,0) scale(1)}
+}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  background:var(--glass-s);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:50px;
+  padding:10px 20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);
+  white-space:nowrap;
+}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'DM Serif Display',serif;font-size:18px;color:var(--text1);text-decoration:none}
+.nav-logo svg{width:30px;height:30px;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  padding:6px 14px;border-radius:50px;font-size:13px;font-weight:500;
+  color:var(--text2);text-decoration:none;transition:background .18s,color .18s;
+}
+.nav-link:hover{background:rgba(106,135,145,0.10);color:var(--teal)}
+.nav-link.active{background:linear-gradient(135deg,rgba(229,154,120,0.18),rgba(229,154,120,0.09));color:#C67050;font-weight:600}
+.lang-toggle{
+  display:flex;align-items:center;gap:2px;
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:50px;
+  padding:5px 5px;cursor:pointer;transition:border-color .2s;
+}
+.lang-toggle:hover{border-color:rgba(106,135,145,0.40)}
+.lt-opt{
+  padding:4px 11px;border-radius:50px;
+  font-size:11.5px;font-weight:600;color:var(--text3);
+  transition:background .2s,color .2s;font-family:inherit;border:none;background:transparent;cursor:pointer;
+}
+.lt-opt.lt-on{background:linear-gradient(135deg,var(--sage),var(--teal));color:white}
+
+/* ── HERO ── */
+.hero{
+  padding:140px 24px 60px;text-align:center;
+  max-width:760px;margin:0 auto;width:100%;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:50px;
+  padding:6px 16px;font-size:12px;font-weight:500;color:#C67050;
+  margin-bottom:28px;box-shadow:var(--gshadow);
+  animation:fade-up .7s ease both;
+}
+.badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#E59A78;display:block}
+.hero-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(38px,6vw,64px);
+  line-height:1.08;letter-spacing:-.4px;
+  color:var(--text1);margin-bottom:20px;
+  animation:fade-up .7s .1s ease both;
+}
+.hero-title em{font-style:italic;color:var(--teal)}
+.hero-meta{
+  font-size:14px;color:var(--text3);font-weight:500;
+  animation:fade-up .7s .2s ease both;
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+}
+.hero-meta span{display:flex;align-items:center;gap:5px}
+.hero-meta::before,.hero-meta::after{display:none}
+
+/* ── LETTER BODY ── */
+.letter-wrap{
+  max-width:720px;margin:0 auto;width:100%;padding:0 24px 100px;
+}
+.letter-card{
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);border-radius:var(--r1);padding:56px 64px;
+  box-shadow:var(--gshadow);
+}
+
+/* ── CHAPTER ── */
+.chapter{margin-bottom:52px}
+.chapter:last-child{margin-bottom:0}
+.chapter-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  color:var(--terra);margin-bottom:12px;
+}
+.chapter-tag::before{
+  content:'';width:20px;height:2px;border-radius:1px;
+  background:linear-gradient(90deg,var(--terra),transparent);display:block;
+}
+.chapter-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(22px,3vw,30px);line-height:1.18;
+  color:var(--text1);margin-bottom:18px;
+}
+.chapter p{
+  font-size:15.5px;line-height:1.82;color:var(--text2);
+  margin-bottom:16px;font-weight:400;
+}
+.chapter p:last-child{margin-bottom:0}
+.chapter p strong{color:var(--text1);font-weight:600}
+.chapter p em{color:var(--teal);font-style:italic}
+
+/* Opening paragraph — larger */
+.letter-opening{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(16px,2.2vw,20px);line-height:1.72;
+  color:var(--text1);margin-bottom:40px;font-weight:400;
+}
+.letter-opening::first-letter{
+  font-size:3.4em;line-height:.8;float:left;margin-right:8px;margin-top:4px;
+  font-family:'DM Serif Display',serif;color:var(--teal);
+}
+
+/* ── DIVIDER ── */
+.chapter-divider{
+  display:flex;align-items:center;gap:16px;margin:44px 0;
+}
+.chapter-divider::before,.chapter-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(106,135,145,0.20),transparent);
+}
+.chapter-divider span{
+  font-size:16px;color:var(--text3);flex-shrink:0;
+  display:flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--text3);
+}
+
+/* ── DECISION CHIPS ── */
+.decision-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(106,135,145,0.09);border:1px solid rgba(106,135,145,0.20);
+  border-radius:50px;padding:4px 12px;
+  font-size:12px;font-weight:600;color:var(--teal);
+  margin:0 4px 6px 0;
+}
+.decision-chip::before{content:'→';opacity:.55;margin-right:1px}
+.chip-row-inline{margin:14px 0;display:flex;flex-wrap:wrap}
+
+/* ── ISSUE BLOCK ── */
+.issue-block{
+  background:rgba(229,154,120,0.07);
+  border:1px solid rgba(229,154,120,0.22);
+  border-radius:var(--r3);padding:16px 20px;margin:12px 0;
+}
+.issue-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#C67050;margin-bottom:6px;display:flex;align-items:center;gap:6px;
+}
+.issue-label::before{content:'⚠';font-size:12px}
+.issue-text{font-size:13.5px;color:var(--text2);line-height:1.68}
+.issue-fix{
+  margin-top:8px;font-size:12.5px;color:var(--teal);font-weight:500;
+  display:flex;align-items:flex-start;gap:5px;
+}
+.issue-fix::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* ── PULL QUOTE ── */
+.pull-quote{
+  border-left:3px solid var(--terra);padding:16px 0 16px 24px;margin:24px 0;
+}
+.pull-quote p{
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:clamp(16px,2vw,20px);color:var(--text1);line-height:1.58;
+  margin:0!important;
+}
+
+/* ── CLOSING ── */
+.letter-closing{
+  margin-top:52px;padding-top:40px;border-top:1px solid rgba(106,135,145,0.16);
+  text-align:right;
+}
+.closing-sig{
+  font-family:'DM Serif Display',serif;font-size:22px;color:var(--text1);
+  margin-bottom:4px;font-style:italic;
+}
+.closing-meta{font-size:13px;color:var(--text3)}
+
+/* ── NAV FOOTER LINKS ── */
+.story-nav{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  flex-wrap:wrap;margin-bottom:52px;
+}
+.story-nav-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:500;color:var(--teal);text-decoration:none;
+  background:rgba(106,135,145,0.09);border:1px solid rgba(106,135,145,0.20);
+  border-radius:50px;padding:7px 18px;transition:background .18s,transform .18s;
+}
+.story-nav-link:hover{background:rgba(106,135,145,0.16);transform:translateX(2px)}
+.story-nav-link.back:hover{transform:translateX(-2px)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid rgba(107,114,128,0.10);
+  padding:32px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  max-width:1100px;margin:0 auto;width:100%;
+}
+.footer-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.footer-brand-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--text1)}
+.footer-brand svg{width:22px;height:22px;flex-shrink:0}
+.footer-copy{font-size:12px;color:var(--text3)}
+
+/* ── ANIMATIONS ── */
+@keyframes fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:760px){
+  .letter-card{padding:32px 24px}
+  nav{top:12px;padding:8px 14px;gap:12px}
+  footer{flex-direction:column;align-items:flex-start;padding:28px 20px}
+}
+@media(max-width:480px){
+  .letter-card{padding:28px 18px;border-radius:var(--r2)}
+  .letter-opening::first-letter{font-size:2.8em}
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient background -->
+<div class="bg">
+  <div class="orb" style="width:500px;height:500px;top:-180px;left:-150px;background:#D8D8D8;opacity:.55;animation-duration:44s"></div>
+  <div class="orb" style="width:420px;height:420px;bottom:5%;right:-140px;background:#CECECE;opacity:.45;animation-duration:33s;animation-delay:-16s"></div>
+  <div class="orb" style="width:340px;height:340px;top:42%;left:38%;background:#DCDCDC;opacity:.4;animation-duration:38s;animation-delay:-9s"></div>
+  <div class="orb" style="width:260px;height:260px;top:20%;right:10%;background:#E0D8CF;opacity:.35;animation-duration:28s;animation-delay:-21s"></div>
+</div>
+
+<canvas id="bg-graph" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+
+<div class="page">
+
+  <!-- Nav -->
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nl-bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stop-color="#7B9EAB"/>
+            <stop offset="100%" stop-color="#526E7A"/>
+          </linearGradient>
+          <radialGradient id="nl-sp" cx="38%" cy="35%" r="55%">
+            <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1024" height="1024" rx="230" fill="url(#nl-bg)"/>
+        <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="410" y2="809" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="205" y2="573" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="266" y2="287" stroke="rgba(255,255,255,0.58)" stroke-width="9"  stroke-linecap="round"/>
+        <line x1="512" y1="184" x2="266" y2="287" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+        <line x1="799" y1="358" x2="768" y2="696" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+        <line x1="410" y1="809" x2="205" y2="573" stroke="rgba(255,255,255,0.30)" stroke-width="7"  stroke-linecap="round"/>
+        <circle cx="512" cy="184" r="38" fill="#EAE8E2"/>
+        <circle cx="799" cy="358" r="43" fill="#D6E6E4"/>
+        <circle cx="768" cy="696" r="32" fill="#EAE8E2"/>
+        <circle cx="410" cy="809" r="38" fill="#D6E6E4"/>
+        <circle cx="205" cy="573" r="43" fill="#EAE8E2"/>
+        <circle cx="266" cy="287" r="32" fill="#D6E6E4"/>
+        <circle cx="512" cy="491" r="96" fill="#E59A78"/>
+        <circle cx="512" cy="491" r="96" fill="url(#nl-sp)"/>
+      </svg>
+      Synapse
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Waitlist</a>
+      <a class="nav-link" href="lab.html">Lab</a>
+      <a class="nav-link active" href="story.html">Story</a>
+    </div>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button class="lt-opt lt-on" id="lt-en" onclick="toggleLang('en')">EN</button>
+      <button class="lt-opt" id="lt-es" onclick="toggleLang('es')">ES</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge">Founder's letter</div>
+    <h1 class="hero-title">The making of <em>Synapse</em></h1>
+    <div class="hero-meta">
+      <span>
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Every decision, every wrong turn
+      </span>
+      <span>·</span>
+      <span>synapse · synapse-service · synapse-web</span>
+      <span>·</span>
+      <span>2026</span>
+    </div>
+  </section>
+
+  <!-- Letter -->
+  <div class="letter-wrap">
+
+    <div class="story-nav reveal">
+      <a class="story-nav-link back" href="index.html">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Waitlist
+      </a>
+      <a class="story-nav-link" href="lab.html">
+        ⚗ The Lab
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+    <div class="letter-card reveal">
+
+      <p class="letter-opening">What follows is an honest account of every decision, every wrong turn, and every moment where the plan changed. Not a polished case study. Not a launch post. The real story — written while it's still fresh, because the next version of this won't remember the confusion the first one required.</p>
+
+      <!-- ── CHAPTER 1 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Origin</div>
+        <h2 class="chapter-title">Why it started</h2>
+        <p>I read books, watch films, listen to podcasts, take notes — and none of it connects. Every highlight lives in isolation. Every idea fades alone in a notebook that never opens again. I kept noticing it: something I read six months ago would suddenly relate perfectly to something I was thinking about today, but I had no way to see that. The connection existed — I just couldn't find it.</p>
+        <p>I wanted a tool that would show me when two things I had absorbed at different times were talking to each other. A tool that would surface the invisible structure of my own thinking. That tool didn't exist the way I needed it to exist. So I built it.</p>
+        <p>Synapse is three things: a local-first knowledge graph (<strong>synapse</strong> — the Flutter app), a cloud sync and AI backend (<strong>synapse-service</strong>), and a public presence (<strong>synapse-web</strong>). They were built in parallel, each with its own set of decisions and problems.</p>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ Architecture</span></div>
+
+      <!-- ── CHAPTER 2 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 1</div>
+        <h2 class="chapter-title">Local-first, always</h2>
+        <p>Before writing a single line of code, I made the most important architectural decision: <strong>the graph lives on the device, not on a server</strong>. This sounds obvious. It has consequences everywhere.</p>
+        <p>It means <strong>Hive</strong>, not SQLite. Hive is a pure-Dart key-value store — no native compilation overhead, no schema migrations, just typed Dart objects stored as bytes. Graph traversal is a simple key lookup. I tested SQLite first. It worked, but every query felt like fighting the wrong model. I was shoe-horning a non-relational graph into relational tables. Every new node type would need a migration. Hive let the graph evolve freely.</p>
+        <p>Local-first also means the backend is <em>never the source of truth</em>. The backend is a backup layer and an AI endpoint — nothing more. No internet, no problem. Synapse works completely, offline, always. This protected the app's soul from day one: it can never become one of those apps that shows you a spinner when the server is down.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">Hive over SQLite</span>
+          <span class="decision-chip">device = source of truth</span>
+          <span class="decision-chip">backend = backup + AI only</span>
+        </div>
+      </div>
+
+      <!-- ── CHAPTER 3 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 2</div>
+        <h2 class="chapter-title">Flutter — because the graph needs a canvas</h2>
+        <p>The core UI of Synapse is a force-directed knowledge graph. Nodes repel each other, edges pull connected ones together, the whole thing moves and breathes in response to gestures. This is a custom canvas problem. It rules out anything with a bridge.</p>
+        <p>React Native's JavaScript-to-native bridge would add latency to every canvas frame. SwiftUI would lock the app to iOS forever. <strong>Flutter owns the canvas entirely</strong> — 60fps, no bridge overhead, one codebase for iOS and Android. Dart's strong typing means the graph data model is safe to evolve without runtime surprises. The decision took about ten minutes. I haven't second-guessed it once.</p>
+        <div class="pull-quote">
+          <p>"Flutter doesn't render through UIKit. It draws directly. For a graph that needs to move at 60fps, that's not a feature — it's a requirement."</p>
+        </div>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ Backend</span></div>
+
+      <!-- ── CHAPTER 4 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 3 · The pivot</div>
+        <h2 class="chapter-title">Dropping Firestore, keeping Firebase Auth</h2>
+        <p>The original plan: <strong>Firebase + Firestore + Cloud Run</strong>. Full Google stack, everything connected, no infrastructure to manage. I got about 60% through implementation before I looked at the pricing calculator.</p>
+        <p>A knowledge graph with 500 nodes syncing changes in real time generates thousands of Firestore read/write operations per session, per user. The math didn't work. Firestore charges per operation at the document level — it's designed for simple key-value access patterns, not graph structures with many small writes. I killed it.</p>
+        <p>I kept <strong>Firebase Auth</strong>. This might seem inconsistent — drop the database but keep the auth? It isn't. Auth is the hardest thing to build correctly: token refresh, session expiry, revocation, edge cases under flaky networks. Firebase handles all of it for free on the Spark plan. The Flutter app gets an ID token, sends it as a Bearer header, and the backend verifies it with Firebase Admin SDK. Zero custom auth code. The trade-off is a Google dependency in the identity layer. That's a dependency I'm genuinely happy to accept.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">Firestore → dropped</span>
+          <span class="decision-chip">Firebase Auth → kept</span>
+          <span class="decision-chip">cost predictability over convenience</span>
+        </div>
+      </div>
+
+      <!-- ── CHAPTER 5 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 4</div>
+        <h2 class="chapter-title">Fastify + PostgreSQL on Railway</h2>
+        <p>Without Firestore, I needed a backend I controlled. I chose <strong>Fastify</strong> — the fastest Node.js HTTP framework, TypeScript, schema-driven validation — and <strong>PostgreSQL</strong> on Railway for the database.</p>
+        <p>The key insight was that I don't need a relational schema for user data. I just need to store the graph as a blob. PostgreSQL's JSONB type means I can push the entire graph as a single payload and pull it back. The app owns the shape; Postgres owns the durability. When the graph model evolves, only the app changes — the server stores bytes and returns them.</p>
+        <p>The schema: two tables. <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">users</code> with Firebase UID as primary key, and <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">snapshots</code> in JSONB, keeping the last 10 per user. No migrations. No relational graph tables. Railway gives a predictable flat monthly cost — the exact opposite of Firestore's per-operation pricing.</p>
+        <p>The API surface: <strong>5 routes</strong>. Health check, user sync on first login, push snapshot, pull latest snapshot, and the AI suggest endpoint. That's the entire backend.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">Fastify over Express</span>
+          <span class="decision-chip">JSONB snapshots</span>
+          <span class="decision-chip">Railway over Cloud Run</span>
+          <span class="decision-chip">last 10 snapshots per user</span>
+        </div>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ AI Layer</span></div>
+
+      <!-- ── CHAPTER 6 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 5 · The model switch</div>
+        <h2 class="chapter-title">From Claude to Gemini</h2>
+        <p>The first implementation used <strong>Claude claude-opus-4-5</strong>. The suggestions were good — specific, cross-domain, grounded in the actual content of notes. But when I looked at the stack holistically, the answer changed.</p>
+        <p>I'm already using Firebase Auth, which is Google. I'm already in the Google ecosystem. The AI layer that fits the architecture is <strong>Gemini</strong>. Same billing, same cloud ecosystem, reduced vendor fragmentation. Gemini's reasoning quality on cross-domain connection tasks is excellent. The "Because:" explanation — the key feature of AI suggestions — requires a model that understands semantic relationships, not just keyword proximity. Gemini delivers this.</p>
+        <p>The switch wasn't about model quality. It was about <em>coherence</em>. A product built on fewer moving parts from fewer vendors is easier to maintain, debug, and scale. Google AI alongside Firebase Auth is a natural fit. The architecture diagram in the Lab now says Google AI API — not as a sponsor, but as a deliberate choice.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">Gemini over Claude</span>
+          <span class="decision-chip">ecosystem coherence</span>
+          <span class="decision-chip">on-demand only, not automatic</span>
+        </div>
+      </div>
+
+      <!-- ── CHAPTER 7 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 6 · UX</div>
+        <h2 class="chapter-title">The AI suggestions tab</h2>
+        <p>The suggestions feature needed its own space. I added a <strong>4th tab</strong> to the bottom nav with a custom Synapse logo icon drawn entirely in Flutter's <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">CustomPainter</code> — a hub-spoke graph with the terra-colored center node, matching the brand icon precisely.</p>
+        <p>The interaction: <strong>swipe right to accept, swipe left to dismiss</strong>. Each suggestion shows two connected nodes, a "Because:" explanation from the model, and the source of each note. Accepted connections create a real edge in the knowledge graph. Dismissed ones vanish. The key principle: AI never auto-creates connections. Every edge requires a human accept. The graph is always a reflection of your thinking, not the model's.</p>
+        <p>Four states were designed: empty (animated Synapse logo, pulsing, with a "Find connections" CTA), loading (shimmer skeleton cards with an animated "Analysing…" dot sequence), suggestions (swipeable cards with a reviewed section below), and all-caught-up (a check mark and refresh option). Each state required its own animation and layout — the loading shimmer alone took three iterations to feel right.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">swipe to accept/dismiss</span>
+          <span class="decision-chip">human always in the loop</span>
+          <span class="decision-chip">4 distinct states</span>
+        </div>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ The Model</span></div>
+
+      <!-- ── CHAPTER 8 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Decision 7 · Growing the model</div>
+        <h2 class="chapter-title">Beyond books — SourceType</h2>
+        <p>The original model had only <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">Book</code> as a source. Notes belonged to books. But Synapse's value was never about books specifically — it's about connecting ideas from anywhere you absorb them.</p>
+        <p>I added a <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">SourceType</code> enum with five values: <strong>book, movie, serie, personal, topic</strong>. Each type carries a label, an icon, and a context-aware creator label — Author for books, Director for films, Creator for series, About for personal notes, Field for topics. The form field hint text adapts. The type picker appears at the top of the editor.</p>
+        <p>The <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">Book</code> model gained a <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">type</code> field. The <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">fromMap</code> method defaults to <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">SourceType.book</code> when the key is missing — existing Hive data migrates silently, no wipe required. The home screen now says "YOUR LIBRARY" instead of "YOUR BOOKS", and "Sources" instead of "Books" in the stat card. Small label changes that signal a different scope.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">5 source types</span>
+          <span class="decision-chip">backward-compatible Hive migration</span>
+          <span class="decision-chip">context-aware field labels</span>
+        </div>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ The Web</span></div>
+
+      <!-- ── CHAPTER 9 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">synapse-web</div>
+        <h2 class="chapter-title">The public face</h2>
+        <p>While building the app, I needed a public presence. Two pages, one design system: the glass morphism language of the app ported to the web — <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">backdrop-filter: blur(20px)</code>, ambient orb backgrounds, the same color tokens, the same font stack.</p>
+        <p><strong>index.html</strong> is the waitlist. Email capture, a physics simulation background graph with mouse repulsion, social proof, an EN/ES language toggle. Both subscribe forms are temporarily disabled while the backend email integration isn't live. A decision: show real constraints honestly rather than fake functionality.</p>
+        <p><strong>lab.html</strong> is the technical story. Architecture decisions, tech stack breakdown, an interactive knowledge graph canvas, an SVG architecture diagram with animated flow lines, the decision log, a Hive data schema diagram, and a roadmap with honest status labels. Transparent on purpose — showing the reasoning behind every choice builds more trust than hiding it.</p>
+        <p>Deployed on <strong>Netlify</strong>, auto-deploying from the <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">imIsmaelHdz/synapse-web</code> GitHub repo on every push to main. Zero-config deploys — push and forget.</p>
+        <div class="chip-row-inline">
+          <span class="decision-chip">Netlify auto-deploy</span>
+          <span class="decision-chip">glass morphism design system</span>
+          <span class="decision-chip">transparent by default</span>
+        </div>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ The Real Part</span></div>
+
+      <!-- ── CHAPTER 10 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">No build goes cleanly</div>
+        <h2 class="chapter-title">The bugs and the fixes</h2>
+        <p>Everything above is the clean version. Here's what actually happened.</p>
+
+        <div class="issue-block">
+          <div class="issue-label">Dev server pointing to the wrong directory</div>
+          <div class="issue-text">The launch config used <code style="font-family:monospace;font-size:12px">"."</code> as the serve path, which resolved to the Flutter project root — not the web folder. Chrome kept showing Flutter's generated <code style="font-family:monospace;font-size:12px">index.html</code> instead of the waitlist page. Three rounds of "it's not updating" before finding the root cause.</div>
+          <div class="issue-fix">Fixed by passing the explicit absolute path to <code style="font-family:monospace;font-size:12px">npx serve</code> and killing the stale process with <code style="font-family:monospace;font-size:12px">lsof -ti:4321 | xargs kill -9</code>.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">allNotes getter doesn't exist</div>
+          <div class="issue-text">When building the AI suggestions screen, I referenced <code style="font-family:monospace;font-size:12px">widget.db.allNotes.length</code>. The getter is called <code style="font-family:monospace;font-size:12px">notes</code>. The analyzer caught it at compile time — but only after a failed hot restart.</div>
+          <div class="issue-fix">One-line fix. Changed to <code style="font-family:monospace;font-size:12px">widget.db.notes.length</code>.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">Unused _dotTimer field warning</div>
+          <div class="issue-text">In the loading state animation of the suggestions screen, I declared <code style="font-family:monospace;font-size:12px">late final _dotTimer = _startDotTimer()</code> as a field but never read the variable. Dart's analyzer flagged it as unused. Not a crash — but a warning that shouldn't exist.</div>
+          <div class="issue-fix">Removed the field and called <code style="font-family:monospace;font-size:12px">_tickDots()</code> directly from <code style="font-family:monospace;font-size:12px">initState()</code>.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">Lab nav button invisible on the main page</div>
+          <div class="issue-text">When first adding the Lab link to the waitlist nav, it didn't appear — the inline <code style="font-family:monospace;font-size:12px">&lt;a&gt;</code> styling conflicted with the nav's flex layout. Spent too long checking the wrong things before finding the CSS specificity issue.</div>
+          <div class="issue-fix">Applied the <code style="font-family:monospace;font-size:12px">.nav-link</code> class consistently to both pages, then matched the active state with <code style="font-family:monospace;font-size:12px">.nav-link.active</code>.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">Social proof number in too many places</div>
+          <div class="issue-text">The "247 readers" number was hardcoded in three separate places: the HTML structure, the T[] i18n array, and the subscribe handler JavaScript. Removing it required hunting all three. Found the last one only after the page still showed the number on language toggle.</div>
+          <div class="issue-fix">Removed all three instances. The social proof section now says "readers already on the waitlist" without any number until it's real.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">Gemini references scattered across the Lab page</div>
+          <div class="issue-text">After switching the AI model from Claude to Gemini, the old model name appeared in six separate places: the hero chip, the tech card title and description, the architecture SVG text, decision #4 question/body/verdict, a roadmap item label, and six entries in the T[] i18n array (English + Spanish). A global find-and-replace would have broken IDs and CSS selectors.</div>
+          <div class="issue-fix">Targeted each instance individually. Updated the tech card logo to a Google-blue G, changed ANTHROPIC API to GOOGLE AI API in the SVG, and rewrote the decision body to reflect the actual reasoning for the switch.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">SwiftPM resolved packages showing as untracked</div>
+          <div class="issue-text">When Flutter resolves iOS Swift package dependencies, Xcode writes resolution state into project-local directories. These showed as untracked in <code style="font-family:monospace;font-size:12px">git status</code> and are large, auto-generated, and platform-specific. Not obvious at first whether they should be committed.</div>
+          <div class="issue-fix">Left them out of commits. They're resolved fresh on each machine. The <code style="font-family:monospace;font-size:12px">.gitignore</code> handles them once you know to look.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">google-services.json and GoogleService-Info.plist sensitivity</div>
+          <div class="issue-text">Firebase config files contain API keys that are technically public (Firebase security comes from Security Rules, not key secrecy), but committing them to a public repository is still a deliberate decision that deserves thought — not an accident.</div>
+          <div class="issue-fix">Excluded from committed changes for now. Documented in the build notes. They'll be added via environment-specific secrets when the backend is deployed.</div>
+        </div>
+
+        <div class="issue-block">
+          <div class="issue-label">Hive data persisting across SourceType migration</div>
+          <div class="issue-text">After adding the <code style="font-family:monospace;font-size:12px">type</code> field to the <code style="font-family:monospace;font-size:12px">Book</code> model, existing Hive boxes stored maps without the <code style="font-family:monospace;font-size:12px">'type'</code> key. If <code style="font-family:monospace;font-size:12px">fromMap</code> threw on missing keys, every existing user's data would be unreadable on first open after the update.</div>
+          <div class="issue-fix">Made <code style="font-family:monospace;font-size:12px">fromMap</code> default to <code style="font-family:monospace;font-size:12px">SourceType.book</code> when the key is absent. Silent, backward-compatible migration — zero data loss.</div>
+        </div>
+      </div>
+
+      <div class="chapter-divider"><span>⬡ What's next</span></div>
+
+      <!-- ── CHAPTER 11 ── -->
+      <div class="chapter">
+        <div class="chapter-tag">Status — 2026</div>
+        <h2 class="chapter-title">Where it stands</h2>
+        <p>The app is feature-complete for private beta. The knowledge graph works — create nodes, write notes, draw wikilinks, watch edges appear. Firebase Auth works. Cloud sync pushes and pulls JSONB snapshots. The AI suggestions tab has its full UI and interaction model — wired to mock data while the backend endpoint is being deployed. The web presence is live at <a href="https://thesynapsetool.netlify.app" style="color:var(--teal);text-decoration:none;font-weight:500">thesynapsetool.netlify.app</a>.</p>
+        <p>What's still left before public launch:</p>
+        <p><strong>Deploy synapse-service to Railway.</strong> The backend is fully built, tested locally, and ready — it just hasn't been pushed to a production environment. The Railway project exists. This is a configuration step, not a code step.</p>
+        <p><strong>Connect the domain.</strong> <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">usesynapse.io</code> still needs to be pointed at Netlify's DNS. Another configuration step.</p>
+        <p><strong>Wire the AI endpoint.</strong> The suggestions tab sends mock data. The backend route exists. Connecting them is a one-file change in the Flutter app — swapping the simulated delay for a real API call to <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">POST /v1/ai/suggest</code>.</p>
+        <p><strong>Android.</strong> Flutter makes this structurally simple — same codebase, different build target. The platform work for Firebase is already done. This is the last item before calling it cross-platform.</p>
+        <div class="pull-quote">
+          <p>"The graph grows. The connections multiply. That was always the point — not the app, but the thinking it makes visible."</p>
+        </div>
+      </div>
+
+      <!-- Closing -->
+      <div class="letter-closing">
+        <div class="closing-sig">Ismael</div>
+        <div class="closing-meta">Building Synapse · 2026</div>
+      </div>
+
+    </div><!-- .letter-card -->
+  </div><!-- .letter-wrap -->
+
+  <!-- Footer -->
+  <footer>
+    <a class="footer-brand" href="index.html">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px">
+        <defs>
+          <linearGradient id="ft-bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stop-color="#7B9EAB"/>
+            <stop offset="100%" stop-color="#526E7A"/>
+          </linearGradient>
+        </defs>
+        <rect width="1024" height="1024" rx="230" fill="url(#ft-bg)"/>
+        <line x1="512" y1="491" x2="512" y2="184" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="799" y2="358" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="768" y2="696" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="410" y2="809" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="205" y2="573" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+        <line x1="512" y1="491" x2="266" y2="287" stroke="rgba(255,255,255,0.58)" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="512" cy="491" r="96" fill="#E59A78"/>
+      </svg>
+      <span class="footer-brand-name">Synapse</span>
+    </a>
+    <div style="display:flex;gap:20px;align-items:center">
+      <a href="index.html" style="font-size:12px;color:var(--text3);text-decoration:none">Waitlist</a>
+      <a href="lab.html"   style="font-size:12px;color:var(--text3);text-decoration:none">Lab</a>
+      <a href="story.html" style="font-size:12px;color:var(--text3);text-decoration:none;font-weight:600;color:var(--teal)">Story</a>
+    </div>
+    <p class="footer-copy">© 2026 Synapse. All rights reserved.</p>
+  </footer>
+
+</div><!-- .page -->
+
+<script>
+// ── BACKGROUND GRAPH (same physics simulation as other pages) ──
+(function bgGraph() {
+  const canvas = document.getElementById('bg-graph');
+  const ctx    = canvas.getContext('2d');
+  let W = 0, H = 0;
+  const mouse = { x: -9999, y: -9999 };
+
+  const NODE_DATA = [
+    { label: 'Local-first',       color: '#6A8791' },
+    { label: 'Hive',              color: '#E59A78' },
+    { label: 'Flutter',           color: '#6A8791' },
+    { label: 'Firebase Auth',     color: '#C6BFA2' },
+    { label: 'PostgreSQL',        color: '#6A8791' },
+    { label: 'Fastify',           color: '#92A8A5' },
+    { label: 'Gemini',            color: '#E59A78' },
+    { label: 'Knowledge Graph',   color: '#6A8791' },
+    { label: 'Wikilinks',         color: '#92A8A5' },
+    { label: 'Offline-first',     color: '#C6BFA2' },
+    { label: 'JSONB Snapshots',   color: '#6A8791' },
+    { label: 'SourceType',        color: '#E59A78' },
+    { label: 'AI Suggestions',    color: '#92A8A5' },
+    { label: 'Canvas 60fps',      color: '#6A8791' },
+    { label: 'Dart',              color: '#C6BFA2' },
+    { label: 'Railway',           color: '#92A8A5' },
+    { label: 'Netlify',           color: '#E59A78' },
+    { label: 'TypeScript',        color: '#6A8791' },
+    { label: 'CustomPainter',     color: '#92A8A5' },
+    { label: 'Glass UI',          color: '#C6BFA2' },
+    { label: 'Privacy',           color: '#6A8791' },
+    { label: 'Notes',             color: '#E59A78' },
+    { label: 'Books',             color: '#92A8A5' },
+    { label: 'Movies',            color: '#C6BFA2' },
+    { label: 'Ideas',             color: '#E59A78' },
+  ];
+
+  const EDGES = [
+    [0,1],[0,7],[0,9],[0,20],
+    [1,7],[1,21],[1,22],
+    [2,13],[2,14],[2,18],[2,7],
+    [3,10],[3,5],[3,15],
+    [4,10],[4,5],[4,15],[4,17],
+    [5,17],[5,15],[5,10],
+    [6,12],[6,7],
+    [7,8],[7,12],[7,21],[7,22],[7,23],[7,24],
+    [8,21],[8,22],
+    [9,0],[9,20],
+    [10,4],[10,15],
+    [11,22],[11,23],[11,24],[11,12],
+    [12,6],[12,11],
+    [13,2],[13,19],
+    [14,2],[14,17],
+    [15,4],[15,16],
+    [16,19],
+    [17,5],[17,4],
+    [18,2],[18,19],
+    [19,16],[19,18],
+    [20,0],[20,21],
+    [21,22],[21,24],
+    [22,23],
+    [23,24],
+  ];
+
+  let nodes = [];
+
+  function hexRgba(hex, a) {
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+
+  function init() {
+    resize();
+    nodes = NODE_DATA.map((d, i) => {
+      const deg = EDGES.filter(e => e[0] === i || e[1] === i).length;
+      return {
+        ...d,
+        x:  W * 0.12 + Math.random() * W * 0.76,
+        y:  H * 0.12 + Math.random() * H * 0.76,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        deg,
+        r: Math.max(5, 4 + deg * 1.6),
+      };
+    });
+    requestAnimationFrame(tick);
+  }
+
+  function tick() {
+    nodes.forEach((a, i) => {
+      let fx = (W / 2 - a.x) * 0.00055;
+      let fy = (H / 2 - a.y) * 0.00055;
+      nodes.forEach((b, j) => {
+        if (i === j) return;
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d  = Math.max(Math.hypot(dx, dy), 1);
+        const f  = Math.min(5500 / (d * d), 3.5);
+        fx += (dx / d) * f;
+        fy += (dy / d) * f;
+      });
+      EDGES.forEach(([si, ti]) => {
+        if (si !== i && ti !== i) return;
+        const other = nodes[si === i ? ti : si];
+        if (!other) return;
+        const dx = other.x - a.x, dy = other.y - a.y;
+        const d  = Math.max(Math.hypot(dx, dy), 1);
+        const ideal  = Math.min(W, H) * 0.19;
+        const spring = (d - ideal) * 0.016;
+        fx += (dx / d) * spring;
+        fy += (dy / d) * spring;
+      });
+      const mdx = a.x - mouse.x, mdy = a.y - mouse.y;
+      const md  = Math.hypot(mdx, mdy);
+      if (md < 220 && md > 0) {
+        const strength = ((220 - md) / 220) * 4.0;
+        fx += (mdx / md) * strength;
+        fy += (mdy / md) * strength;
+      }
+      fx += (Math.random() - 0.5) * 0.055;
+      fy += (Math.random() - 0.5) * 0.055;
+      a.vx = (a.vx + fx) * 0.76;
+      a.vy = (a.vy + fy) * 0.76;
+      const spd = Math.hypot(a.vx, a.vy);
+      if (spd > 2.8) { a.vx = a.vx / spd * 2.8; a.vy = a.vy / spd * 2.8; }
+      a.x = Math.max(a.r + 16, Math.min(W - a.r - 16, a.x + a.vx));
+      a.y = Math.max(a.r + 16, Math.min(H - a.r - 16, a.y + a.vy));
+    });
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  function draw() {
+    const dpr = window.devicePixelRatio || 1;
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(dpr, dpr);
+    EDGES.forEach(([si, ti]) => {
+      const a = nodes[si], b = nodes[ti];
+      if (!a || !b) return;
+      const near = Math.hypot(a.x - mouse.x, a.y - mouse.y) < 200
+                || Math.hypot(b.x - mouse.x, b.y - mouse.y) < 200;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = near ? 'rgba(106,135,145,0.28)' : 'rgba(148,145,140,0.11)';
+      ctx.lineWidth   = near ? 1.3 : 0.75;
+      ctx.stroke();
+    });
+    nodes.forEach(n => {
+      const dist  = Math.hypot(n.x - mouse.x, n.y - mouse.y);
+      const near  = dist < 200;
+      const close = dist < 90;
+      const alpha = close ? 0.90 : near ? 0.72 : 0.44;
+      const r     = n.r * (close ? 1.35 : near ? 1.18 : 1);
+      if (near) {
+        const haloR = r + (close ? 16 : 10);
+        const grad  = ctx.createRadialGradient(n.x, n.y, r * 0.4, n.x, n.y, haloR);
+        grad.addColorStop(0, hexRgba(n.color, close ? 0.22 : 0.13));
+        grad.addColorStop(1, hexRgba(n.color, 0));
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, haloR, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = hexRgba(n.color, alpha);
+      ctx.fill();
+      ctx.strokeStyle = `rgba(255,255,255,${near ? 0.80 : 0.52})`;
+      ctx.lineWidth   = near ? 1.8 : 1.1;
+      ctx.stroke();
+      const labelAlpha = close ? 0.72 : near ? 0.50 : 0.26;
+      const fontSize   = close ? 11 : near ? 10.5 : 9.5;
+      ctx.fillStyle    = `rgba(28,28,30,${labelAlpha})`;
+      ctx.font         = `${close ? '500 ' : ''}${fontSize}px "DM Sans",sans-serif`;
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(n.label, n.x, n.y + r + 3.5);
+    });
+    ctx.restore();
+  }
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+  window.addEventListener('touchmove', e => {
+    if (e.touches.length) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
+  }, { passive: true });
+  window.addEventListener('touchend', () => { mouse.x = -9999; mouse.y = -9999; }, { passive: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── LANGUAGE TOGGLE (minimal — page is EN-primary) ──
+let currentLang = localStorage.getItem('synapse_lang') || 'en';
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('synapse_lang', lang);
+  document.getElementById('lt-en').classList.toggle('lt-on', lang === 'en');
+  document.getElementById('lt-es').classList.toggle('lt-on', lang === 'es');
+  document.documentElement.lang = lang;
+}
+function toggleLang(lang) {
+  if (lang === currentLang) return;
+  applyLang(lang);
+}
+(function(){ applyLang(currentLang); })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" width="1000" height="540">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F6F5F3"/>
+    <stop offset="100%" stop-color="#EDECE8"/>
+  </linearGradient>
+  <radialGradient id="oa" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#CFCFCC" stop-opacity="0.55"/>
+    <stop offset="100%" stop-color="#CFCFCC" stop-opacity="0"/>
+  </radialGradient>
+  <!-- Left panel gradient — warm/terra tint -->
+  <linearGradient id="left-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="rgba(229,154,120,0.10)"/>
+    <stop offset="100%" stop-color="rgba(229,154,120,0.05)"/>
+  </linearGradient>
+  <!-- Right panel gradient — teal -->
+  <linearGradient id="right-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="rgba(106,135,145,0.10)"/>
+    <stop offset="100%" stop-color="rgba(106,135,145,0.06)"/>
+  </linearGradient>
+  <filter id="cs" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="10" stdDeviation="24" flood-color="#0000000D"/>
+    <feDropShadow dx="0" dy="2"  stdDeviation="5"  flood-color="#00000008"/>
+  </filter>
+  <filter id="x-glow" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#C67050" flood-opacity="0.18"/>
+  </filter>
+  <filter id="check-glow" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#6A8791" flood-opacity="0.22"/>
+  </filter>
+</defs>
+
+<!-- Background -->
+<rect width="1000" height="540" fill="url(#bg)"/>
+<ellipse cx="-40" cy="-30" rx="360" ry="360" fill="url(#oa)"/>
+<ellipse cx="1040" cy="570" rx="300" ry="300" fill="#DDD7CD" opacity="0.36"/>
+
+<!-- Title -->
+<text x="500" y="52" text-anchor="middle" fill="#1C1C1E"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="26">Decision 3 · The pivot</text>
+<text x="500" y="80" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="14">Dropping Firestore, keeping Firebase Auth</text>
+
+<!-- ═══════════════════════════════
+     LEFT PANEL — Firestore (dropped)
+     ═══════════════════════════════ -->
+<g transform="translate(56, 106)" filter="url(#cs)">
+  <!-- Panel background -->
+  <rect width="374" height="342" rx="22"
+        fill="rgba(255,255,255,0.36)" stroke="rgba(229,154,120,0.26)" stroke-width="1.2"/>
+  <!-- Top fill with warm tint -->
+  <rect width="374" height="58" rx="22" fill="rgba(229,154,120,0.12)"/>
+  <rect y="36" width="374" height="22" fill="rgba(229,154,120,0.12)"/>
+
+  <!-- Panel header -->
+  <text x="187" y="36" text-anchor="middle" fill="#8A4830"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="12" font-weight="700" letter-spacing="0.08em">DROPPED</text>
+
+  <!-- Service name -->
+  <text x="187" y="92" text-anchor="middle" fill="#1C1C1E"
+        font-family="Georgia,'Times New Roman',serif"
+        font-size="28" letter-spacing="-0.3">Firestore</text>
+  <text x="187" y="116" text-anchor="middle" fill="#5A5A6E"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="13">+ Cloud Run</text>
+
+  <!-- Divider -->
+  <line x1="32" y1="134" x2="342" y2="134" stroke="rgba(229,154,120,0.22)" stroke-width="1"/>
+
+  <!-- Cost explanation rows -->
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+    <!-- Row 1 -->
+    <rect x="20" y="148" width="8" height="8" rx="2" fill="rgba(198,112,80,0.30)"/>
+    <text x="36" y="158" fill="#5A5A6E" font-size="13">Billed per operation (read / write)</text>
+
+    <!-- Row 2 -->
+    <rect x="20" y="172" width="8" height="8" rx="2" fill="rgba(198,112,80,0.30)"/>
+    <text x="36" y="182" fill="#5A5A6E" font-size="13">500 nodes × N writes per session</text>
+
+    <!-- Row 3 -->
+    <rect x="20" y="196" width="8" height="8" rx="2" fill="rgba(198,112,80,0.30)"/>
+    <text x="36" y="206" fill="#5A5A6E" font-size="13">× growing user base</text>
+
+    <!-- Cost math box -->
+    <rect x="20" y="220" width="334" height="50" rx="12"
+          fill="rgba(229,154,120,0.10)" stroke="rgba(229,154,120,0.24)" stroke-width="1"/>
+    <text x="187" y="241" text-anchor="middle" fill="#8A4830"
+          font-size="12" font-weight="600" letter-spacing="0.04em">500 nodes  ×  N writes  ×  users</text>
+    <text x="187" y="260" text-anchor="middle" fill="#C67050"
+          font-size="15" font-weight="700">= The math didn't work.</text>
+
+    <!-- Row 4 -->
+    <rect x="20" y="284" width="8" height="8" rx="2" fill="rgba(198,112,80,0.30)"/>
+    <text x="36" y="294" fill="#5A5A6E" font-size="13">Wrong model for graph writes</text>
+  </g>
+
+  <!-- Big X -->
+  <text x="340" y="82" text-anchor="middle" fill="#C67050"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="44" font-weight="700" filter="url(#x-glow)">✕</text>
+
+  <!-- Strikethrough line across panel -->
+  <line x1="18" y1="324" x2="356" y2="116"
+        stroke="rgba(198,112,80,0.20)" stroke-width="1.5" stroke-dasharray="6,4"/>
+</g>
+
+<!-- ═══════════════════════════════
+     CENTER PIVOT ARROW
+     ═══════════════════════════════ -->
+<rect x="453" y="236" width="94" height="56" rx="28"
+      fill="rgba(255,255,255,0.55)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+<text x="500" y="255" text-anchor="middle" fill="#6A8791"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10" font-weight="600" letter-spacing="0.06em">PIVOT</text>
+<text x="500" y="278" text-anchor="middle" fill="#6A8791"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="22">→</text>
+
+<!-- ═══════════════════════════════
+     RIGHT PANEL — Firebase Auth (kept)
+     ═══════════════════════════════ -->
+<g transform="translate(570, 106)" filter="url(#cs)">
+  <!-- Panel background -->
+  <rect width="374" height="342" rx="22"
+        fill="rgba(255,255,255,0.38)" stroke="rgba(106,135,145,0.24)" stroke-width="1.2"/>
+  <!-- Top fill with teal tint -->
+  <rect width="374" height="58" rx="22" fill="rgba(106,135,145,0.12)"/>
+  <rect y="36" width="374" height="22" fill="rgba(106,135,145,0.12)"/>
+
+  <!-- Panel header -->
+  <text x="187" y="36" text-anchor="middle" fill="#3A6070"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="12" font-weight="700" letter-spacing="0.08em">KEPT</text>
+
+  <!-- Service name -->
+  <text x="187" y="92" text-anchor="middle" fill="#1C1C1E"
+        font-family="Georgia,'Times New Roman',serif"
+        font-size="28" letter-spacing="-0.3">Firebase Auth</text>
+  <text x="187" y="116" text-anchor="middle" fill="#5A5A6E"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="13">Spark plan · zero custom auth code</text>
+
+  <!-- Divider -->
+  <line x1="32" y1="134" x2="342" y2="134" stroke="rgba(106,135,145,0.20)" stroke-width="1"/>
+
+  <!-- Benefit rows -->
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+    <!-- Row 1 -->
+    <circle cx="24" cy="152" r="4.5" fill="rgba(106,135,145,0.30)"/>
+    <text x="40" y="158" fill="#5A5A6E" font-size="13">Token refresh handled automatically</text>
+
+    <!-- Row 2 -->
+    <circle cx="24" cy="176" r="4.5" fill="rgba(106,135,145,0.30)"/>
+    <text x="40" y="182" fill="#5A5A6E" font-size="13">Session expiry, revocation, edge cases</text>
+
+    <!-- Row 3 -->
+    <circle cx="24" cy="200" r="4.5" fill="rgba(106,135,145,0.30)"/>
+    <text x="40" y="206" fill="#5A5A6E" font-size="13">Bearer header → Firebase Admin SDK</text>
+
+    <!-- Row 4 -->
+    <circle cx="24" cy="224" r="4.5" fill="rgba(106,135,145,0.30)"/>
+    <text x="40" y="230" fill="#5A5A6E" font-size="13">Free on Spark plan</text>
+
+    <!-- Quote box -->
+    <rect x="20" y="244" width="334" height="50" rx="12"
+          fill="rgba(106,135,145,0.09)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+    <text x="187" y="264" text-anchor="middle" fill="#4A6E7A"
+          font-size="12" font-weight="600">"Auth is the hardest thing to build correctly."</text>
+    <text x="187" y="282" text-anchor="middle" fill="#6A8791"
+          font-size="12">Firebase handles it. I accepted that dependency.</text>
+
+    <!-- Row 5 -->
+    <circle cx="24" cy="308" r="4.5" fill="rgba(106,135,145,0.30)"/>
+    <text x="40" y="314" fill="#5A5A6E" font-size="13">Zero custom auth code written</text>
+  </g>
+
+  <!-- Big checkmark -->
+  <text x="344" y="82" text-anchor="middle" fill="#6A8791"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="40" font-weight="700" filter="url(#check-glow)">✓</text>
+</g>
+
+<!-- ═══════════════════════════════
+     Decision chips — bottom
+     ═══════════════════════════════ -->
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600">
+  <rect x="136" y="468" width="140" height="26" rx="13"
+        fill="rgba(198,112,80,0.10)" stroke="rgba(198,112,80,0.22)" stroke-width="1"/>
+  <text x="206" y="485" text-anchor="middle" fill="#C67050">→ Firestore dropped</text>
+
+  <rect x="296" y="468" width="152" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="372" y="485" text-anchor="middle" fill="#6A8791">→ Firebase Auth kept</text>
+
+  <rect x="468" y="468" width="210" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="573" y="485" text-anchor="middle" fill="#6A8791">→ cost predictability over convenience</text>
+
+  <rect x="698" y="468" width="170" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="783" y="485" text-anchor="middle" fill="#6A8791">→ Google ecosystem fit</text>
+</g>
+</svg>

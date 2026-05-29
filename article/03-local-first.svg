@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" width="1000" height="540">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F6F5F3"/>
+    <stop offset="100%" stop-color="#EDECE8"/>
+  </linearGradient>
+  <radialGradient id="oa" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#CFCFCC" stop-opacity="0.60"/>
+    <stop offset="100%" stop-color="#CFCFCC" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="teal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#7B9EAB"/>
+    <stop offset="100%" stop-color="#526E7A"/>
+  </linearGradient>
+  <linearGradient id="hive-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#E59A78" stop-opacity="0.22"/>
+    <stop offset="100%" stop-color="#E59A78" stop-opacity="0.10"/>
+  </linearGradient>
+  <filter id="cs" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="10" stdDeviation="22" flood-color="#0000000E"/>
+    <feDropShadow dx="0" dy="2"  stdDeviation="5"  flood-color="#00000009"/>
+  </filter>
+  <filter id="glow-teal" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#6A8791" flood-opacity="0.22"/>
+  </filter>
+  <!-- Dashed arrow marker -->
+  <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L7,3 z" fill="#94A0B8"/>
+  </marker>
+  <marker id="arr-solid" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L7,3 z" fill="#6A8791"/>
+  </marker>
+</defs>
+
+<!-- Background -->
+<rect width="1000" height="540" fill="url(#bg)"/>
+<ellipse cx="-60" cy="-40" rx="380" ry="380" fill="url(#oa)"/>
+<ellipse cx="1050" cy="580" rx="320" ry="320" fill="#DDD7CD" opacity="0.36"/>
+
+<!-- Title -->
+<text x="500" y="52" text-anchor="middle" fill="#1C1C1E"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="26">Decision 1 — Local-first, always</text>
+<text x="500" y="80" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="14">The graph lives on the device, not on a server</text>
+
+<!-- ═══════════════════════════
+     DEVICE (left) — source of truth
+     ═══════════════════════════ -->
+<g transform="translate(165, 112)" filter="url(#cs)">
+  <!-- Phone body -->
+  <rect width="168" height="292" rx="24" fill="rgba(255,255,255,0.48)" stroke="rgba(255,255,255,0.72)" stroke-width="1.5"/>
+  <!-- Phone screen bezel -->
+  <rect x="8" y="38" width="152" height="214" rx="6" fill="rgba(106,135,145,0.07)"/>
+  <!-- Status bar top pill -->
+  <rect x="58" y="14" width="52" height="8" rx="4" fill="rgba(106,135,145,0.22)"/>
+  <!-- Home indicator -->
+  <rect x="62" y="318" width="44" height="5" rx="2.5" fill="rgba(106,135,145,0.20)"/>
+
+  <!-- Hive hexagonal pattern inside screen -->
+  <!-- Row 1 (3 hexes) -->
+  <g fill="url(#hive-grad)" stroke="rgba(229,154,120,0.36)" stroke-width="1">
+    <!-- Hex 1 -->
+    <polygon points="84,62  98,55  112,62  112,76  98,83  84,76"/>
+    <!-- Hex 2 -->
+    <polygon points="112,62  126,55  140,62  140,76  126,83  112,76"/>
+    <!-- Hex 3 -->
+    <polygon points="56,62  70,55  84,62   84,76  70,83  56,76"/>
+  </g>
+  <!-- Row 2 (3 hexes, offset) -->
+  <g fill="url(#hive-grad)" stroke="rgba(229,154,120,0.36)" stroke-width="1">
+    <polygon points="98,83  112,76  126,83  126,97  112,104  98,97"/>
+    <polygon points="70,83  84,76   98,83   98,97  84,104  70,97"/>
+    <polygon points="126,83 140,76  154,83  154,97  140,104  126,97"/>
+  </g>
+  <!-- Row 3 (3 hexes) -->
+  <g fill="url(#hive-grad)" stroke="rgba(229,154,120,0.36)" stroke-width="1">
+    <polygon points="84,104 98,97   112,104 112,118 98,125  84,118"/>
+    <polygon points="112,104 126,97 140,104 140,118 126,125 112,118"/>
+    <polygon points="56,104 70,97   84,104  84,118  70,125  56,118"/>
+  </g>
+  <!-- Row 4 (2 hexes) -->
+  <g fill="url(#hive-grad)" stroke="rgba(229,154,120,0.36)" stroke-width="1">
+    <polygon points="98,125  112,118 126,125 126,139 112,146 98,139"/>
+    <polygon points="70,125  84,118  98,125  98,139  84,146  70,139"/>
+  </g>
+
+  <!-- HIVE DB label -->
+  <rect x="36" y="160" width="96" height="22" rx="11"
+        fill="rgba(229,154,120,0.18)" stroke="rgba(229,154,120,0.32)" stroke-width="1"/>
+  <text x="84" y="175" text-anchor="middle" fill="#C67050"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="10" font-weight="700" letter-spacing="0.08em">HIVE DB</text>
+
+  <!-- Note rows (simplified list) -->
+  <rect x="16" y="196" width="136" height="8" rx="4" fill="rgba(106,135,145,0.16)"/>
+  <rect x="16" y="210" width="110" height="8" rx="4" fill="rgba(106,135,145,0.12)"/>
+  <rect x="16" y="224" width="124" height="8" rx="4" fill="rgba(106,135,145,0.16)"/>
+</g>
+
+<!-- SOURCE OF TRUTH label below device -->
+<rect x="182" y="424" width="134" height="24" rx="12"
+      fill="rgba(106,135,145,0.14)" stroke="rgba(106,135,145,0.26)" stroke-width="1"/>
+<text x="249" y="440" text-anchor="middle" fill="#4A6E7A"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10.5" font-weight="700" letter-spacing="0.08em">SOURCE OF TRUTH</text>
+
+<!-- OFFLINE badge — prominent -->
+<rect x="174" y="456" width="150" height="34" rx="17"
+      fill="rgba(106,135,145,0.92)" filter="url(#glow-teal)"/>
+<text x="249" y="478" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="13" font-weight="700" letter-spacing="0.04em">✓  Offline always</text>
+
+<!-- ═══════════════════════════
+     SYNC ARROW — center
+     ═══════════════════════════ -->
+<!-- Dashed line device → cloud -->
+<line x1="340" y1="260" x2="596" y2="260"
+      stroke="#94A0B8" stroke-width="1.5" stroke-dasharray="6,5"
+      marker-end="url(#arr)"/>
+<!-- "sync" label on arrow -->
+<rect x="425" y="246" width="68" height="22" rx="11"
+      fill="rgba(255,255,255,0.55)" stroke="rgba(148,160,184,0.30)" stroke-width="1"/>
+<text x="459" y="261" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11" font-weight="500">backup only</text>
+
+<!-- Small upward arrow under device — "source of truth" indicator -->
+<line x1="249" y1="408" x2="249" y2="422"
+      stroke="#6A8791" stroke-width="1.5"
+      marker-end="url(#arr-solid)"/>
+
+<!-- ═══════════════════════════
+     CLOUD (right) — dimmed
+     ═══════════════════════════ -->
+<g transform="translate(600, 140)" opacity="0.62" filter="url(#cs)">
+  <!-- Cloud body — simple path -->
+  <path d="M60,200 Q20,200 20,165 Q20,140 42,132 Q38,120 48,110
+           Q58,100 74,104 Q82,88 100,84 Q120,80 136,96
+           Q152,88 168,96 Q188,100 188,120 Q204,122 210,138
+           Q218,158 206,172 Q196,184 180,186 L80,186 Q60,186 60,170 Z"
+        fill="rgba(255,255,255,0.40)" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
+  <!-- Cloud label -->
+  <text x="115" y="152" text-anchor="middle" fill="#5A5A6E"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="12" font-weight="600">synapse-service</text>
+  <text x="115" y="170" text-anchor="middle" fill="#94A0B8"
+        font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="10.5">Railway · PostgreSQL</text>
+</g>
+
+<!-- BACKUP ONLY label below cloud -->
+<rect x="634" y="364" width="106" height="22" rx="11"
+      fill="rgba(148,160,184,0.14)" stroke="rgba(148,160,184,0.24)" stroke-width="1"/>
+<text x="687" y="379" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10" font-weight="600" letter-spacing="0.06em">BACKUP ONLY</text>
+
+<!-- "Never a spinner" caption -->
+<text x="687" y="408" text-anchor="middle" fill="#94A0B8"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="13" font-style="italic">No internet? No problem.</text>
+
+<!-- ═══════════════════════════
+     Decision chips — bottom
+     ═══════════════════════════ -->
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600">
+  <!-- chip 1 -->
+  <rect x="194" y="500" width="128" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="258" y="517" text-anchor="middle" fill="#6A8791">→ Hive over SQLite</text>
+
+  <!-- chip 2 -->
+  <rect x="342" y="500" width="162" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="423" y="517" text-anchor="middle" fill="#6A8791">→ device = source of truth</text>
+
+  <!-- chip 3 -->
+  <rect x="524" y="500" width="166" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="607" y="517" text-anchor="middle" fill="#6A8791">→ backend = backup + AI</text>
+</g>
+</svg>

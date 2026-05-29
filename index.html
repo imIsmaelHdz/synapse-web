@@ -6,6 +6,20 @@
 <title>Synapse — Coming Soon</title>
 <meta name="description" content="Where thinking becomes a map. Synapse turns your notes into a living knowledge web — link ideas across books, thoughts, and media. Launching soon.">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="canonical" href="https://usesynapse.io/">
+<link rel="alternate" hreflang="en" href="https://usesynapse.io/">
+<link rel="alternate" hreflang="es" href="https://usesynapse.io/?lang=es">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://usesynapse.io/">
+<meta property="og:title"       content="Synapse — Where thinking becomes a map">
+<meta property="og:description" content="Turn your notes into a living knowledge web. Link ideas across books, films, and thoughts. Launching soon.">
+<meta property="og:image"       content="https://usesynapse.io/og-image.png">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="Synapse — Where thinking becomes a map">
+<meta name="twitter:description" content="Turn your notes into a living knowledge web. Launching soon.">
+<meta name="twitter:image"       content="https://usesynapse.io/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -782,7 +796,7 @@ footer{
         <div class="av" style="background:linear-gradient(135deg,#C6BFA2,#A89C80)">S</div>
         <div class="av" style="background:linear-gradient(135deg,#6A8791,#4A6771)">R</div>
       </div>
-      <p class="sp-text">readers already on the waitlist</p>
+      <p class="sp-text">early readers on the waitlist</p>
     </div>
   </section>
 
@@ -1342,7 +1356,8 @@ async function subscribe(which) {
 }
 
 // ── LANGUAGE TOGGLE ──────────────────────────────────────────────
-let currentLang = localStorage.getItem('synapse_lang') || 'en';
+let currentLang = 'en';
+try { currentLang = localStorage.getItem('synapse_lang') || 'en'; } catch(_) {}
 
 const SVG_CHECK = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
 const SVG_STAR  = '<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
@@ -1577,7 +1592,7 @@ const T = [
 
 function applyLang(lang) {
   currentLang = lang;
-  localStorage.setItem('synapse_lang', lang);
+  try { localStorage.setItem('synapse_lang', lang); } catch(_) {}
   document.getElementById('lt-en').classList.toggle('lt-on', lang === 'en');
   document.getElementById('lt-es').classList.toggle('lt-on', lang === 'es');
   document.documentElement.lang = lang;

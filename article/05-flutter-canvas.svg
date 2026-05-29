@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" width="1000" height="540">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F6F5F3"/>
+    <stop offset="100%" stop-color="#EDECE8"/>
+  </linearGradient>
+  <radialGradient id="oa" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#CFCFCC" stop-opacity="0.60"/>
+    <stop offset="100%" stop-color="#CFCFCC" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="teal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#7B9EAB"/>
+    <stop offset="100%" stop-color="#526E7A"/>
+  </linearGradient>
+  <linearGradient id="terra-node" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#E59A78"/>
+    <stop offset="100%" stop-color="#C87850"/>
+  </linearGradient>
+  <radialGradient id="node-shine" cx="35%" cy="30%" r="60%">
+    <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+  </radialGradient>
+  <filter id="cs" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="10" stdDeviation="24" flood-color="#0000000D"/>
+    <feDropShadow dx="0" dy="2"  stdDeviation="5"  flood-color="#00000008"/>
+  </filter>
+  <filter id="node-glow" x="-60%" y="-60%" width="220%" height="220%">
+    <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#E59A78" flood-opacity="0.28"/>
+  </filter>
+  <filter id="teal-glow" x="-60%" y="-60%" width="220%" height="220%">
+    <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#6A8791" flood-opacity="0.26"/>
+  </filter>
+</defs>
+
+<!-- Background -->
+<rect width="1000" height="540" fill="url(#bg)"/>
+<ellipse cx="-40" cy="-30" rx="360" ry="360" fill="url(#oa)"/>
+<ellipse cx="1040" cy="570" rx="300" ry="300" fill="#DDD7CD" opacity="0.38"/>
+
+<!-- Title -->
+<text x="500" y="52" text-anchor="middle" fill="#1C1C1E"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="26">Decision 2 — Flutter, because the graph needs a canvas</text>
+<text x="500" y="80" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="14">A force-directed graph at 60 fps — no bridge, no compromise</text>
+
+<!-- ══════════════════════════════════════════════
+     MAIN CANVAS CARD — the knowledge graph
+     ══════════════════════════════════════════════ -->
+<rect x="60" y="104" width="560" height="366" rx="22"
+      fill="rgba(255,255,255,0.36)" stroke="rgba(255,255,255,0.66)" stroke-width="1.5"
+      filter="url(#cs)"/>
+
+<!-- Canvas label -->
+<text x="340" y="126" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10" font-weight="700" letter-spacing="0.10em">FLUTTER CANVAS  ·  CustomPainter</text>
+
+<!-- ══════════════════════════════
+     Force-directed graph edges
+     ══════════════════════════════ -->
+<g stroke="rgba(106,135,145,0.35)" stroke-width="1.4" fill="none">
+  <!-- Hub → Flutter -->
+  <line x1="295" y1="290" x2="190" y2="188"/>
+  <!-- Hub → Dart -->
+  <line x1="295" y1="290" x2="400" y2="178"/>
+  <!-- Hub → iOS -->
+  <line x1="295" y1="290" x2="460" y2="310"/>
+  <!-- Hub → Android -->
+  <line x1="295" y1="290" x2="370" y2="400"/>
+  <!-- Hub → Notes -->
+  <line x1="295" y1="290" x2="170" y2="368"/>
+  <!-- Hub → Graph -->
+  <line x1="295" y1="290" x2="148" y2="300"/>
+  <!-- Secondary edges -->
+  <line x1="190" y1="188" x2="400" y2="178"/>
+  <line x1="400" y1="178" x2="460" y2="310"/>
+  <line x1="460" y1="310" x2="370" y2="400"/>
+  <line x1="370" y1="400" x2="170" y2="368"/>
+  <line x1="170" y1="368" x2="148" y2="300"/>
+</g>
+
+<!-- ══════════════════════════════
+     Nodes
+     ══════════════════════════════ -->
+<!-- Center hub — terra (Synapse center node) -->
+<circle cx="295" cy="290" r="34" fill="url(#terra-node)" filter="url(#node-glow)"/>
+<circle cx="295" cy="290" r="34" fill="url(#node-shine)"/>
+<text x="295" y="295" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11" font-weight="700">Synapse</text>
+
+<!-- Flutter node — teal -->
+<circle cx="190" cy="188" r="26" fill="url(#teal-grad)" filter="url(#teal-glow)"/>
+<circle cx="190" cy="188" r="26" fill="url(#node-shine)"/>
+<text x="190" y="193" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11" font-weight="600">Flutter</text>
+
+<!-- Dart node — sage -->
+<circle cx="400" cy="178" r="22" fill="#92A8A5"/>
+<circle cx="400" cy="178" r="22" fill="url(#node-shine)"/>
+<text x="400" y="183" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11" font-weight="600">Dart</text>
+
+<!-- iOS node — light teal -->
+<circle cx="460" cy="310" r="20" fill="#7B9EAB"/>
+<circle cx="460" cy="310" r="20" fill="url(#node-shine)"/>
+<text x="460" y="315" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10.5" font-weight="600">iOS</text>
+
+<!-- Android node — sage -->
+<circle cx="370" cy="400" r="20" fill="#92A8A5"/>
+<circle cx="370" cy="400" r="20" fill="url(#node-shine)"/>
+<text x="370" y="405" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10" font-weight="600">Android</text>
+
+<!-- Notes node — sand -->
+<circle cx="170" cy="368" r="22" fill="#C6BFA2"/>
+<circle cx="170" cy="368" r="22" fill="url(#node-shine)"/>
+<text x="170" y="373" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="10.5" font-weight="600">Notes</text>
+
+<!-- Graph node — teal darker -->
+<circle cx="148" cy="300" r="18" fill="#526E7A"/>
+<circle cx="148" cy="300" r="18" fill="url(#node-shine)"/>
+<text x="148" y="305" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="9.5" font-weight="600">Graph</text>
+
+<!-- 60fps badge — top right of canvas -->
+<rect x="484" y="116" width="72" height="26" rx="13"
+      fill="rgba(229,154,120,0.88)"/>
+<text x="520" y="133" text-anchor="middle" fill="white"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11" font-weight="700">60 fps</text>
+
+<!-- ══════════════════════════════════════════════
+     RIGHT PANEL — comparison / rationale
+     ══════════════════════════════════════════════ -->
+<rect x="648" y="104" width="296" height="366" rx="22"
+      fill="rgba(255,255,255,0.34)" stroke="rgba(255,255,255,0.60)" stroke-width="1.5"
+      filter="url(#cs)"/>
+
+<!-- Flutter — chosen -->
+<rect x="668" y="126" width="256" height="76" rx="14"
+      fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.24)" stroke-width="1"/>
+<text x="796" y="148" text-anchor="middle" fill="#1C1C1E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="15" font-weight="700">Flutter</text>
+<text x="796" y="166" text-anchor="middle" fill="#5A5A6E"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11">Owns the canvas. No bridge.</text>
+<text x="796" y="184" text-anchor="middle" fill="#6A8791"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11" font-weight="600">✓ 60fps  ✓ iOS + Android</text>
+
+<!-- React Native — ruled out -->
+<rect x="668" y="216" width="256" height="66" rx="14"
+      fill="rgba(148,160,184,0.08)" stroke="rgba(148,160,184,0.18)" stroke-width="1"/>
+<text x="796" y="237" text-anchor="middle" fill="#94A0B8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="14" font-weight="600">React Native</text>
+<text x="796" y="255" text-anchor="middle" fill="#94A0B8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11">JS→native bridge latency</text>
+<text x="796" y="272" text-anchor="middle" fill="#C0B8B0"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11">✕ Canvas frame overhead</text>
+
+<!-- SwiftUI — ruled out -->
+<rect x="668" y="296" width="256" height="66" rx="14"
+      fill="rgba(148,160,184,0.08)" stroke="rgba(148,160,184,0.18)" stroke-width="1"/>
+<text x="796" y="317" text-anchor="middle" fill="#94A0B8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="14" font-weight="600">SwiftUI</text>
+<text x="796" y="335" text-anchor="middle" fill="#94A0B8"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11">iOS only, forever</text>
+<text x="796" y="352" text-anchor="middle" fill="#C0B8B0"
+      font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+      font-size="11">✕ No cross-platform path</text>
+
+<!-- Pull quote at bottom of right panel -->
+<rect x="668" y="376" width="256" height="82" rx="14"
+      fill="rgba(106,135,145,0.07)" stroke="rgba(106,135,145,0.16)" stroke-width="1"/>
+<line x1="672" y1="392" x2="672" y2="444" stroke="#E59A78" stroke-width="3" stroke-linecap="round"/>
+<text x="688" y="396" fill="#4A6E7A"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="11" font-style="italic">"Flutter doesn't render</text>
+<text x="688" y="412" fill="#4A6E7A"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="11" font-style="italic">through UIKit. It draws</text>
+<text x="688" y="428" fill="#4A6E7A"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="11" font-style="italic">directly. That's not a feature</text>
+<text x="688" y="444" fill="#4A6E7A"
+      font-family="Georgia,'Times New Roman',serif"
+      font-size="11" font-style="italic">— it's a requirement."</text>
+
+<!-- Decision chips — bottom -->
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11" font-weight="600">
+  <rect x="166" y="488" width="144" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="238" y="505" text-anchor="middle" fill="#6A8791">→ Flutter over RN</text>
+
+  <rect x="326" y="488" width="148" height="26" rx="13"
+        fill="rgba(106,135,145,0.10)" stroke="rgba(106,135,145,0.22)" stroke-width="1"/>
+  <text x="400" y="505" text-anchor="middle" fill="#6A8791">→ one codebase</text>
+
+  <rect x="490" y="488" width="136" height="26" rx="13"
+        fill="rgba(229,154,120,0.12)" stroke="rgba(229,154,120,0.24)" stroke-width="1"/>
+  <text x="558" y="505" text-anchor="middle" fill="#C67050">→ 60fps no bridge</text>
+</g>
+</svg>
