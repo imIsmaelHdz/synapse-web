@@ -6,15 +6,15 @@
 <title>The Making of Synapse — A Founder's Letter</title>
 <meta name="description" content="Every decision, every wrong turn, and every pivot in building Synapse — a local-first knowledge graph for iOS. An honest account.">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="canonical" href="https://usesynapse.io/story.html">
+<link rel="canonical" href="https://thesynapsetool.com/story.html">
 <meta property="og:type"        content="article">
-<meta property="og:url"         content="https://usesynapse.io/story.html">
+<meta property="og:url"         content="https://thesynapsetool.com/story.html">
 <meta property="og:title"       content="The Making of Synapse — A Founder's Letter">
 <meta property="og:description" content="Every decision, every wrong turn, and every pivot in building Synapse. An honest account.">
-<meta property="og:image"       content="https://usesynapse.io/og-image.png">
+<meta property="og:image"       content="https://thesynapsetool.com/og-image.png">
 <meta name="twitter:card"        content="summary_large_image">
 <meta name="twitter:title"       content="The Making of Synapse — A Founder's Letter">
-<meta name="twitter:image"       content="https://usesynapse.io/og-image.png">
+<meta name="twitter:image"       content="https://thesynapsetool.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -566,7 +566,7 @@ footer{
         <p>The app is feature-complete for private beta. The knowledge graph works — create nodes, write notes, draw wikilinks, watch edges appear. Firebase Auth works. Cloud sync pushes and pulls JSONB snapshots. The AI suggestions tab has its full UI and interaction model — wired to mock data while the backend endpoint is being deployed. The web presence is live at <a href="https://thesynapsetool.netlify.app" style="color:var(--teal);text-decoration:none;font-weight:500">thesynapsetool.netlify.app</a>.</p>
         <p>What's still left before public launch:</p>
         <p><strong>Deploy synapse-service to Railway.</strong> The backend is fully built, tested locally, and ready — it just hasn't been pushed to a production environment. The Railway project exists. This is a configuration step, not a code step.</p>
-        <p><strong>Connect the domain.</strong> <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">usesynapse.io</code> still needs to be pointed at Netlify's DNS. Another configuration step.</p>
+        <p><strong>Connect the domain.</strong> <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">thesynapsetool.com</code> still needs to be pointed at Netlify's DNS. Another configuration step.</p>
         <p><strong>Wire the AI endpoint.</strong> The suggestions tab sends mock data. The backend route exists. Connecting them is a one-file change in the Flutter app — swapping the simulated delay for a real API call to <code style="background:rgba(106,135,145,0.12);border-radius:4px;padding:1px 6px;font-size:12.5px;color:var(--teal);font-family:monospace">POST /v1/ai/suggest</code>.</p>
         <p><strong>Android.</strong> Flutter makes this structurally simple — same codebase, different build target. The platform work for Firebase is already done. This is the last item before calling it cross-platform.</p>
         <div class="pull-quote">
